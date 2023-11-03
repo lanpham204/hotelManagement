@@ -96,7 +96,6 @@ public class MainFrm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1540, 810));
 
         panelTrai.setBackground(new java.awt.Color(54, 33, 89));
         panelTrai.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -333,6 +332,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         lblOclock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblOclock.setForeground(new java.awt.Color(255, 255, 255));
+        lblOclock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Clock.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

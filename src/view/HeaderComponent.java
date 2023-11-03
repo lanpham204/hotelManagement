@@ -87,7 +87,7 @@ color3 .setBorder(border);
         jLabel8.setText("Đang dọn dẹp");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(662, 29, -1, -1));
 
-        jPanel2.setBackground(new java.awt.Color(240, 240, 255));
+        jPanel2.setBackground(new java.awt.Color(240, 240, 240));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
