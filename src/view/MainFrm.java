@@ -54,10 +54,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        btnFloor = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
         btnInvoice = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -169,25 +165,6 @@ public class MainFrm extends javax.swing.JFrame {
 
         panelTrai.add(btnRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 300, 60));
 
-        btnFloor.setBackground(new java.awt.Color(64, 43, 100));
-        btnFloor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnFloorMousePressed(evt);
-            }
-        });
-        btnFloor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        btnFloor.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, -1, 70));
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Tầng");
-        btnFloor.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 110, 30));
-
-        jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/apartment.png"))); // NOI18N
-        btnFloor.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
-        panelTrai.add(btnFloor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
-
         btnInvoice.setBackground(new java.awt.Color(64, 43, 100));
         btnInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -205,7 +182,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice.png"))); // NOI18N
         btnInvoice.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 300, 60));
+        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
 
         btnStatictics.setBackground(new java.awt.Color(64, 43, 100));
         btnStatictics.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -227,7 +204,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
         btnStatictics.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnStatictics, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 600, 300, 60));
+        panelTrai.add(btnStatictics, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 300, 60));
         panelTrai.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
         panelTrai.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
@@ -252,7 +229,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/hotel-bell.png"))); // NOI18N
         btnService.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
+        panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
 
         btnCustomer.setBackground(new java.awt.Color(64, 43, 100));
         btnCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -271,7 +248,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tourist.png"))); // NOI18N
         btnCustomer.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 300, 60));
+        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
 
         btnStaff.setBackground(new java.awt.Color(64, 43, 100));
         btnStaff.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -290,7 +267,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/staff.png"))); // NOI18N
         btnStaff.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
+        panelTrai.add(btnStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 300, 60));
 
         btnAccount.setBackground(new java.awt.Color(64, 43, 100));
         btnAccount.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -312,7 +289,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/account.png"))); // NOI18N
         btnAccount.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 300, 60));
+        panelTrai.add(btnAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 300, 60));
 
         jPanel2.setBackground(new java.awt.Color(54, 33, 89));
 
@@ -473,13 +450,6 @@ public class MainFrm extends javax.swing.JFrame {
                 
     }//GEN-LAST:event_btnAccountMousePressed
 
-    private void btnFloorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFloorMousePressed
-        setView(new RoomsFrm());
-         resetColor();
-        setColor(btnFloor);
-               
-    }//GEN-LAST:event_btnFloorMousePressed
-
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         // TODO add your handling code here:
         System.exit(0);
@@ -529,7 +499,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JPanel btnAccount;
     private javax.swing.JPanel btnBooking;
     private javax.swing.JPanel btnCustomer;
-    private javax.swing.JPanel btnFloor;
     private javax.swing.JPanel btnInvoice;
     private javax.swing.JPanel btnLogout;
     private javax.swing.JPanel btnRoom;
@@ -558,7 +527,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
@@ -568,8 +536,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel2;
@@ -595,7 +561,6 @@ public class MainFrm extends javax.swing.JFrame {
         btnAccount.setBackground(new Color(64, 43, 100));
         btnBooking.setBackground(new Color(64, 43, 100));
         btnCustomer.setBackground(new Color(64, 43, 100));
-        btnFloor.setBackground(new Color(64, 43, 100));
         btnInvoice.setBackground(new Color(64, 43, 100));
         btnRoom.setBackground(new Color(64, 43, 100));
         btnService.setBackground(new Color(64, 43, 100));

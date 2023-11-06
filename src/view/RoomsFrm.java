@@ -59,7 +59,7 @@ public class RoomsFrm extends javax.swing.JPanel {
                 container.add(rowPanel);
                 rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         }
-       cardPanel.addMouseListener(new PopupMenuMouseListener(cardPanel));
+       cardPanel.addMouseListener(new PopupMenuMouseListener(cardPanel,this));
     }
     
     container.add(rowPanel);
@@ -95,10 +95,12 @@ add(scrollPane, BorderLayout.CENTER);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-private class PopupMenuMouseListener extends MouseAdapter {
+public class PopupMenuMouseListener extends MouseAdapter {
         private JPanel cardPanel;
-        public PopupMenuMouseListener(JPanel cardPanel) {
+        private JPanel roomsFrm;
+        public PopupMenuMouseListener(JPanel cardPanel, JPanel roomsFrm) {
             this.cardPanel = cardPanel;
+            this.roomsFrm = roomsFrm;
         }
         
         
@@ -112,16 +114,19 @@ private class PopupMenuMouseListener extends MouseAdapter {
                 bookItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        cardPanel.removeAll();
-                        cardPanel.add(new CardRoomComponent("P101","Đơn","Khách hàng: Lan"
-                ,"Gía: 100 VND/Ngày",new ImageIcon(getClass().getResource("/icon/human.png")),new Color(255,51,51)));
-                        cardPanel.revalidate();
-                        cardPanel.repaint();
+                        BookRoomFrm bookRoomFrm = new BookRoomFrm("P101",cardPanel);
+                        bookRoomFrm.setVisible(true);
+                        
                     }
                 });
                 payItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        roomsFrm.removeAll();
+                        roomsFrm.setLayout(new BorderLayout());
+                        roomsFrm.add(new DetailBookRoomFrm());
+                        roomsFrm.validate();
+                        roomsFrm.repaint();
                         cardPanel.removeAll();
                         cardPanel.add(new CardRoomComponent("P101","Đơn",""
                 ,"",new ImageIcon(getClass().getResource("/icon/broom.png")),new Color(255,255,0)));
@@ -149,4 +154,5 @@ private class PopupMenuMouseListener extends MouseAdapter {
             }
         }
     }
+
 }
