@@ -11,12 +11,6 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
     </Container>
-    <Component class="org.jdesktop.core.animation.timing.sources.ManualTimingSource" name="manualTimingSource1">
-    </Component>
-    <Component class="efectos.MaterialColor" name="materialColor1">
-    </Component>
-    <Component class="rojerusan.RSLabelVerticalDBeanInfo" name="rSLabelVerticalDBeanInfo1">
-    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

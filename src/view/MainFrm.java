@@ -38,9 +38,6 @@ public class MainFrm extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
-        manualTimingSource1 = new org.jdesktop.core.animation.timing.sources.ManualTimingSource();
-        materialColor1 = new efectos.MaterialColor();
-        rSLabelVerticalDBeanInfo1 = new rojerusan.RSLabelVerticalDBeanInfo();
         panelTrai = new javax.swing.JPanel();
         btnLogout = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -540,10 +537,7 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblOclock;
-    private org.jdesktop.core.animation.timing.sources.ManualTimingSource manualTimingSource1;
-    private efectos.MaterialColor materialColor1;
     private javax.swing.JPanel panelTrai;
-    private rojerusan.RSLabelVerticalDBeanInfo rSLabelVerticalDBeanInfo1;
     private javax.swing.JPanel view;
     // End of variables declaration//GEN-END:variables
 
