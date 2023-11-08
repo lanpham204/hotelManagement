@@ -52,7 +52,7 @@ public class RoomsFrm extends javax.swing.JPanel {
         JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
         CardRoomComponent cardRoomComponent = new CardRoomComponent(
                 "P101","Đơn",""
-                ,"",new ImageIcon(getClass().getResource("/icon/hotel (1).png")),new Color(102,255,102));
+                ,"",new Color(102,255,102));
         cardPanel.add(cardRoomComponent);
         rowPanel.add(cardPanel);
         if (rowPanel.getComponentCount()==4) {
@@ -114,7 +114,7 @@ private class PopupMenuMouseListener extends MouseAdapter {
                     public void actionPerformed(ActionEvent e) {
                         cardPanel.removeAll();
                         cardPanel.add(new CardRoomComponent("P101","Đơn","Khách hàng: Lan"
-                ,"Gía: 100 VND/Ngày",new ImageIcon(getClass().getResource("/icon/human.png")),new Color(255,51,51)));
+                ,"Gía: 100 VND/Ngày",new Color(255,51,51)));
                         cardPanel.revalidate();
                         cardPanel.repaint();
                     }
@@ -124,7 +124,7 @@ private class PopupMenuMouseListener extends MouseAdapter {
                     public void actionPerformed(ActionEvent e) {
                         cardPanel.removeAll();
                         cardPanel.add(new CardRoomComponent("P101","Đơn",""
-                ,"",new ImageIcon(getClass().getResource("/icon/broom.png")),new Color(255,255,0)));
+                ,"",new Color(255,255,0)));
                         cardPanel.revalidate();
                         cardPanel.repaint();
                     }

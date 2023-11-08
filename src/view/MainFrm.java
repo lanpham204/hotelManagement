@@ -45,46 +45,35 @@ public class MainFrm extends javax.swing.JFrame {
         btnLogout = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
         btnBooking = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
         btnRoom = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
         btnFloor = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
         btnInvoice = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
         btnStatictics = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         btnService = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
         btnCustomer = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
         btnStaff = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
         btnAccount = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel37 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -114,9 +103,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel2.setText("Logout");
         btnLogout.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 70, 30));
 
-        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout (1).png"))); // NOI18N
-        btnLogout.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 750, 300, 60));
 
         btnBooking.setBackground(new java.awt.Color(85, 65, 118));
@@ -145,9 +131,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel4.setText("Đặt phòng");
         btnBooking.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 130, 30));
 
-        jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/booking_1.png"))); // NOI18N
-        btnBooking.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 300, 60));
 
         btnRoom.setBackground(new java.awt.Color(64, 43, 100));
@@ -163,9 +146,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Phòng");
         btnRoom.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 30));
-
-        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/twin-beds.png"))); // NOI18N
-        btnRoom.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 300, 60));
 
@@ -183,9 +163,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel8.setText("Tầng");
         btnFloor.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 110, 30));
 
-        jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/apartment.png"))); // NOI18N
-        btnFloor.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnFloor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
 
         btnInvoice.setBackground(new java.awt.Color(64, 43, 100));
@@ -201,9 +178,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Hóa đơn");
         btnInvoice.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
-
-        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice.png"))); // NOI18N
-        btnInvoice.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 300, 60));
 
@@ -224,16 +198,9 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel12.setText("Thống kê");
         btnStatictics.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 110, 30));
 
-        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
-        btnStatictics.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnStatictics, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 600, 300, 60));
         panelTrai.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
         panelTrai.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
-
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/a (3) (Custom) (Custom) (Custom).png"))); // NOI18N
-        panelTrai.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 120));
 
         btnService.setBackground(new java.awt.Color(64, 43, 100));
         btnService.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -248,9 +215,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Dịch vụ");
         btnService.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
-
-        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/hotel-bell.png"))); // NOI18N
-        btnService.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
 
@@ -268,9 +232,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel19.setText("Khách hàng");
         btnCustomer.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, 30));
 
-        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tourist.png"))); // NOI18N
-        btnCustomer.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 300, 60));
 
         btnStaff.setBackground(new java.awt.Color(64, 43, 100));
@@ -286,9 +247,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("Nhân viên");
         btnStaff.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 30));
-
-        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/staff.png"))); // NOI18N
-        btnStaff.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
 
@@ -309,9 +267,6 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel27.setText("Tài khoản");
         btnAccount.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, 30));
 
-        jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/account.png"))); // NOI18N
-        btnAccount.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
-
         panelTrai.add(btnAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 300, 60));
 
         jPanel2.setBackground(new java.awt.Color(54, 33, 89));
@@ -323,7 +278,6 @@ public class MainFrm extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button.png"))); // NOI18N
         jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel15MouseClicked(evt);
@@ -332,7 +286,6 @@ public class MainFrm extends javax.swing.JFrame {
 
         lblOclock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblOclock.setForeground(new java.awt.Color(255, 255, 255));
-        lblOclock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Clock.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -344,7 +297,7 @@ public class MainFrm extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel14))
                     .addComponent(lblOclock, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 924, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 988, Short.MAX_VALUE)
                 .addComponent(jLabel15)
                 .addGap(29, 29, 29))
         );
@@ -353,7 +306,7 @@ public class MainFrm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel15)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel14)
@@ -544,7 +497,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -555,16 +507,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

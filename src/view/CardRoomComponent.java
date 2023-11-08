@@ -25,12 +25,11 @@ public class CardRoomComponent extends javax.swing.JPanel {
         initComponents();
     }
 
-    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price, ImageIcon icon, Color backColor) {
+    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price, Color backColor) {
         initComponents();
         this.id = id;
         this.nameCustomer = nameCustomer;
         this.price = price;
-        this.icon = icon;
         this.kindOfRoom = kindOfRoom;
         this.background = backColor;
         lblID.setText(id);
@@ -71,8 +70,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblKofRoom.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblKofRoom.setForeground(new java.awt.Color(0, 0, 0));
         lblKofRoom.setText("Đơn");
-
-        lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/human.png"))); // NOI18N
 
         lblCustomer.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
