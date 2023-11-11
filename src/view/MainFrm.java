@@ -387,7 +387,7 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingMousePressed
 
     private void btnRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomMousePressed
-        setView(new RoomsFrm());
+        setView(new RoomMangementFrm());
         resetColor();
         setColor(btnRoom);
     }//GEN-LAST:event_btnRoomMousePressed
