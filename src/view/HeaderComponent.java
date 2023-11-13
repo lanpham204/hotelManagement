@@ -46,8 +46,6 @@ color3 .setBorder(border);
         color6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         color1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         color2 = new javax.swing.JLabel();
@@ -89,11 +87,6 @@ color3 .setBorder(border);
 
         jPanel2.setBackground(new java.awt.Color(240, 240, 240));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
-        jLabel1.setText("Search:");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 60, -1));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 190, -1));
 
         color1.setBackground(new java.awt.Color(102, 255, 102));
         color1.setPreferredSize(new java.awt.Dimension(20, 20));
@@ -141,7 +134,6 @@ color3 .setBorder(border);
     private javax.swing.JLabel color4;
     private javax.swing.JLabel color5;
     private javax.swing.JLabel color6;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -151,7 +143,6 @@ color3 .setBorder(border);
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

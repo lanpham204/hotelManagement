@@ -4,8 +4,12 @@
  */
 package view;
 
+import dao.RoomDAO;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
+import model.Room;
 
 /**
  *
@@ -18,27 +22,39 @@ public class CardRoomComponent extends javax.swing.JPanel {
     ImageIcon icon;
     String kindOfRoom;
     Color background;
+    private List<Room> rooms = new ArrayList<>();
+    private RoomDAO roomDAO = new RoomDAO();
     /**
      * Creates new form CardRoomPnl
      */
     public CardRoomComponent() {
         initComponents();
     }
-
-    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price, ImageIcon icon, Color backColor) {
+//    public CardRoomComponent(int status) {
+//        initComponents();
+//        rooms = roomDAO.selectAll();
+//            if(room.getStatus() == 0) {
+//                lblID.setText(id);
+//                lblKofRoom.setText(kindOfRoom);
+//                lblIcon.setIcon(icon);
+//                lblPrice.setText(price);
+//                lblCustomer.setText(nameCustomer);
+//                this.setBackground(backColor);
+//            }
+//    }
+    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price,int status) {
         initComponents();
-        this.id = id;
-        this.nameCustomer = nameCustomer;
-        this.price = price;
-        this.icon = icon;
-        this.kindOfRoom = kindOfRoom;
-        this.background = backColor;
         lblID.setText(id);
         lblKofRoom.setText(kindOfRoom);
-        lblIcon.setIcon(icon);
         lblPrice.setText(price);
         lblCustomer.setText(nameCustomer);
-        this.setBackground(backColor);
+        if(status == 0) {
+            this.setBackground(new Color(102,255,102));
+        } else if(status == 1) {
+            this.setBackground(new Color(255,51,51));
+        } else if(status == 2) {
+            this.setBackground(new Color(255,255,0));
+        }
     }
     
     

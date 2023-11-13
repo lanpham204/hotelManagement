@@ -4,6 +4,8 @@
  */
 package view;
 
+import dao.RoomDAO;
+import dao.TypeOfRoomDAO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -20,46 +22,49 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import model.Room;
+import model.TypeOfRoom;
 
 /**
  *
  * @author phamn
  */
 public class RoomsFrm extends javax.swing.JPanel {
-
+    private List<Room> rooms = new ArrayList<>();
+    private RoomDAO roomDAO = new RoomDAO();
+    private TypeOfRoomDAO typeOfRoomDAO = new TypeOfRoomDAO();
     /**
      * Creates new form BookRoomFrm
      */
     public RoomsFrm() {
         initComponents();
+        rooms = roomDAO.selectAll();
         setLayout(new BorderLayout());
 
         JPanel container = new JPanel(new GridLayout(0, 1));
         this.setBackground(new Color(54,33,89));
         HeaderComponent headerComponent = new HeaderComponent();
         container.add(headerComponent);
-//for (int i = 0; i < 6; i++) {
-//    JPanel floorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,50));
-//    floorPanel.add(new FloorComponent());
-//    floorPanel.setBorder(new EmptyBorder(0, 0,-500, 0));
-//    container.add(floorPanel);
     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0)); // Sắp xếp component theo hàng ngang
-    for (int j = 0; j < 20; j++) {
+        for (Room room : rooms) {
         JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
+        TypeOfRoom tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
         CardRoomComponent cardRoomComponent = new CardRoomComponent(
-                "P101","Đơn",""
-                ,"",new ImageIcon(getClass().getResource("/icon/hotel (1).png")),new Color(102,255,102));
+                room.getId(),tor.getName(),""
+                ,"",room.getStatus());
         cardPanel.add(cardRoomComponent);
         rowPanel.add(cardPanel);
         if (rowPanel.getComponentCount()==4) {
                 container.add(rowPanel);
                 rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         }
-       cardPanel.addMouseListener(new PopupMenuMouseListener(cardPanel,this));
+       cardPanel.addMouseListener(new PopupMenuMouseListener(cardPanel,this,room.getId()));
     }
     
     container.add(rowPanel);
@@ -98,9 +103,11 @@ add(scrollPane, BorderLayout.CENTER);
 public class PopupMenuMouseListener extends MouseAdapter {
         private JPanel cardPanel;
         private JPanel roomsFrm;
-        public PopupMenuMouseListener(JPanel cardPanel, JPanel roomsFrm) {
+        private String id;
+        public PopupMenuMouseListener(JPanel cardPanel, JPanel roomsFrm,String id) {
             this.cardPanel = cardPanel;
             this.roomsFrm = roomsFrm;
+            this.id = id;
         }
         
         
@@ -114,7 +121,8 @@ public class PopupMenuMouseListener extends MouseAdapter {
                 bookItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        BookRoomFrm bookRoomFrm = new BookRoomFrm("P101",cardPanel);
+                        Room room = roomDAO.selectById(id);
+                        BookRoomFrm bookRoomFrm = new BookRoomFrm(id,cardPanel);
                         bookRoomFrm.setVisible(true);
                         
                     }
@@ -128,8 +136,8 @@ public class PopupMenuMouseListener extends MouseAdapter {
                         roomsFrm.validate();
                         roomsFrm.repaint();
                         cardPanel.removeAll();
-                        cardPanel.add(new CardRoomComponent("P101","Đơn",""
-                ,"",new ImageIcon(getClass().getResource("/icon/broom.png")),new Color(255,255,0)));
+//                        cardPanel.add(new CardRoomComponent("P101","Đơn",""
+//                ,"",new ImageIcon(getClass().getResource("/icon/broom.png")),new Color(255,255,0)));
                         cardPanel.revalidate();
                         cardPanel.repaint();
                     }

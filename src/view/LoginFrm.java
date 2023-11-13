@@ -4,22 +4,29 @@
  */
 package view;
 
+import dao.StaffDAO;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.UIManager;
+import model.Staff;
+import util.Auth;
+import util.MsgBox;
 
 /**
  *
  * @author phamn
  */
 public class LoginFrm extends javax.swing.JFrame {
-
+    StaffDAO dao = new StaffDAO();
     /**
      * Creates new form LoginF
      */
     public LoginFrm() {
         initComponents();
         setLocationRelativeTo(null);
-        txtusername.setBackground(new java.awt.Color(0,0,0,1));
-        txtpassword.setBackground(new java.awt.Color(0,0,0,1));
+        init(); 
+
     }
 
     /**
@@ -37,11 +44,11 @@ public class LoginFrm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
-        txtusername = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        txtpassword = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
         jLabel9 = new javax.swing.JLabel();
         disable = new javax.swing.JLabel();
         show = new javax.swing.JLabel();
@@ -102,10 +109,15 @@ public class LoginFrm extends javax.swing.JFrame {
         });
         jPanel2.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 306, 341, 40));
 
-        txtusername.setFont(txtusername.getFont().deriveFont(txtusername.getFont().getSize()+2f));
-        txtusername.setForeground(new java.awt.Color(255, 255, 255));
-        txtusername.setBorder(null);
-        jPanel2.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 140, 240, 30));
+        txtUsername.setFont(txtUsername.getFont().deriveFont(txtUsername.getFont().getSize()+2f));
+        txtUsername.setForeground(new java.awt.Color(70, 73, 75));
+        txtUsername.setBorder(null);
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 140, 240, 30));
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("_________________________________________");
@@ -120,11 +132,21 @@ public class LoginFrm extends javax.swing.JFrame {
         jLabel8.setText("Password");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 192, 341, -1));
 
-        txtpassword.setFont(txtpassword.getFont().deriveFont(txtpassword.getFont().getSize()+2f));
-        txtpassword.setForeground(new java.awt.Color(255, 255, 255));
-        txtpassword.setBorder(null);
-        txtpassword.setCaretColor(new java.awt.Color(255, 255, 255));
-        jPanel2.add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 240, 30));
+        txtPassword.setFont(txtPassword.getFont().deriveFont(txtPassword.getFont().getSize()+2f));
+        txtPassword.setForeground(new java.awt.Color(70, 73, 75));
+        txtPassword.setBorder(null);
+        txtPassword.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+        jPanel2.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 240, 30));
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("_________________________________________");
@@ -196,12 +218,11 @@ public class LoginFrm extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        new MainFrm().setVisible(true);
-        dispose();
+        login();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
-        txtpassword.setEchoChar((char)0);
+        txtPassword.setEchoChar((char)0);
         disable.setVisible(false);
         disable.setEnabled(false);
         show.setEnabled(true);
@@ -209,7 +230,7 @@ public class LoginFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_disableMouseClicked
 
     private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
-        txtpassword.setEchoChar((char)8226);
+        txtPassword.setEchoChar((char)8226);
         disable.setVisible(true);
         disable.setEnabled(true);
         show.setEnabled(false);
@@ -229,6 +250,22 @@ public class LoginFrm extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+        txtPassword.requestFocusInWindow();
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()== KeyEvent.VK_ENTER) {
+            login();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
     /**
      * @param args the command line arguments
      */
@@ -286,7 +323,35 @@ public class LoginFrm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel show;
-    private javax.swing.JPasswordField txtpassword;
-    private javax.swing.JTextField txtusername;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        
+    }
+
+    private void login() {
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        if(username.isEmpty() || password.isEmpty()) {
+            MsgBox.showMessage(rootPane, "Vui lòng nhập tài khoản hoặc mật khẩu");
+        } else {
+            Staff staff = dao.selectById(username);
+           
+        if(staff == null) {
+            MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
+                 System.out.println(staff.getId());
+        } else if(!password.equalsIgnoreCase(staff.getPassword()))  {
+             MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
+        } else {
+            Auth.user =  staff;
+            new MainFrm().setVisible(true);
+            dispose();
+        }
+                
+        }
+    }
+
+   
 }

@@ -4,9 +4,13 @@
  */
 package view;
 
+import dao.RoomDAO;
+import dao.TypeOfRoomDAO;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import model.Room;
+import model.TypeOfRoom;
 
 /**
  *
@@ -14,6 +18,9 @@ import javax.swing.JPanel;
  */
 public class BookRoomFrm extends javax.swing.JFrame {
     private JPanel cardPanel;
+    private String id;
+    private RoomDAO dao = new RoomDAO();
+    private TypeOfRoomDAO tordao = new TypeOfRoomDAO();
     /**
      * Creates new form BookRoomFrm
      */
@@ -25,6 +32,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.cardPanel = cardPanel;
+        this.id = id;
         lblId.setText(id);
     }
 
@@ -304,9 +312,12 @@ public class BookRoomFrm extends javax.swing.JFrame {
 
     private void btnCheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckinActionPerformed
         // TODO add your handling code here:
+        Room room = dao.selectById(id);
+        TypeOfRoom tor = tordao.selectById(room.getIdTypeofRoom());
+        room.setStatus(1);
             cardPanel.removeAll();
-                        cardPanel.add(new CardRoomComponent("P101","Đơn","Khách hàng: Lan"
-                ,"Gía: 100 VND/Ngày",new ImageIcon(getClass().getResource("/icon/human.png")),new Color(255,51,51)));
+                        cardPanel.add(new CardRoomComponent(room.getId(),tor.getName(),"Khách hàng: Lan"
+                ,"Giá: "+Math.round(tor.getPricePerDay())+" VND/Ngày",room.getStatus()));
                         cardPanel.revalidate();
                         cardPanel.repaint();
             dispose();
