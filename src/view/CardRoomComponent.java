@@ -88,8 +88,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblKofRoom.setForeground(new java.awt.Color(0, 0, 0));
         lblKofRoom.setText("Đơn");
 
-        lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/human.png"))); // NOI18N
-
         lblCustomer.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
         lblCustomer.setText("Khách hàng: Nguyễn Văn A");

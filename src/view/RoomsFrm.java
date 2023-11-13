@@ -51,7 +51,7 @@ public class RoomsFrm extends javax.swing.JPanel {
         this.setBackground(new Color(54,33,89));
         HeaderComponent headerComponent = new HeaderComponent();
         container.add(headerComponent);
-    JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0)); // Sắp xếp component theo hàng ngang
+    JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,20,5)); // Sắp xếp component theo hàng ngang
         for (Room room : rooms) {
         JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
         TypeOfRoom tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
@@ -62,7 +62,7 @@ public class RoomsFrm extends javax.swing.JPanel {
         rowPanel.add(cardPanel);
         if (rowPanel.getComponentCount()==4) {
                 container.add(rowPanel);
-                rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,20,5));
         }
        cardPanel.addMouseListener(new PopupMenuMouseListener(cardPanel,this,room.getId()));
     }
@@ -89,7 +89,7 @@ add(scrollPane, BorderLayout.CENTER);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 95, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
