@@ -30,7 +30,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
     public CardRoomComponent() {
         initComponents();
     }
-<<<<<<< HEAD
 //    public CardRoomComponent(int status) {
 //        initComponents();
 //        rooms = roomDAO.selectAll();
@@ -45,16 +44,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
 //    }
     public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price,int status) {
         initComponents();
-=======
-
-    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price, Color backColor) {
-        initComponents();
-        this.id = id;
-        this.nameCustomer = nameCustomer;
-        this.price = price;
-        this.kindOfRoom = kindOfRoom;
-        this.background = backColor;
->>>>>>> pr/1
         lblID.setText(id);
         lblKofRoom.setText(kindOfRoom);
         lblPrice.setText(price);
@@ -98,6 +87,8 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblKofRoom.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblKofRoom.setForeground(new java.awt.Color(0, 0, 0));
         lblKofRoom.setText("Đơn");
+
+        lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/human.png"))); // NOI18N
 
         lblCustomer.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
