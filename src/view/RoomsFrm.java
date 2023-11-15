@@ -4,6 +4,8 @@
  */
 package view;
 
+import dao.BookingDAO;
+import dao.GuestDAO;
 import dao.RoomDAO;
 import dao.TypeOfRoomDAO;
 import java.awt.BorderLayout;
@@ -28,6 +30,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import model.Booking;
+import model.Guest;
 import model.Room;
 import model.TypeOfRoom;
 
@@ -39,6 +43,8 @@ public class RoomsFrm extends javax.swing.JPanel {
     private List<Room> rooms = new ArrayList<>();
     private RoomDAO roomDAO = new RoomDAO();
     private TypeOfRoomDAO typeOfRoomDAO = new TypeOfRoomDAO();
+    private BookingDAO bookingDAO = new BookingDAO();
+    private GuestDAO guestDAO = new GuestDAO();
     /**
      * Creates new form BookRoomFrm
      */
@@ -53,12 +59,21 @@ public class RoomsFrm extends javax.swing.JPanel {
         container.add(headerComponent);
     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,20,5)); // Sắp xếp component theo hàng ngang
         for (Room room : rooms) {
-        JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
+            JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
         TypeOfRoom tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
-        CardRoomComponent cardRoomComponent = new CardRoomComponent(
+            if(room.getStatus() == 1) {
+                Booking booking = bookingDAO.selectByIdRoom(room.getId());
+                Guest guest = guestDAO.selectById(booking.getIdGuest());
+                CardRoomComponent cardRoomComponent = new CardRoomComponent(
+                room.getId(),tor.getName(),"Khách hàng: "+guest.getFullName()
+                ,room.getStatus());
+                cardPanel.add(cardRoomComponent);
+            } else {
+                CardRoomComponent cardRoomComponent = new CardRoomComponent(
                 room.getId(),tor.getName(),""
-                ,"",room.getStatus());
-        cardPanel.add(cardRoomComponent);
+                ,room.getStatus());
+                cardPanel.add(cardRoomComponent);
+            }
         rowPanel.add(cardPanel);
         if (rowPanel.getComponentCount()==4) {
                 container.add(rowPanel);
@@ -68,8 +83,8 @@ public class RoomsFrm extends javax.swing.JPanel {
     }
     
     container.add(rowPanel);
-JScrollPane scrollPane = new JScrollPane(container);
-add(scrollPane, BorderLayout.CENTER);
+    JScrollPane scrollPane = new JScrollPane(container);
+    add(scrollPane, BorderLayout.CENTER);
 
 
     }
@@ -116,23 +131,24 @@ public class PopupMenuMouseListener extends MouseAdapter {
             if (e.isPopupTrigger()) {
                 JPopupMenu popupMenu = new JPopupMenu();
                 JMenuItem bookItem = new JMenuItem("Đặt phòng");               
-                JMenuItem payItem = new JMenuItem("Thanh toán");
+                JMenuItem detailItem = new JMenuItem("Chi tiết phòng đặt");
 
                 bookItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Room room = roomDAO.selectById(id);
-                        BookRoomFrm bookRoomFrm = new BookRoomFrm(id,cardPanel);
+                        if(room != null) {
+                            BookRoomFrm bookRoomFrm = new BookRoomFrm(room.getId(),cardPanel);
                         bookRoomFrm.setVisible(true);
-                        
+                        }
                     }
                 });
-                payItem.addActionListener(new ActionListener() {
+                detailItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         roomsFrm.removeAll();
                         roomsFrm.setLayout(new BorderLayout());
-                        roomsFrm.add(new DetailBookRoomFrm());
+                        roomsFrm.add(new DetailBookRoomFrm(id));
                         roomsFrm.validate();
                         roomsFrm.repaint();
                         cardPanel.removeAll();
@@ -143,7 +159,7 @@ public class PopupMenuMouseListener extends MouseAdapter {
                     }
                 });
                 popupMenu.add(bookItem);
-                popupMenu.add(payItem);
+                popupMenu.add(detailItem);
                 popupMenu.show(cardPanel, e.getX(), e.getY());
             }
         }

@@ -18,7 +18,6 @@ import model.Room;
 public class CardRoomComponent extends javax.swing.JPanel {
     String id;
     String nameCustomer;
-    String price;
     ImageIcon icon;
     String kindOfRoom;
     Color background;
@@ -42,11 +41,10 @@ public class CardRoomComponent extends javax.swing.JPanel {
 //                this.setBackground(backColor);
 //            }
 //    }
-    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer, String price,int status) {
+    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer,int status) {
         initComponents();
         lblID.setText(id);
         lblKofRoom.setText(kindOfRoom);
-        lblPrice.setText(price);
         lblCustomer.setText(nameCustomer);
         if(status == 0) {
             this.setBackground(new Color(102,255,102));
@@ -73,7 +71,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblKofRoom = new javax.swing.JLabel();
         lblIcon = new javax.swing.JLabel();
         lblCustomer = new javax.swing.JLabel();
-        lblPrice = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 255, 102));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -92,10 +89,6 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
         lblCustomer.setText("Khách hàng: Nguyễn Văn A");
 
-        lblPrice.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        lblPrice.setForeground(new java.awt.Color(0, 0, 0));
-        lblPrice.setText("Gía : 100k");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,8 +104,7 @@ public class CardRoomComponent extends javax.swing.JPanel {
                         .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblKofRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblKofRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,11 +114,9 @@ public class CardRoomComponent extends javax.swing.JPanel {
                     .addComponent(lblIcon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblKofRoom)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(lblCustomer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPrice)
-                .addContainerGap())
+                .addGap(34, 34, 34))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -136,6 +126,5 @@ public class CardRoomComponent extends javax.swing.JPanel {
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblKofRoom;
-    private javax.swing.JLabel lblPrice;
     // End of variables declaration//GEN-END:variables
 }

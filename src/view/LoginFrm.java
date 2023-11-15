@@ -18,14 +18,16 @@ import util.MsgBox;
  * @author phamn
  */
 public class LoginFrm extends javax.swing.JFrame {
+
     StaffDAO dao = new StaffDAO();
+
     /**
      * Creates new form LoginF
      */
     public LoginFrm() {
         initComponents();
         setLocationRelativeTo(null);
-        init(); 
+        init();
 
     }
 
@@ -222,7 +224,7 @@ public class LoginFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void disableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_disableMouseClicked
-        txtPassword.setEchoChar((char)0);
+        txtPassword.setEchoChar((char) 0);
         disable.setVisible(false);
         disable.setEnabled(false);
         show.setEnabled(true);
@@ -230,7 +232,7 @@ public class LoginFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_disableMouseClicked
 
     private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
-        txtPassword.setEchoChar((char)8226);
+        txtPassword.setEchoChar((char) 8226);
         disable.setVisible(true);
         disable.setEnabled(true);
         show.setEnabled(false);
@@ -239,14 +241,14 @@ public class LoginFrm extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        for (double i = 0.0; i <=1.0; i = i+0.1){
-            String val = i+ "";
+        for (double i = 0.0; i <= 1.0; i = i + 0.1) {
+            String val = i + "";
             float f = Float.valueOf(val);
             this.setOpacity(f);
-            try{
+            try {
                 Thread.sleep(50);
-            }catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
         }
     }//GEN-LAST:event_formWindowOpened
@@ -262,7 +264,7 @@ public class LoginFrm extends javax.swing.JFrame {
 
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()== KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             login();
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
@@ -328,30 +330,29 @@ public class LoginFrm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
-        
+
     }
 
     private void login() {
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
-        if(username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             MsgBox.showMessage(rootPane, "Vui lòng nhập tài khoản hoặc mật khẩu");
         } else {
             Staff staff = dao.selectById(username);
-           
-        if(staff == null) {
-            MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
-                 System.out.println(staff.getId());
-        } else if(!password.equalsIgnoreCase(staff.getPassword()))  {
-             MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
-        } else {
-            Auth.user =  staff;
-            new MainFrm().setVisible(true);
-            dispose();
-        }
-                
+
+            if (staff == null) {
+                MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
+                System.out.println(staff.getId());
+            } else if (!password.equalsIgnoreCase(staff.getPassword())) {
+                MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
+            } else {
+                Auth.user = staff;
+                new MainFrm().setVisible(true);
+                dispose();
+            }
+
         }
     }
 
-   
 }
