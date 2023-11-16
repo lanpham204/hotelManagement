@@ -10,8 +10,8 @@ import model.Booking;
 import util.JdbcHelper;
 
 public class BookingDAO extends HotelDAO<Booking, Integer> {
-    String INSERT_SQL = "INSERT INTO PhieuDatPhong(MaKH, MaPhong, NgayGioNhan, NgayGioTra,HinhThucThue, TongTien) VALUES (?, ?, ?, ?, ?,?)";
-    String UPDATE_SQL = "UPDATE PhieuDatPhong SET MaKH = ?, MaPhong = ?, NgayGioNhan = ?, NgayGioTra = ?,HinhThucThue = ?, TongTien = ? WHERE MaPDP = ?";
+    String INSERT_SQL = "INSERT INTO PhieuDatPhong(MaKH, MaPhong, NgayGioNhan, NgayGioTra,HinhThucThue, TongTien, TrangThai) VALUES (?,?, ?, ?, ?, ?,?)";
+    String UPDATE_SQL = "UPDATE PhieuDatPhong SET MaKH = ?, MaPhong = ?, NgayGioNhan = ?, NgayGioTra = ?,HinhThucThue = ?, TongTien = ?, TrangThai = ? WHERE MaPDP = ?";
     String DELETE_SQL = "DELETE FROM PhieuDatPhong WHERE MaPDP = ?";
     String SELECT_ALL_SQL = "SELECT * FROM PhieuDatPhong";
     String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDatPhong WHERE MaPDP = ?";
@@ -73,6 +73,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
                 booking.setEndDate(resultSet.getTimestamp("NgayGioTra"));
                 booking.setType(resultSet.getBoolean("HinhThucThue"));
                 booking.setTotalMoney(resultSet.getFloat("TongTien"));
+                booking.setStatus(resultSet.getBoolean("TrangThai"));
                 bookings.add(booking);
             }
             return bookings;
@@ -82,9 +83,8 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
         return null;
     }
     public Booking selectByIdRoom(String id) {
-        String sql = "select Top(1) * from PhieuDatPhong\n" +
-                        "where MaPhong = ?\n" +
-                        "order by MaPDP desc";
+        String sql =    "select * from PhieuDatPhong\n" +
+                    "where MaPhong = ? and TrangThai = 1\n";
         List<Booking> bookings = selectBySql(sql, id);
         if(bookings.isEmpty()) {
             return null;

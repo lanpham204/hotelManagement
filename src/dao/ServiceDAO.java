@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Service;
+import model.TypeOfRoom;
+import model.TypeOfService;
 import util.JdbcHelper;
 
 public class ServiceDAO extends HotelDAO<Service, Integer> {
@@ -75,5 +77,10 @@ public class ServiceDAO extends HotelDAO<Service, Integer> {
             Logger.getLogger(ServiceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    public List<Service> selectServiceByIdTypeOfService(TypeOfService tos) {
+        String sql = "select * from DichVu\n" +
+                    "where MaLDV = ?";
+        return selectBySql(sql, tos.getId());
     }
 }

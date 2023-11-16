@@ -395,7 +395,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         gdao.insert(guest);
         Booking booking = new Booking(guest.getId(), room.getId(), 
                 startDate, endDate,type== "Ngày"?true:false, 
-                price);
+                price,true);
         bookingDAO.insert(booking);
         room.setStatus(1);
         roomDao.update(room);

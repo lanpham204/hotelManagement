@@ -63,11 +63,13 @@ public class RoomsFrm extends javax.swing.JPanel {
         TypeOfRoom tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
             if(room.getStatus() == 1) {
                 Booking booking = bookingDAO.selectByIdRoom(room.getId());
-                Guest guest = guestDAO.selectById(booking.getIdGuest());
+                if(booking!=null) {
+                    Guest guest = guestDAO.selectById(booking.getIdGuest());
                 CardRoomComponent cardRoomComponent = new CardRoomComponent(
                 room.getId(),tor.getName(),"Khách hàng: "+guest.getFullName()
                 ,room.getStatus());
                 cardPanel.add(cardRoomComponent);
+                }
             } else {
                 CardRoomComponent cardRoomComponent = new CardRoomComponent(
                 room.getId(),tor.getName(),""
@@ -130,16 +132,24 @@ public class PopupMenuMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             if (e.isPopupTrigger()) {
                 JPopupMenu popupMenu = new JPopupMenu();
-                JMenuItem bookItem = new JMenuItem("Đặt phòng");               
+                JMenuItem bookingItem = new JMenuItem("Đặt phòng");               
                 JMenuItem detailItem = new JMenuItem("Chi tiết phòng đặt");
-
-                bookItem.addActionListener(new ActionListener() {
+                Room r = roomDAO.selectById(id);
+                if(r.getStatus() == 0) {
+                    detailItem.setEnabled(false);
+                    bookingItem.setEnabled(true);
+                } else if(r.getStatus() == 1) {
+                    bookingItem.setEnabled(false);
+                    detailItem.setEnabled(true);
+                }
+                bookingItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Room room = roomDAO.selectById(id);
                         if(room != null) {
                             BookRoomFrm bookRoomFrm = new BookRoomFrm(room.getId(),cardPanel);
                         bookRoomFrm.setVisible(true);
+                        
                         }
                     }
                 });
@@ -158,7 +168,7 @@ public class PopupMenuMouseListener extends MouseAdapter {
                         cardPanel.repaint();
                     }
                 });
-                popupMenu.add(bookItem);
+                popupMenu.add(bookingItem);
                 popupMenu.add(detailItem);
                 popupMenu.show(cardPanel, e.getX(), e.getY());
             }

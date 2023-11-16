@@ -307,6 +307,12 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel23.setText("Tìm kiếm");
 
+        cbTypeOfService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTypeOfServiceActionPerformed(evt);
+            }
+        });
+
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel29.setText("Loại dịch vụ:");
 
@@ -678,6 +684,21 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_rdoHourActionPerformed
 
+    private void cbTypeOfServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTypeOfServiceActionPerformed
+        // TODO add your handling code here:
+        if(cbTypeOfService.getSelectedIndex() != 0) {
+            TypeOfService tos = (TypeOfService) cbTypeOfService.getSelectedItem();
+            if(tos!= null) {
+                showServices(serviceDAO.
+                    selectServiceByIdTypeOfService(tos));
+            }
+                
+            
+        } else {
+            showServices(serviceDAO.selectAll());
+        }
+    }//GEN-LAST:event_cbTypeOfServiceActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupType;
@@ -775,7 +796,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
         showDetail();
          fillComboboxTypeOfService();
-         showService();
+         showServices(serviceDAO.selectAll());
     }
 
     private int calculateDays(Date startDate, Date endDate) {
@@ -798,17 +819,17 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         List<TypeOfService> typeOfServices = typeOfServiceDAO.selectAll();
         DefaultComboBoxModel comboBoxModel = (DefaultComboBoxModel) cbTypeOfService.getModel();
         comboBoxModel.removeAllElements();
+        comboBoxModel.addElement("Tất cả");
         for (TypeOfService typeOfService : typeOfServices) {
             comboBoxModel.addElement(typeOfService);
         }
     }
 
-    private void showService() {
+    private void showServices(List<Service> services) {
+        pnlService.removeAll();
         DefaultTableModel tableModel = (DefaultTableModel) tblService.getModel();
         tableModel.setRowCount(0);
         pnlService.setLayout(new GridLayout(0, 1));
-        List<Service> services = serviceDAO.selectAll();
-//        JPanel container = new JPanel(new GridLayout(0, 1));
     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Sắp xếp component theo hàng ngang
         for (Service service : services) {
             JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
@@ -820,7 +841,6 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                 pnlService.add(rowPanel);
                 rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         }
-//       cardPanel.addMouseListener(new RoomsFrm.PopupMenuMouseListener(cardPanel,this,room.getId()));
     }
     
     pnlService.add(rowPanel);
