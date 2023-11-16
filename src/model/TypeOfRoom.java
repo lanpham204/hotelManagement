@@ -17,6 +17,12 @@ public class TypeOfRoom {
     public TypeOfRoom() {
     }
 
+    public TypeOfRoom(String name, float hourlyPrice, float pricePerDay) {
+        this.name = name;
+        this.hourlyPrice = hourlyPrice;
+        this.pricePerDay = pricePerDay;
+    }
+
     public TypeOfRoom(int id, String name, float hourlyPrice, float pricePerDay) {
         this.id = id;
         this.name = name;

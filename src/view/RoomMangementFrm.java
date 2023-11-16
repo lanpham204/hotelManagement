@@ -4,17 +4,38 @@
  */
 package view;
 
+import dao.RoomDAO;
+import dao.TypeOfRoomDAO;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import model.Room;
+import model.TypeOfRoom;
+import util.MsgBox;
+
 /**
  *
  * @author phamn
  */
 public class RoomMangementFrm extends javax.swing.JPanel {
 
+    int idType = 0;
+    TypeOfRoomDAO typeOfRoomDAO = new TypeOfRoomDAO();
+    RoomDAO roomDAO = new RoomDAO();
+    DefaultComboBoxModel cboModelStatus = new DefaultComboBoxModel();
+    DefaultComboBoxModel cboModelTypeRoom = new DefaultComboBoxModel();
+    DefaultTableModel tblModelRoom;// = new DefaultTableModel();
+    DefaultTableModel tblModelTypeRoom;
+    List<TypeOfRoom> listTypeRoom = typeOfRoomDAO.selectAll();
+    List<Room> listRoom = roomDAO.selectAll();
+
     /**
      * Creates new form RoomMangementFrm
      */
     public RoomMangementFrm() {
         initComponents();
+        init();
+        setWhiteForm();
     }
 
     /**
@@ -29,120 +50,158 @@ public class RoomMangementFrm extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtRoom = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboType = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jSpinner1 = new javax.swing.JSpinner();
+        cboStatus = new javax.swing.JComboBox<>();
+        chkThemNhieu = new javax.swing.JCheckBox();
+        cboSoLuong = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        tblRoom = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        btnInsert = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        cboTang = new javax.swing.JSpinner();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtNameType = new javax.swing.JTextField();
+        txtPriceDay = new javax.swing.JTextField();
+        txtPriceHour = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
+        tblType = new javax.swing.JTable();
+        btnRemoveType = new javax.swing.JButton();
+        btnEditType = new javax.swing.JButton();
+        txtNewType = new javax.swing.JButton();
+        btnInsertType = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(0, 689));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Loại phòng:");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtRoom.setEditable(false);
+        txtRoom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Phòng:");
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Trạng thái:");
 
-        jComboBox2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox1.setText("Thêm nhiều");
+        chkThemNhieu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        chkThemNhieu.setText("Thêm nhiều");
+        chkThemNhieu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkThemNhieuActionPerformed(evt);
+            }
+        });
 
-        jSpinner1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboSoLuong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Số lượng");
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblRoom.setAutoCreateRowSorter(true);
+        tblRoom.setBackground(new java.awt.Color(255, 255, 255));
+        tblRoom.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        tblRoom.setForeground(new java.awt.Color(0, 0, 0));
+        tblRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Ma phong", "Ten loai phong", "Trang thai"
             }
         ));
-        jTable1.setFocusable(false);
-        jTable1.setGridColor(new java.awt.Color(230, 230, 230));
-        jTable1.setIntercellSpacing(new java.awt.Dimension(5, 5));
-        jTable1.setRowHeight(40);
-        jTable1.setShowHorizontalLines(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        tblRoom.setFocusable(false);
+        tblRoom.setGridColor(new java.awt.Color(230, 230, 230));
+        tblRoom.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        tblRoom.setRowHeight(40);
+        tblRoom.setShowHorizontalLines(true);
+        tblRoom.getTableHeader().setReorderingAllowed(false);
+        tblRoom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRoomMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblRoom);
 
-        jButton9.setBackground(new java.awt.Color(255, 0, 0));
-        jButton9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(0, 0, 0));
-        jButton9.setText("Xóa");
-        jButton9.setPreferredSize(new java.awt.Dimension(88, 27));
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(0, 0, 0));
+        btnDelete.setText("Xóa");
+        btnDelete.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
-        jButton10.setBackground(new java.awt.Color(204, 204, 0));
-        jButton10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(0, 0, 0));
-        jButton10.setText("Sửa");
-        jButton10.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnEdit.setBackground(new java.awt.Color(204, 204, 0));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(0, 0, 0));
+        btnEdit.setText("Sửa");
+        btnEdit.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
-        jButton11.setBackground(new java.awt.Color(0, 204, 204));
-        jButton11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton11.setForeground(new java.awt.Color(0, 0, 0));
-        jButton11.setText("Mới");
-        jButton11.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnNew.setBackground(new java.awt.Color(0, 204, 204));
+        btnNew.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnNew.setForeground(new java.awt.Color(0, 0, 0));
+        btnNew.setText("Mới");
+        btnNew.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
 
-        jButton12.setBackground(new java.awt.Color(153, 255, 153));
-        jButton12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton12.setForeground(new java.awt.Color(0, 0, 0));
-        jButton12.setText("Thêm");
-        jButton12.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnInsert.setBackground(new java.awt.Color(153, 255, 153));
+        btnInsert.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnInsert.setForeground(new java.awt.Color(0, 0, 0));
+        btnInsert.setText("Thêm");
+        btnInsert.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Tầng:");
+
+        cboTang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboTang.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cboTangStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,62 +213,68 @@ public class RoomMangementFrm extends javax.swing.JPanel {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(195, 195, 195)
+                                .addComponent(cboType, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboTang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(138, 138, 138)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jCheckBox1)
+                                .addComponent(chkThemNhieu)
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(cboSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(232, 232, 232)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnInsert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(352, 352, 352))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
-                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1012, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(129, 129, 129))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(cboTang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1)
+                    .addComponent(cboType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkThemNhieu)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                    .addComponent(cboSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInsert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -226,33 +291,34 @@ public class RoomMangementFrm extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Tên loại phòng:");
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtNameType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNameType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtNameTypeActionPerformed(evt);
             }
         });
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        txtPriceDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPriceDay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                txtPriceDayActionPerformed(evt);
             }
         });
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtPriceHour.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPriceHour.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtPriceHourActionPerformed(evt);
             }
         });
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jTable2.setAutoCreateRowSorter(true);
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblType.setAutoCreateRowSorter(true);
+        tblType.setBackground(new java.awt.Color(255, 255, 255));
+        tblType.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        tblType.setForeground(new java.awt.Color(0, 0, 0));
+        tblType.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -260,79 +326,99 @@ public class RoomMangementFrm extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Ma loai", "Ten loai", "Gia theo ngay", "Gia theo gio"
             }
         ));
-        jTable2.setFocusable(false);
-        jTable2.setGridColor(new java.awt.Color(230, 230, 230));
-        jTable2.setIntercellSpacing(new java.awt.Dimension(5, 5));
-        jTable2.setRowHeight(40);
-        jTable2.setShowHorizontalLines(true);
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
+        tblType.setFocusable(false);
+        tblType.setGridColor(new java.awt.Color(230, 230, 230));
+        tblType.setIntercellSpacing(new java.awt.Dimension(5, 5));
+        tblType.setRowHeight(40);
+        tblType.setShowHorizontalLines(true);
+        tblType.getTableHeader().setReorderingAllowed(false);
+        tblType.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTypeMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblType);
 
-        jButton13.setBackground(new java.awt.Color(255, 0, 0));
-        jButton13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton13.setForeground(new java.awt.Color(0, 0, 0));
-        jButton13.setText("Xóa");
-        jButton13.setPreferredSize(new java.awt.Dimension(88, 27));
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
+        btnRemoveType.setBackground(new java.awt.Color(255, 0, 0));
+        btnRemoveType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnRemoveType.setForeground(new java.awt.Color(0, 0, 0));
+        btnRemoveType.setText("Xóa");
+        btnRemoveType.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnRemoveType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+                btnRemoveTypeActionPerformed(evt);
             }
         });
 
-        jButton14.setBackground(new java.awt.Color(204, 204, 0));
-        jButton14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton14.setForeground(new java.awt.Color(0, 0, 0));
-        jButton14.setText("Sửa");
-        jButton14.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnEditType.setBackground(new java.awt.Color(204, 204, 0));
+        btnEditType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnEditType.setForeground(new java.awt.Color(0, 0, 0));
+        btnEditType.setText("Sửa");
+        btnEditType.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnEditType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditTypeActionPerformed(evt);
+            }
+        });
 
-        jButton15.setBackground(new java.awt.Color(0, 204, 204));
-        jButton15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton15.setForeground(new java.awt.Color(0, 0, 0));
-        jButton15.setText("Mới");
-        jButton15.setPreferredSize(new java.awt.Dimension(88, 27));
+        txtNewType.setBackground(new java.awt.Color(0, 204, 204));
+        txtNewType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNewType.setForeground(new java.awt.Color(0, 0, 0));
+        txtNewType.setText("Mới");
+        txtNewType.setPreferredSize(new java.awt.Dimension(88, 27));
+        txtNewType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNewTypeActionPerformed(evt);
+            }
+        });
 
-        jButton16.setBackground(new java.awt.Color(153, 255, 153));
-        jButton16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton16.setForeground(new java.awt.Color(0, 0, 0));
-        jButton16.setText("Thêm");
-        jButton16.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnInsertType.setBackground(new java.awt.Color(153, 255, 153));
+        btnInsertType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnInsertType.setForeground(new java.awt.Color(0, 0, 0));
+        btnInsertType.setText("Thêm");
+        btnInsertType.setPreferredSize(new java.awt.Dimension(88, 27));
+        btnInsertType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertTypeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1093, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(188, 188, 188)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnInsertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(352, 352, 352))
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRemoveType, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(26, 26, 26)
-                            .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(30, 30, 30)
-                            .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtNewType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPriceHour, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNameType, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtPriceDay)))
+                .addContainerGap(166, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,21 +426,21 @@ public class RoomMangementFrm extends javax.swing.JPanel {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNameType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPriceHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                    .addComponent(txtPriceDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEditType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNewType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInsertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemoveType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -368,7 +454,7 @@ public class RoomMangementFrm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 153, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,39 +462,92 @@ public class RoomMangementFrm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtNameTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtNameTypeActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txtPriceDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPriceDayActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txtPriceDayActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtPriceHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPriceHourActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtPriceHourActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+        deleteRoom();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+    private void btnRemoveTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton13ActionPerformed
+        deleteType();
+    }//GEN-LAST:event_btnRemoveTypeActionPerformed
+
+    private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
+        // TODO add your handling code here:
+        insertRoom();
+    }//GEN-LAST:event_btnInsertActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        updateRoom();
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        // TODO add your handling code here:
+        setWhiteForm();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void tblRoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRoomMouseClicked
+        // TODO add your handling code here:
+        fillFormRoom();
+    }//GEN-LAST:event_tblRoomMouseClicked
+
+    private void btnInsertTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertTypeActionPerformed
+        // TODO add your handling code here:
+        insertType();
+    }//GEN-LAST:event_btnInsertTypeActionPerformed
+
+    private void txtNewTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewTypeActionPerformed
+        // TODO add your handling code here:
+        setWhiteForm();
+    }//GEN-LAST:event_txtNewTypeActionPerformed
+
+    private void btnEditTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditTypeActionPerformed
+        // TODO add your handling code here:
+        updateType();
+    }//GEN-LAST:event_btnEditTypeActionPerformed
+
+    private void tblTypeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTypeMouseClicked
+        // TODO add your handling code here:
+        fillFormType();
+    }//GEN-LAST:event_tblTypeMouseClicked
+
+    private void cboTangStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cboTangStateChanged
+        // TODO add your handling code here:
+        checkTang();
+    }//GEN-LAST:event_cboTangStateChanged
+
+    private void chkThemNhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkThemNhieuActionPerformed
+        // TODO add your handling code here:
+        cboSoLuong.setEnabled(true);
+    }//GEN-LAST:event_chkThemNhieuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnEditType;
+    private javax.swing.JButton btnInsert;
+    private javax.swing.JButton btnInsertType;
+    private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnRemoveType;
+    private javax.swing.JSpinner cboSoLuong;
+    private javax.swing.JComboBox<String> cboStatus;
+    private javax.swing.JSpinner cboTang;
+    private javax.swing.JComboBox<String> cboType;
+    private javax.swing.JCheckBox chkThemNhieu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -416,17 +555,206 @@ public class RoomMangementFrm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tblRoom;
+    private javax.swing.JTable tblType;
+    private javax.swing.JTextField txtNameType;
+    private javax.swing.JButton txtNewType;
+    private javax.swing.JTextField txtPriceDay;
+    private javax.swing.JTextField txtPriceHour;
+    private javax.swing.JTextField txtRoom;
     // End of variables declaration//GEN-END:variables
+    public void setWhiteForm() {
+        txtNameType.setText("");
+        txtPriceDay.setText("");
+        txtPriceHour.setText("");
+        //chkThemNhieu.setSelected(false);
+        listRoom = roomDAO.selectAll();
+        listTypeRoom = typeOfRoomDAO.selectAll();
+        fillTableType();
+        fillTableRoom();
+        checkTang();
+    }
+
+    public void fillTableRoom() {
+        tblModelRoom.setRowCount(0);
+        for (Room x : listRoom) {
+            String nameType = "";
+            String nameStatus = "";
+            for (TypeOfRoom y : listTypeRoom) {
+                if (x.getIdTypeofRoom() == y.getId()) {
+                    nameType = y.getName();
+                    break;
+                }
+            }
+            for (int i = 0; i < 4; i++) {
+                switch (x.getStatus()) {
+                    case 0:
+                        nameStatus = "Phòng trống";
+                        break;
+                    case 1:
+                        nameStatus = "Đã đặt";
+                        break;
+                    case 2:
+                        nameStatus = "Đang dọn";
+                        break;
+                    default:
+                        nameStatus = "Bảo trì";
+                        break;
+                }
+            }
+            tblModelRoom.addRow(new Object[]{x.getId(), nameType, nameStatus});
+        }
+        tblModelRoom.fireTableDataChanged();
+    }
+
+    public void fillTableType() {
+        tblModelTypeRoom.setRowCount(0);
+        for (TypeOfRoom x : listTypeRoom) {
+            tblModelTypeRoom.addRow(new Object[]{x.getId(), x.getName(), x.getHourlyPrice(), x.getPricePerDay()});
+        }
+        tblModelTypeRoom.fireTableDataChanged();
+        fillCboType();
+    }
+
+    public void fillCboType() {
+        cboModelTypeRoom.removeAllElements();
+        for (TypeOfRoom x : listTypeRoom) {
+            cboModelTypeRoom.addElement(x.getName());
+        }
+        cboType.setModel(cboModelTypeRoom);
+    }
+
+    public void init() {
+        tblModelRoom = (DefaultTableModel) tblRoom.getModel();
+        tblModelTypeRoom = (DefaultTableModel) tblType.getModel();
+        cboModelStatus.removeAllElements();
+        cboModelStatus.addElement("Phòng trống");
+        cboModelStatus.addElement("Đã đặt");
+        cboModelStatus.addElement("Đang dọn");
+        cboModelStatus.addElement("Đang dọn");
+        cboStatus.setModel(cboModelStatus);
+        fillTableRoom();
+        fillTableType();
+        cboSoLuong.setEnabled(false);
+        cboTang.setValue(1);
+    }
+
+    public void insertRoom() {
+        if (chkThemNhieu.isSelected()) {
+            for (int i = 0; i < Integer.parseInt(cboSoLuong.getValue().toString()); i++) {
+                String id = txtRoom.getText();
+                int idType = listTypeRoom.get(cboType.getSelectedIndex()).getId();
+                int status = cboStatus.getSelectedIndex();
+                System.out.println(idType);
+                System.out.println(status);
+                Room room = new Room(id, status, idType);
+                roomDAO.insert(room);
+                setWhiteForm();
+            }
+            chkThemNhieu.setSelected(true);
+        } else {
+            String id = txtRoom.getText();
+            int idType = listTypeRoom.get(cboType.getSelectedIndex()).getId();
+            int status = cboStatus.getSelectedIndex();
+            System.out.println(idType);
+            System.out.println(status);
+            Room room = new Room(id, status, idType);
+            roomDAO.insert(room);
+            setWhiteForm();
+        }
+        MsgBox.showMessage(jPanel1, "Đã thêm");
+    }
+
+    public void updateRoom() {
+        String id = txtRoom.getText();
+        int idType = listTypeRoom.get(cboType.getSelectedIndex()).getId();
+        int status = cboStatus.getSelectedIndex();
+        Room room = new Room(id, status, idType);
+        roomDAO.update(room);
+        setWhiteForm();
+        MsgBox.showMessage(jPanel1, "Đã cập nhập");
+
+    }
+
+    public void deleteRoom() {
+        String id = txtRoom.getText();
+        int idType = listTypeRoom.get(cboType.getSelectedIndex()).getId();
+        int status = cboStatus.getSelectedIndex();
+        Room room = new Room(id, status, idType);
+        roomDAO.delete(room);
+        setWhiteForm();
+        MsgBox.showMessage(jPanel1, "Đã xóa");
+
+    }
+
+    public void fillFormRoom() {
+        int row = tblRoom.getSelectedRow();
+        txtRoom.setText(tblModelRoom.getValueAt(row, 0).toString());
+        cboStatus.setSelectedItem(tblModelRoom.getValueAt(row, 2).toString());
+        cboModelTypeRoom.setSelectedItem(tblModelRoom.getValueAt(row, 1).toString());
+    }
+
+    public void insertType() {
+        String type = txtNameType.getText();
+        float priceHour = Float.parseFloat(txtPriceHour.getText());
+        float priceDay = Float.parseFloat(txtPriceDay.getText());
+        TypeOfRoom typeRoom = new TypeOfRoom(type, priceHour, priceDay);
+        typeOfRoomDAO.insert(typeRoom);
+        setWhiteForm();
+        MsgBox.showMessage(jPanel1, "Đã thêm");
+
+    }
+
+    public void updateType() {
+        String type = txtNameType.getText();
+        float priceHour = Float.parseFloat(txtPriceHour.getText());
+        float priceDay = Float.parseFloat(txtPriceDay.getText());
+        TypeOfRoom typeRoom = new TypeOfRoom(idType, type, priceHour, priceDay);
+        typeOfRoomDAO.update(typeRoom);
+        setWhiteForm();
+        MsgBox.showMessage(jPanel1, "Đã cập nhập");
+
+    }
+
+    public void deleteType() {
+        String type = txtNameType.getText();
+        float priceHour = Float.parseFloat(txtPriceHour.getText());
+        float priceDay = Float.parseFloat(txtPriceDay.getText());
+        TypeOfRoom typeRoom = new TypeOfRoom(idType, type, priceHour, priceDay);
+        typeOfRoomDAO.delete(typeRoom);
+        setWhiteForm();
+        MsgBox.showMessage(jPanel1, "Đã xóa");
+
+    }
+
+    public void fillFormType() {
+        int row = tblType.getSelectedRow();
+        idType = (int) tblModelTypeRoom.getValueAt(row, 0);
+        txtNameType.setText(tblModelTypeRoom.getValueAt(row, 1).toString());
+        txtPriceHour.setText(tblModelTypeRoom.getValueAt(row, 2).toString());
+        txtPriceDay.setText(tblModelTypeRoom.getValueAt(row, 3).toString());
+    }
+    public void checkTang(){
+        if((int) cboTang.getValue() < 1) {
+            cboTang.setValue(1);
+        }
+        String nameRoom = listRoom.get(listRoom.size() - 1).getId();
+        nameRoom = "P" + cboTang.getValue().toString() + "01";
+        while (roomDAO.selectById(nameRoom) != null) {
+            if (nameRoom.substring(nameRoom.length() - 2).equals("09")) {
+                int tang = (int) cboTang.getValue();
+                cboTang.setValue(++tang);
+                nameRoom = "P" + cboTang.getValue().toString() + "01";
+            } else {
+                nameRoom = "P" + cboTang.getValue().toString()+"0"+ ((Integer.parseInt(nameRoom.substring(nameRoom.length() - 2)) + 1));
+            }
+        }
+        txtRoom.setText(nameRoom);
+    }
 }
