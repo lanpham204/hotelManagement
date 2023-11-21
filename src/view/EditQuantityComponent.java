@@ -4,7 +4,6 @@
  */
 package view;
 
-import dao.BookingDAO;
 import dao.ServiceDAO;
 import dao.ServiceRoomDAO;
 import java.text.NumberFormat;
@@ -14,13 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import model.Service;
 import model.ServiceRoom;
-import util.MsgBox;
 
 /**
  *
  * @author phamn
  */
-public class QuantityComponent extends javax.swing.JFrame {
+public class EditQuantityComponent extends javax.swing.JFrame {
+    private int id;
     private int idBooking;
     private String name;
     private String price;
@@ -29,28 +28,30 @@ public class QuantityComponent extends javax.swing.JFrame {
     private ServiceDAO serviceDAO = new ServiceDAO();
     private ServiceRoomDAO serviceRoomDAO = new ServiceRoomDAO();
     private int quantity = 1;
+    private int selectedIndex;
     private NumberFormat numberFormat = 
             NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
-    private Service service;
-    private ServiceRoom serviceRoom;
     /**
      * Creates new form QuantityCompo
      */
-    public QuantityComponent() {
+    public EditQuantityComponent() {
         initComponents();
     }
-    public QuantityComponent(int id,int idBooking,String name,String price,DefaultTableModel tableModel,JLabel lblTotalPrice) {
+    public EditQuantityComponent(int id,int idBooking,int selectedIndex,DefaultTableModel tableModel,int quantity,JLabel lblTotalPrice) {
         initComponents();
         setLocationRelativeTo(null);
+        this.id = id;
         this.name = name;
         this.price = price;
+        this.selectedIndex = selectedIndex;
         this.tableModel = tableModel;
         this.idBooking = idBooking;
+        this.quantity = quantity;
         this.lblTotalPrice = lblTotalPrice;
         txtQuantity.setText(quantity+"");
-        btnDiv.setEnabled(false);
-        service = serviceDAO.selectById(id);
-        serviceRoom = new ServiceRoom(idBooking , service.getId(), quantity);
+        if(quantity == 1) {
+            btnDiv.setEnabled(false);
+        }
     }
 
     /**
@@ -138,32 +139,12 @@ public class QuantityComponent extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-         boolean serviceExist = false;
-         
-          float totalPrice = 0;
-                for (int i = 0; i < tableModel.getRowCount(); i++) {
-                    if(name.equals(tableModel.getValueAt(i, 0))) {
-                        if(name.equalsIgnoreCase((String) tableModel.getValueAt(i, 0))){
-                            MsgBox.showMessage(rootPane, "Dịch vụ đã tồn tại");
-                            serviceExist = true;
-                            dispose();
-                            break;
-                        }
-                        
-                    }
-                }
-                if(!serviceExist) {
-                    Object[] rowData = {name, price,quantity,totalPrice};
-                    tableModel.addRow(rowData);
-                    
-                    serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
-                    serviceRoomDAO.insert(serviceRoom);
-                    List<ServiceRoom> serviceRooms = serviceRoomDAO.selectAll();
-                    int id = serviceRooms.get(serviceRooms.size()-1).getId();
-                        updateTotal(id,tableModel.getRowCount()-1, tableModel);
+         ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
+                        tableModel.setValueAt(Integer.parseInt(txtQuantity.getText()), selectedIndex, 2);
+                        updateTotal(selectedIndex, tableModel);
+                        serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                        serviceRoomDAO.update(serviceRoom);
                         updateTotalPriceAll();
-                    
-                }
                 dispose();
     }//GEN-LAST:event_btnSubmitActionPerformed
 
@@ -202,21 +183,23 @@ public class QuantityComponent extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditQuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditQuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditQuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditQuantityComponent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuantityComponent().setVisible(true);
+                new EditQuantityComponent().setVisible(true);
             }
         });
     }
@@ -228,13 +211,13 @@ public class QuantityComponent extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
-        private void updateTotal(int id,int row, DefaultTableModel tableModel) {
-            int quantity = (int) tableModel.getValueAt(row, 2);
+        private void updateTotal(int row, DefaultTableModel tableModel) {
+            ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
+         Service service = serviceDAO.selectById(serviceRoom.getIdService());
+            int quantity = Integer.parseInt(txtQuantity.getText());
             float total =  service.getPrice() * quantity;
-            tableModel.setValueAt(numberFormat.format(total), row, 3);
-            tableModel.setValueAt(id, row, 4);
+            tableModel.setValueAt(numberFormat.format(total), row, 3); 
         }
-
     private void updateTotalPriceAll() {
         float totalPriceAll = 0;
         List<ServiceRoom> serviceRooms = serviceRoomDAO.selectServiceRoomByIdBooking(idBooking);

@@ -10,7 +10,7 @@ import model.Staff;
 import util.JdbcHelper;
 
 public class StaffDAO extends HotelDAO<Staff, String> {
-    String INSERT_SQL = "INSERT INTO NhanVien(MaNV, MatKhau, HoTen,NgaySinh, GioiTinh, CCCD, Email, SoDienThoai, VaiTro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String INSERT_SQL = "INSERT INTO NhanVien(MaNV, MatKhau, HoTen,NgaySinh, GioiTinh, CCCD, Email, SoDienThoai, VaiTro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     String UPDATE_SQL = "UPDATE NhanVien SET MatKhau = ?, HoTen = ?,NgaySinh = ?, GioiTinh = ?, CCCD = ?, Email = ?, SoDienThoai = ?, VaiTro = ? WHERE MaNV = ?";
     String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV = ?";
     String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
@@ -84,5 +84,13 @@ public class StaffDAO extends HotelDAO<Staff, String> {
             Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    public Staff selectByEmail(String email) {
+        String sql = "SELECT * FROM NhanVien WHERE Email = ?";
+        List<Staff> staffs = this.selectBySql(sql, email);
+        if (staffs.isEmpty()) {
+            return null;
+        }
+        return staffs.get(0);
     }
 }

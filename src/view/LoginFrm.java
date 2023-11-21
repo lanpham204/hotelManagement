@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.UIManager;
 import model.Staff;
+import org.mindrot.jbcrypt.BCrypt;
 import util.Auth;
 import util.MsgBox;
 
@@ -89,14 +90,19 @@ public class LoginFrm extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(199, 226, 255));
-        jLabel5.setText("Username");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 123, 341, -1));
+        jLabel5.setText("Tài khoản:");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 341, -1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(199, 226, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Quên mật khẩu ?");
         jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel11MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(254, 261, 121, 27));
 
         btnLogin.setBackground(new java.awt.Color(255, 255, 255));
@@ -131,8 +137,8 @@ public class LoginFrm extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(199, 226, 255));
-        jLabel8.setText("Password");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 192, 341, -1));
+        jLabel8.setText("Mật khẩu:");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 341, -1));
 
         txtPassword.setFont(txtPassword.getFont().deriveFont(txtPassword.getFont().getSize()+2f));
         txtPassword.setForeground(new java.awt.Color(70, 73, 75));
@@ -268,6 +274,11 @@ public class LoginFrm extends javax.swing.JFrame {
             login();
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
+        // TODO add your handling code here:
+        new ForgetPassword().setVisible(true);
+    }//GEN-LAST:event_jLabel11MouseClicked
     /**
      * @param args the command line arguments
      */
@@ -344,7 +355,7 @@ public class LoginFrm extends javax.swing.JFrame {
             if (staff == null) {
                 MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
                 System.out.println(staff.getId());
-            } else if (!password.equalsIgnoreCase(staff.getPassword())) {
+            } else if (!BCrypt.checkpw(password, staff.getPassword())) {
                 MsgBox.showMessage(rootPane, "Sai tài khoản hoặc mật khẩu");
             } else {
                 Auth.user = staff;

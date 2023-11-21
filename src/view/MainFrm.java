@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import util.Auth;
+import util.MsgBox;
 
 /**
  *
@@ -79,7 +81,7 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
+        lblStaff = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         lblOclock = new javax.swing.JLabel();
         view = new javax.swing.JPanel();
@@ -172,7 +174,7 @@ public class MainFrm extends javax.swing.JFrame {
         btnInvoice.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
         btnInvoice.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
+        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
 
         btnStatictics.setBackground(new java.awt.Color(64, 43, 100));
         btnStatictics.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -214,7 +216,7 @@ public class MainFrm extends javax.swing.JFrame {
         btnService.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
         btnService.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
+        panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
 
         btnCustomer.setBackground(new java.awt.Color(64, 43, 100));
         btnCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -231,7 +233,7 @@ public class MainFrm extends javax.swing.JFrame {
         btnCustomer.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, 30));
         btnCustomer.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
+        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
 
         btnStaff.setBackground(new java.awt.Color(64, 43, 100));
         btnStaff.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -271,11 +273,12 @@ public class MainFrm extends javax.swing.JFrame {
         panelTrai.add(btnAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 300, 60));
 
         jPanel2.setBackground(new java.awt.Color(54, 33, 89));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1264, 20));
 
-        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("Xin chào:  ");
+        lblStaff.setBackground(new java.awt.Color(255, 255, 255));
+        lblStaff.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblStaff.setForeground(new java.awt.Color(255, 255, 255));
+        lblStaff.setText("Xin chào:  ");
 
         jLabel15.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -295,10 +298,8 @@ public class MainFrm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel14))
-                    .addComponent(lblOclock, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblOclock, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblStaff))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 950, Short.MAX_VALUE)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
@@ -309,8 +310,9 @@ public class MainFrm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addGap(38, 38, 38)
+                        .addGap(26, 26, 26)
+                        .addComponent(lblStaff)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblOclock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -336,7 +338,7 @@ public class MainFrm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panelTrai, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(view, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -345,7 +347,7 @@ public class MainFrm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelTrai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addGap(0, 0, 0)
                         .addComponent(view, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, 0))
@@ -355,7 +357,12 @@ public class MainFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
-
+        boolean confirm = MsgBox.confirm(rootPane, "Bạn có chắc muốn đăng xuất");
+        if(confirm) {
+            Auth.clear();
+            new LoginFrm().setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_btnLogoutMouseClicked
 
     private void btnBookingAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnBookingAncestorRemoved
@@ -369,9 +376,13 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingMousePressed
 
     private void btnRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomMousePressed
-        setView(new RoomMangementFrm());
-        resetColor();
-        setColor(btnRoom);
+        if(Auth.isManager()) {
+            setView(new RoomMangementFrm());
+            resetColor();
+            setColor(btnRoom);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
     }//GEN-LAST:event_btnRoomMousePressed
 
     private void btnInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvoiceMousePressed
@@ -384,9 +395,14 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStaticticsMouseClicked
 
     private void btnStaticticsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaticticsMousePressed
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnStatictics);
+        
+        if(Auth.isManager()) {
+            setView(new RoomsFrm());
+            resetColor();
+            setColor(btnStatictics);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
     }//GEN-LAST:event_btnStaticticsMousePressed
 
     private void btnBookingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingMouseClicked
@@ -396,9 +412,13 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnServiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnServiceMousePressed
         // TODO add your handling code here:
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnService);
+        if(Auth.isManager()) {
+            setView(new ServiceFrm());
+            resetColor();
+            setColor(btnService);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
     }//GEN-LAST:event_btnServiceMousePressed
 
     private void btnCustomerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomerMousePressed
@@ -410,9 +430,13 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnStaffMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaffMousePressed
         // TODO add your handling code here:
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnStaff);
+        if(Auth.isManager()) {
+            setView(new StaffFrm());
+            resetColor();
+            setColor(btnStaff);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
 
     }//GEN-LAST:event_btnStaffMousePressed
 
@@ -423,7 +447,7 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnAccountMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAccountMousePressed
         // TODO add your handling code here:
-        setView(new RoomsFrm());
+        new ChangePassword().setVisible(true);
         resetColor();
         setColor(btnAccount);
                 
@@ -489,7 +513,6 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -519,6 +542,7 @@ public class MainFrm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblOclock;
+    private javax.swing.JLabel lblStaff;
     private javax.swing.JPanel panelTrai;
     private javax.swing.JPanel view;
     // End of variables declaration//GEN-END:variables
@@ -548,6 +572,7 @@ public class MainFrm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         onOclock();
         setView(new RoomsFrm());
+        lblStaff.setText("Xin chào: "+Auth.user.getFullName());
     }
     private void onOclock() {
         Thread t = new Thread(new Runnable() {
@@ -567,7 +592,5 @@ public class MainFrm extends javax.swing.JFrame {
         });
         t.start();
     }
-    private void showService() {
-        
-    }
+    
 }

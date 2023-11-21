@@ -16,7 +16,11 @@ public class Service {
 
     public Service() {
     }
-
+    public Service( String name, float price, String idTypeOfService) {
+        this.name = name;
+        this.price = price;
+        this.idTypeOfService = idTypeOfService;
+    }
     public Service(int id, String name, float price, String idTypeOfService) {
         this.id = id;
         this.name = name;

@@ -15,24 +15,38 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import model.Booking;
 import model.Guest;
 import model.Room;
 import model.Service;
+import model.ServiceRoom;
 import model.TypeOfRoom;
 import model.TypeOfService;
+import util.MsgBox;
 import util.XDate;
 
 /**
@@ -48,12 +62,19 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private ServiceDAO serviceDAO = new ServiceDAO();
     private TypeOfServiceDAO typeOfServiceDAO = new TypeOfServiceDAO();
     private ServiceRoomDAO serviceRoomDAO = new ServiceRoomDAO();
+    List<ServiceRoom> serviceRooms = new ArrayList<>();
+    private DefaultTableModel tableModel;
+    private int selectedIndex = -1;
+    private float totalAll = 0;
+    private float totalPriceRoom = 0;
+    private float totalPriceService = 0;
     private Room room;
-    Booking booking ;
-    TypeOfRoom tor;
-    Date endDate = new Date();
-     private NumberFormat numberFormat = 
+    private Booking booking ;
+    private TypeOfRoom tor;
+    private Date endDate = new Date();
+    private NumberFormat numberFormat = 
             NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+     private int totalDay;
     /**
      * Creates new form DetailBookRoomFrm
      */
@@ -77,12 +98,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroupType = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
@@ -99,18 +119,20 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jLabel29 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         pnlService = new javax.swing.JPanel();
+        lblTotalService = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtPrice = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
+        txtPriceRefund = new javax.swing.JTextField();
+        lblTotalPriceAll = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCheckout = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -121,8 +143,8 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         dcEnd = new com.toedter.calendar.JDateChooser();
         dcStart = new com.toedter.calendar.JDateChooser();
         jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         lblGuest = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         lblHours = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -131,13 +153,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         lblEndDate = new javax.swing.JLabel();
         lblTotalPriceRoom = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
         lblIdRoom = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1294, 600));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Chi Tiết Thuê Phòng");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -149,8 +169,9 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
         jPanel8.setBackground(new java.awt.Color(54, 33, 89));
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel24.setText("Chi Tiết Dịch Vụ");
+        jLabel32.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel32.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel32.setText("Chi Tiết Dịch Vụ");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -158,14 +179,14 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel24)
+                .addComponent(jLabel32)
                 .addContainerGap(785, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jLabel24)
-                .addGap(0, 5, Short.MAX_VALUE))
+                .addComponent(jLabel32)
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Thêm dịch vụ"));
@@ -276,11 +297,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên", "Giá", "Số lượng"
+                "Tên", "Giá", "Số lượng", "Tổng tiền", "Mã DV phòng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -293,14 +314,22 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         tblService.setRowHeight(40);
         tblService.setShowHorizontalLines(true);
         tblService.getTableHeader().setReorderingAllowed(false);
+        tblService.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblServiceMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblService);
         if (tblService.getColumnModel().getColumnCount() > 0) {
             tblService.getColumnModel().getColumn(0).setResizable(false);
             tblService.getColumnModel().getColumn(1).setResizable(false);
             tblService.getColumnModel().getColumn(2).setResizable(false);
+            tblService.getColumnModel().getColumn(3).setResizable(false);
+            tblService.getColumnModel().getColumn(4).setResizable(false);
+            tblService.getColumnModel().getColumn(4).setPreferredWidth(0);
         }
 
-        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 440, 320));
+        jPanel5.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 440, 290));
 
         pnl.setBorder(javax.swing.BorderFactory.createTitledBorder("Thêm dịch vụ"));
 
@@ -366,11 +395,29 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
         jPanel5.add(pnl, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 450, 330));
 
+        lblTotalService.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblTotalService.setForeground(new java.awt.Color(255, 102, 102));
+        lblTotalService.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTotalService.setText("Tổng tiền phòng:");
+        lblTotalService.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                lblTotalServicePropertyChange(evt);
+            }
+        });
+        jPanel5.add(lblTotalService, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 350, 160, 30));
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(255, 102, 102));
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel37.setText("Tổng tiền phòng:");
+        jPanel5.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 160, 30));
+
         jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jPanel11.setBackground(new java.awt.Color(54, 33, 89));
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setText("Thanh Toán");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -398,21 +445,37 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel30.setText("Hình thức thanh toán:");
 
+        txtPrice.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtPricePropertyChange(evt);
+            }
+        });
+        txtPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPriceKeyPressed(evt);
+            }
+        });
+
         jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel31.setText("Tiền trả lại:");
 
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 102, 102));
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("Tổng tiền ");
+        lblTotalPriceAll.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTotalPriceAll.setForeground(new java.awt.Color(255, 102, 102));
+        lblTotalPriceAll.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTotalPriceAll.setText("Tổng tiền ");
 
         jLabel33.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 102, 102));
         jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel33.setText("Tổng tiền :");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Thanh Toán");
+        btnCheckout.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnCheckout.setText("Thanh Toán");
+        btnCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -421,7 +484,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(btnCheckout)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -429,9 +492,9 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                                 .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING))
                             .addGap(18, 18, 18)
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                                .addComponent(jTextField4)))
+                                .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                                .addComponent(txtPriceRefund)
+                                .addComponent(lblTotalPriceAll, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jLabel30)
                         .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -455,15 +518,15 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPriceRefund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTotalPriceAll, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jButton1)
+                .addComponent(btnCheckout)
                 .addGap(19, 19, 19))
             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
@@ -525,9 +588,9 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                                 .addComponent(rdoDay, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rdoHour, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE))
                             .addComponent(dcEnd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(657, 657, 657))
+                .addGap(659, 659, 659))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,15 +614,24 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
         jPanel4.setBackground(new java.awt.Color(54, 33, 89));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Chi Tiết Thuê Phòng");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1210, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1030, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 5, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1210, 30));
@@ -567,10 +639,6 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         lblGuest.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblGuest.setText("Khách hàng");
         jPanel3.add(lblGuest, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 150, 27));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel13.setText("Dự kiến trả:");
-        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         lblHours.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblHours.setText("50,000 đ");
@@ -593,6 +661,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jPanel3.add(lblDay, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 40, 80, 27));
 
         lblEndDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblEndDate.setForeground(new java.awt.Color(255, 51, 51));
         lblEndDate.setText("Ngày trả phòng:");
         jPanel3.add(lblEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 300, 27));
 
@@ -600,21 +669,35 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         lblTotalPriceRoom.setForeground(new java.awt.Color(255, 102, 102));
         lblTotalPriceRoom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTotalPriceRoom.setText("Tổng tiền phòng:");
+        lblTotalPriceRoom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                lblTotalPriceRoomPropertyChange(evt);
+            }
+        });
         jPanel3.add(lblTotalPriceRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, 340, 30));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel34.setText("Ngày trả phòng:");
         jPanel3.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 110, 27));
 
-        jLabel35.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel35.setForeground(new java.awt.Color(255, 102, 102));
-        jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel35.setText("Tổng tiền phòng:");
-        jPanel3.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 340, 30));
+        jLabel36.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(255, 102, 102));
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel36.setText("Tổng tiền phòng:");
+        jPanel3.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 340, 30));
 
         lblIdRoom.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblIdRoom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblIdRoom.setText("P101");
+
+        jButton1.setBackground(new java.awt.Color(255, 102, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setText("<<Trở về");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -628,30 +711,27 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(lblIdRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 1205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 524, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 524, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblIdRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 1054, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -699,8 +779,78 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cbTypeOfServiceActionPerformed
 
+    private void tblServiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblServiceMouseClicked
+        // TODO add your handling code here:
+        //        int column = tblService.getColumnModel().getColumnIndex("Số lượng");
+//                int row = tblService.rowAtPoint(evt.getPoint());
+        selectedIndex = tblService.getSelectedRow();
+    tblService.addMouseListener(new PopupMenuMouseListener(this,selectedIndex));
+           
+        
+    }//GEN-LAST:event_tblServiceMouseClicked
+
+    private void lblTotalPriceRoomPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lblTotalPriceRoomPropertyChange
+        // TODO add your handling code here:
+        float totalRoom = Float.parseFloat(lblTotalPriceRoom.getText().substring(0,lblTotalPriceRoom.getText().length()-2).replace(".", ""));
+        totalPriceRoom =  totalRoom;
+        totalAll = totalPriceRoom + totalPriceService;
+        lblTotalPriceAll.setText(numberFormat.format(totalAll));
+    }//GEN-LAST:event_lblTotalPriceRoomPropertyChange
+
+    private void lblTotalServicePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_lblTotalServicePropertyChange
+        // TODO add your handling code here:
+            float totalService = Float.parseFloat(lblTotalService.getText().substring(0,lblTotalService.getText().length()-2).replace(".", ""));
+        totalPriceService = totalService;
+          totalAll = totalPriceRoom + totalPriceService;
+          lblTotalPriceAll.setText(numberFormat.format(totalAll));
+    }//GEN-LAST:event_lblTotalServicePropertyChange
+
+    private void txtPricePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtPricePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPricePropertyChange
+
+    private void txtPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                txtPriceRefund.setText(Math.round((Float.parseFloat(txtPrice.getText())-totalAll))+"");
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_0) {
+            if(txtPrice.getText().length() <= 2) {
+                txtPrice.setText(Integer.parseInt(txtPrice.getText())+"000");
+            }
+            
+        }
+    }//GEN-LAST:event_txtPriceKeyPressed
+
+    private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
+        // TODO add your handling code here:
+        booking.setTotalMoney(totalAll);
+        booking.setStatus(false);
+        bookingDAO.update(booking);
+        room.setStatus(2);
+        roomDAO.update(room);
+        ExportInvoicePDF.export(booking, lblTotalPriceRoom.getText(), lblTotalService.getText(), lblTotalPriceAll.getText(),totalDay);
+        MsgBox.showMessage(this, "Thanh toán thành công");
+        this.removeAll();
+        this.setLayout(new BorderLayout());
+        this.add(new RoomsFrm());
+         this.revalidate();
+         this.repaint();
+        
+    }//GEN-LAST:event_btnCheckoutActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.removeAll();
+        this.setLayout(new BorderLayout());
+        this.add(new RoomsFrm());
+         this.revalidate();
+         this.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheckout;
     private javax.swing.ButtonGroup buttonGroupType;
     private javax.swing.JComboBox<String> cbTypeOfService;
     private com.toedter.calendar.JDateChooser dcEnd;
@@ -711,14 +861,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
@@ -726,9 +873,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel10;
@@ -745,19 +894,21 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lblDay;
     private javax.swing.JLabel lblEndDate;
     private javax.swing.JLabel lblGuest;
     private javax.swing.JLabel lblHours;
     private javax.swing.JLabel lblIdRoom;
+    private javax.swing.JLabel lblTotalPriceAll;
     private javax.swing.JLabel lblTotalPriceRoom;
+    private javax.swing.JLabel lblTotalService;
     private javax.swing.JPanel pnl;
     private javax.swing.JPanel pnlService;
     private javax.swing.JRadioButton rdoDay;
     private javax.swing.JRadioButton rdoHour;
     private javax.swing.JTable tblService;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtPriceRefund;
     // End of variables declaration//GEN-END:variables
 
     private void showDetail() {
@@ -773,8 +924,13 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         rdoHour.setSelected(!booking.isType());
         dcStart.setDate(booking.getStartDate());
         dcEnd.setDate(booking.getEndDate());
+        if(booking.isType()) {
+            rdoDay.setSelected(true);
+        } else {
+            rdoHour.setSelected(true);
+        }
         if(rdoDay.isSelected()) {
-            int totalDay = calculateDays(booking.getStartDate(),endDate);
+            totalDay = calculateDays(booking.getStartDate(),endDate);
             
             if(totalDay == 0) {
             lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
@@ -785,6 +941,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             int totalDay = calculateHours(booking.getStartDate(),endDate);
             lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getHourlyPrice())));
         }
+        
     }
 
     private void init() {
@@ -797,6 +954,8 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         showDetail();
          fillComboboxTypeOfService();
          showServices(serviceDAO.selectAll());
+        showServicesRoom();
+//         tblService.removeColumn(tblService.getColumnModel().getColumn(4));
     }
 
     private int calculateDays(Date startDate, Date endDate) {
@@ -827,14 +986,14 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
     private void showServices(List<Service> services) {
         pnlService.removeAll();
-        DefaultTableModel tableModel = (DefaultTableModel) tblService.getModel();
+        tableModel = (DefaultTableModel) tblService.getModel();
         tableModel.setRowCount(0);
         pnlService.setLayout(new GridLayout(0, 1));
     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Sắp xếp component theo hàng ngang
         for (Service service : services) {
             JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
-                ServiceComponent serviceComponent = new ServiceComponent(
-                        service.getName(), service.getPrice(),tableModel);
+                ServiceComponent serviceComponent = new ServiceComponent(service.getId(),booking.getId(),
+                        service.getName(), service.getPrice(),tableModel,lblTotalService);
                 cardPanel.add(serviceComponent);
         rowPanel.add(cardPanel);
         if (rowPanel.getComponentCount()==3) {
@@ -845,4 +1004,90 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     
     pnlService.add(rowPanel);
     }
+    private void showServicesRoom() {
+        float totalPrice = 0;
+        List<ServiceRoom> serviceRooms = serviceRoomDAO.selectServiceRoomByIdBooking(booking.getId());
+        for (ServiceRoom serviceRoom : serviceRooms) {
+            Service service = serviceDAO.selectById(serviceRoom.getIdService());
+            Object[] rowData = {service.getName(), numberFormat.format(service.getPrice())
+                    ,serviceRoom.getQuantity(),
+                    numberFormat.format(service.getPrice()*serviceRoom.getQuantity()),serviceRoom.getId()};
+                    tableModel.addRow(rowData);
+                    totalPrice += (serviceRoom.getQuantity()*service.getPrice());
+        }
+        lblTotalService.setText(numberFormat.format(totalPrice));
+    }
+ 
+    public class PopupMenuMouseListener extends MouseAdapter {
+        private JPanel panel;
+        private int selectedIndex;
+        public PopupMenuMouseListener(JPanel parent,int selectedIndex) {
+            this.panel = parent;
+            this.selectedIndex = selectedIndex;
+        }
+        
+        
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem editItem = new JMenuItem("Sửa số lượng");               
+                JMenuItem deleteItem = new JMenuItem("Xóa dịch vụ");
+                editItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        
+                         Service service = serviceDAO.selectServiceByIdName(
+                    (String) tblService.getValueAt(selectedIndex, 0));
+                    int id = (int) tblService.getModel().getValueAt(selectedIndex, 4);
+                    int quantity = (int) tblService.getValueAt(selectedIndex, 2);
+                     new EditQuantityComponent(id,booking.getId(), selectedIndex, tableModel, quantity,lblTotalService).setVisible(true);
+                     
+                    }
+                });
+                deleteItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                            boolean confirm = MsgBox.confirm(panel, "Bạn có chắc muốn xóa dịch vụ này !");
+                            if(confirm) {
+                                int id = (int) tblService.getModel().getValueAt(selectedIndex, 4);
+                                ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
+                                serviceRoomDAO.delete(serviceRoom);
+                                tableModel.removeRow(selectedIndex);
+                                updateTotalPriceAll();
+                            }
+                    }
+                });
+                popupMenu.add(editItem);
+                popupMenu.add(deleteItem);
+                popupMenu.show(tblService, e.getX(), e.getY());
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                mouseClicked(e);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                mouseClicked(e);
+            }
+        }
+    }
+    private void updateTotalPriceAll() {
+        float totalPriceAll = 0;
+        List<ServiceRoom> serviceRooms = serviceRoomDAO.selectServiceRoomByIdBooking(booking.getId());
+        for (ServiceRoom sr : serviceRooms) {
+                        Service sv = serviceDAO.selectById(sr.getIdService());
+                        totalPriceAll += (sr.getQuantity()*sv.getPrice());
+        
+                    }
+                    lblTotalService.setText(numberFormat.format(totalPriceAll));
+    }
 }
+

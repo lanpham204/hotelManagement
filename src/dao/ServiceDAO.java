@@ -83,4 +83,13 @@ public class ServiceDAO extends HotelDAO<Service, Integer> {
                     "where MaLDV = ?";
         return selectBySql(sql, tos.getId());
     }
+    public Service selectServiceByIdName(String name) {
+        String sql = "select * from DichVu\n" +
+            "where TenDV like '%' + ? + '%'";
+        List<Service> services = this.selectBySql(sql, name);
+        if (services.isEmpty()) {
+            return null;
+        }
+        return services.get(0);
+    }
 }

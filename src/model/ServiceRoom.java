@@ -17,6 +17,12 @@ public class ServiceRoom {
     public ServiceRoom() {
     }
 
+    public ServiceRoom(int idBooking, int idService, int quantity) {
+        this.idBooking = idBooking;
+        this.idService = idService;
+        this.quantity = quantity;
+    }
+
     public ServiceRoom(int id, int idBooking, int idService, int quantity) {
         this.id = id;
         this.idBooking = idBooking;

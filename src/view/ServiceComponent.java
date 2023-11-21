@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.Locale;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,16 +18,22 @@ import javax.swing.table.DefaultTableModel;
 public class ServiceComponent extends javax.swing.JPanel {
     private NumberFormat numberFormat = 
             NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+    private int id;
+    private int idBooking;
+    private JLabel lblTotalPrice;
     /*==
      * Creates new form ServiceComponent
      */
     public ServiceComponent() {
         initComponents();
     }
-    public ServiceComponent(String name,float price,DefaultTableModel tableModel) {
+    public ServiceComponent(int id,int idBooking,String name,float price,DefaultTableModel tableModel,JLabel lblTotalPrice) {
         initComponents();
         lblName.setText(name);
         lblPrice.setText(numberFormat.format(price));
+        this.id = id;
+        this.idBooking = idBooking;
+        this.lblTotalPrice = lblTotalPrice;
         addMouseListenerToPanel(tableModel);
     }
 
@@ -79,7 +86,7 @@ public class ServiceComponent extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 String serviceName = lblName.getText();
                 String servicePrice = lblPrice.getText();
-                QuantityComponent quantityComponent = new QuantityComponent(serviceName,servicePrice,tableModel);
+                QuantityComponent quantityComponent = new QuantityComponent(id,idBooking,serviceName,servicePrice,tableModel,lblTotalPrice);
                 quantityComponent.setVisible(true);
             }
         });

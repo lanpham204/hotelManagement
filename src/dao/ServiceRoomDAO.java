@@ -1,6 +1,9 @@
 package dao;
 
-import java.sql.ResultSet;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,12 @@ public class ServiceRoomDAO extends HotelDAO<ServiceRoom, Integer> {
     String SELECT_ALL_SQL = "SELECT * FROM DichVuPhong";
     String SELECT_BY_ID_SQL = "SELECT * FROM DichVuPhong WHERE MaDVP = ?";
     private JdbcHelper jdbcHelper = new JdbcHelper();
-
+    
     @Override
     public void insert(ServiceRoom entity) {
         try {
             jdbcHelper.update(INSERT_SQL, entity.getIdBooking(), entity.getIdService(), entity.getQuantity());
+
         } catch (SQLException ex) {
             Logger.getLogger(ServiceRoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,5 +79,10 @@ public class ServiceRoomDAO extends HotelDAO<ServiceRoom, Integer> {
             Logger.getLogger(ServiceRoomDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    public List<ServiceRoom> selectServiceRoomByIdBooking(int id) {
+        String sql = "select * from DichVuPhong\n" +
+                "where MaPDPhong = ?";
+        return this.selectBySql(sql,id);
     }
 }

@@ -9,7 +9,9 @@ import dao.GuestDAO;
 import dao.RoomDAO;
 import dao.TypeOfRoomDAO;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -94,7 +96,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnFindGuest = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -300,8 +302,18 @@ public class BookRoomFrm extends javax.swing.JFrame {
                 txtSearchActionPerformed(evt);
             }
         });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
 
-        jButton1.setText("Tìm");
+        btnFindGuest.setText("Tìm");
+        btnFindGuest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindGuestActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Tìm kiếm khách hàng:");
@@ -319,13 +331,13 @@ public class BookRoomFrm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCheckin))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFindGuest)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -338,7 +350,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnFindGuest))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -384,15 +396,18 @@ public class BookRoomFrm extends javax.swing.JFrame {
                 startDate == null||endDate == null||phoneNum.isEmpty() || gender.isEmpty()) {
             MsgBox.showMessage(rootPane, "Vui lòng nhập đủ thông tin");
         } else {
-             float price = 0;
+             if(validate(idGuest,phoneNum,birthDate)) {
+                 float price = 0;
              if(rdoDay.isSelected()) {
                  price = tor.getPricePerDay();
              } else if(rdoHours.isSelected()) {
                  price = tor.getHourlyPrice();
              }
             Guest guest = new Guest(idGuest, fullName, birthDate,gender== "Nam"?true:false,phoneNum);
-        guests.add(guest);
-        gdao.insert(guest);
+            if(!exist(idGuest)) {
+                guests.add(guest);
+                gdao.insert(guest);
+            }
         Booking booking = new Booking(guest.getId(), room.getId(), 
                 startDate, endDate,type== "Ngày"?true:false, 
                 price,true);
@@ -406,8 +421,8 @@ public class BookRoomFrm extends javax.swing.JFrame {
                         cardPanel.repaint();
         MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
             dispose();
+             }
         }
-        
     }//GEN-LAST:event_btnCheckinActionPerformed
 
     private void rdoDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDayActionPerformed
@@ -427,6 +442,18 @@ public class BookRoomFrm extends javax.swing.JFrame {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnFindGuestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindGuestActionPerformed
+        // TODO add your handling code here:
+        searchGuest();
+    }//GEN-LAST:event_btnFindGuestActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            searchGuest();
+        }
+    }//GEN-LAST:event_txtSearchKeyPressed
 
     /**
      * @param args the command line arguments
@@ -468,12 +495,12 @@ public class BookRoomFrm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCheckin;
+    private javax.swing.JButton btnFindGuest;
     private javax.swing.ButtonGroup buttonGroupGender;
     private javax.swing.ButtonGroup buttonGroupType;
     private com.toedter.calendar.JDateChooser dcBirthDay;
     private com.toedter.calendar.JDateChooser dcEnd;
     private com.toedter.calendar.JDateChooser dcStart;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -526,5 +553,55 @@ public class BookRoomFrm extends javax.swing.JFrame {
         }
         return false;
     }
+
+    private void setForm(Guest guest) {
+        txtId.setText(guest.getId());
+        txtFullName.setText(guest.getFullName());
+        txtPhone.setText(guest.getPhoneNum());
+        dcBirthDay.setDate(guest.getBirthDate());
+        if(guest.isGender()) {
+            rdoMale.setSelected(true);
+        } else {
+            rdoFemale.setSelected(false);
+        }
+    }
+
+    private void searchGuest() {
+        String id = txtSearch.getText();
+        Guest g = gdao.selectById(id);
+        if(g!= null) {
+            txtId.setText(g.getId());
+            txtFullName.setText(g.getFullName());
+            txtPhone.setText(g.getPhoneNum());
+            dcBirthDay.setDate(g.getBirthDate());
+            if(g.isGender()) {
+                rdoMale.setSelected(true);
+            } else {
+                rdoFemale.setSelected(true);
+            }
+        } else {
+            MsgBox.showMessage(rootPane, "Mã khách hàng không tồn tại !");
+        }
+    }
+
+    private boolean validate(String idGuest, String phoneNum, Date birthDate) {
+        if(!idGuest.matches("^([A-Z0-9]{9,13})$")) {
+            MsgBox.showMessage(rootPane, "Số CMND/Căn cước/Hộ chiếu không hợp lệ! \n"
+                    + "VD hợp lệ: 037153000257");
+            return false;
+        } else if(!phoneNum.matches("^(03|07|08|09)\\d{8}$")) {
+            MsgBox.showMessage(rootPane, "Số điện thoại phải có 10 chữ số\n"
+                    + "VD hợp lệ: 0812312312");
+            return false;
+        } else if((LocalDate.now().getYear() - birthDate.getYear()-1900) < 18) {
+            MsgBox.showMessage(rootPane, "Ngày sinh không hợp lệ\n"
+                    + "Phải trên 18 tuổi\n"
+                    + "VD hợp lệ: 04/06/2000");
+            return false;
+        }
+        return true;
+    }
+
+
 
 }

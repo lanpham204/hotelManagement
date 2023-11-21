@@ -21,7 +21,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     public void insert(Booking entity) {
         try {
             jdbcHelper.update(INSERT_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.isStatus());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -31,7 +31,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     public void update(Booking entity) {
         try {
             jdbcHelper.update(UPDATE_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(), entity.getId());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.isStatus(), entity.getId());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

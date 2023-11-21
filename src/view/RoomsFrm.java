@@ -34,6 +34,7 @@ import model.Booking;
 import model.Guest;
 import model.Room;
 import model.TypeOfRoom;
+import util.MsgBox;
 
 /**
  *
@@ -134,13 +135,20 @@ public class PopupMenuMouseListener extends MouseAdapter {
                 JPopupMenu popupMenu = new JPopupMenu();
                 JMenuItem bookingItem = new JMenuItem("Đặt phòng");               
                 JMenuItem detailItem = new JMenuItem("Chi tiết phòng đặt");
+                JMenuItem cleanItem = new JMenuItem("Dọn dẹp");
                 Room r = roomDAO.selectById(id);
                 if(r.getStatus() == 0) {
                     detailItem.setEnabled(false);
                     bookingItem.setEnabled(true);
+                    cleanItem.setEnabled(false);
                 } else if(r.getStatus() == 1) {
                     bookingItem.setEnabled(false);
                     detailItem.setEnabled(true);
+                    cleanItem.setEnabled(false);
+                } else if(r.getStatus() == 2) {
+                    bookingItem.setEnabled(false);
+                    detailItem.setEnabled(false);
+                    cleanItem.setEnabled(true);
                 }
                 bookingItem.addActionListener(new ActionListener() {
                     @Override
@@ -168,8 +176,26 @@ public class PopupMenuMouseListener extends MouseAdapter {
                         cardPanel.repaint();
                     }
                 });
+                cleanItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Room r = roomDAO.selectById(id);
+                        TypeOfRoom tor = typeOfRoomDAO.selectById(r.getIdTypeofRoom());
+                        r.setStatus(0);
+                        roomDAO.update(r);
+                         CardRoomComponent cardRoomComponent = new CardRoomComponent(
+                        r.getId(),tor.getName(),""
+                        ,r.getStatus());
+                        cardPanel.removeAll();
+                        cardPanel.add(cardRoomComponent);
+                        cardPanel.revalidate();
+                        cardPanel.repaint();
+                    }
+                    
+                });
                 popupMenu.add(bookingItem);
                 popupMenu.add(detailItem);
+                popupMenu.add(cleanItem);
                 popupMenu.show(cardPanel, e.getX(), e.getY());
             }
         }
