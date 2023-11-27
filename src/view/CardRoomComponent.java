@@ -4,54 +4,74 @@
  */
 package view;
 
+import dao.BookingDAO;
+import dao.GuestDAO;
 import dao.RoomDAO;
 import java.awt.Color;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
+import model.Booking;
+import model.Guest;
 import model.Room;
+import util.XDate;
 
 /**
  *
  * @author phamn
  */
 public class CardRoomComponent extends javax.swing.JPanel {
-    String id;
-    String nameCustomer;
-    ImageIcon icon;
-    String kindOfRoom;
-    Color background;
-    private List<Room> rooms = new ArrayList<>();
     private RoomDAO roomDAO = new RoomDAO();
+    private BookingDAO bookingDAO = new BookingDAO();
+    private GuestDAO guestDAO = new GuestDAO();
     /**
      * Creates new form CardRoomPnl
      */
     public CardRoomComponent() {
         initComponents();
     }
-//    public CardRoomComponent(int status) {
-//        initComponents();
-//        rooms = roomDAO.selectAll();
-//            if(room.getStatus() == 0) {
-//                lblID.setText(id);
-//                lblKofRoom.setText(kindOfRoom);
-//                lblIcon.setIcon(icon);
-//                lblPrice.setText(price);
-//                lblCustomer.setText(nameCustomer);
-//                this.setBackground(backColor);
-//            }
-//    }
-    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer,int status) {
+    public CardRoomComponent(String id,String kindOfRoom, String nameCustomer,String reverse,int status) {
         initComponents();
         lblID.setText(id);
         lblKofRoom.setText(kindOfRoom);
-        lblCustomer.setText(nameCustomer);
+        lblGuest.setText(nameCustomer);
+        lblReverse.setText(reverse);
+        Booking reserve = bookingDAO.selectReserveByIdRoom(id);
+        if(kindOfRoom.equalsIgnoreCase("Đôi")) {
+            lblBed2.setIcon(new ImageIcon("src\\icon\\bedroom.png"));
+        }
+        if(reserve != null) {
+            lblReverse.setText("Đặt trước: "+XDate.toString(reserve.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
+            Guest g = guestDAO.selectById(reserve.getIdGuest());
+            lblGuest.setText( "Khách hàng: " + g.getFullName());
+            Date now = new Date();
+            if(now.getTime() >= reserve.getStartDate().getTime()) {
+                Room r = roomDAO.selectById(id);
+                r.setStatus(1);
+                reserve.setStatus(1);
+                bookingDAO.update(reserve);
+                roomDAO.update(r);
+                lblGuest.setText("");
+            }
+        } else {
+            lblReverse.setText("");
+        }
+        
         if(status == 0) {
+            lblIcon.setIcon(new ImageIcon("src\\icon\\hotel (1).png"));
             this.setBackground(new Color(102,255,102));
         } else if(status == 1) {
+            lblIcon.setIcon(new ImageIcon("src\\icon\\human.png"));
             this.setBackground(new Color(255,51,51));
         } else if(status == 2) {
+            lblIcon.setIcon(new ImageIcon("src\\icon\\broom.png"));
             this.setBackground(new Color(255,255,0));
+        } else if(status == 3) {
+            lblIcon.setIcon(new ImageIcon("src\\icon\\tools.png"));
+            this.setBackground(new Color(153,153,153));
+            
         }
     }
     
@@ -70,9 +90,12 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblID = new javax.swing.JLabel();
         lblKofRoom = new javax.swing.JLabel();
         lblIcon = new javax.swing.JLabel();
-        lblCustomer = new javax.swing.JLabel();
+        lblGuest = new javax.swing.JLabel();
+        lblBed1 = new javax.swing.JLabel();
+        lblBed2 = new javax.swing.JLabel();
+        lblReverse = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(102, 255, 102));
+        setBackground(new java.awt.Color(153, 153, 153));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         setPreferredSize(new java.awt.Dimension(270, 153));
 
@@ -85,9 +108,20 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblKofRoom.setForeground(new java.awt.Color(0, 0, 0));
         lblKofRoom.setText("Đơn");
 
-        lblCustomer.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
-        lblCustomer.setText("Khách hàng: Nguyễn Văn A");
+        lblGuest.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        lblGuest.setForeground(new java.awt.Color(0, 0, 0));
+        lblGuest.setText("khach hang");
+
+        lblBed1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        lblBed1.setForeground(new java.awt.Color(0, 0, 0));
+        lblBed1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/bedroom.png"))); // NOI18N
+
+        lblBed2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        lblBed2.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblReverse.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblReverse.setForeground(new java.awt.Color(0, 0, 0));
+        lblReverse.setText("Dat truoc");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -97,14 +131,22 @@ public class CardRoomComponent extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 24, Short.MAX_VALUE)
                         .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblKofRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblReverse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblGuest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblKofRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblBed1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblBed2)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,18 +155,27 @@ public class CardRoomComponent extends javax.swing.JPanel {
                     .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIcon))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblKofRoom)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(lblCustomer)
-                .addGap(34, 34, 34))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblBed1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblKofRoom))
+                    .addComponent(lblBed2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblGuest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblReverse)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblCustomer;
+    private javax.swing.JLabel lblBed1;
+    private javax.swing.JLabel lblBed2;
+    private javax.swing.JLabel lblGuest;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblKofRoom;
+    private javax.swing.JLabel lblReverse;
     // End of variables declaration//GEN-END:variables
 }

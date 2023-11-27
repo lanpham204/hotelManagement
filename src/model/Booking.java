@@ -18,12 +18,12 @@ public class Booking {
     private Date endDate;
     private boolean type;
     private float totalMoney;
-    private boolean  status;
+    private int  status;
 
     public Booking() {
     }
 
-    public Booking(String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, boolean status) {
+    public Booking(String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status) {
         this.idGuest = idGuest;
         this.idRoom = idRoom;
         this.startDate = startDate;
@@ -33,7 +33,7 @@ public class Booking {
         this.status = status;
     }
 
-    public Booking(int id, String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, boolean status) {
+    public Booking(int id, String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status) {
         this.id = id;
         this.idGuest = idGuest;
         this.idRoom = idRoom;
@@ -77,13 +77,15 @@ public class Booking {
         return startDate;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
+
+    
     
     public void setStartDate(Date startDate) {
         this.startDate = startDate;

@@ -20,6 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -29,6 +31,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -115,7 +124,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         pnl = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         cbTypeOfService = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearchService = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         pnlService = new javax.swing.JPanel();
@@ -342,6 +351,22 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             }
         });
 
+        txtSearchService.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtSearchServicePropertyChange(evt);
+            }
+        });
+        txtSearchService.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchServiceKeyPressed(evt);
+            }
+        });
+        txtSearchService.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                txtSearchServiceVetoableChange(evt);
+            }
+        });
+
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel29.setText("Loại dịch vụ:");
 
@@ -374,7 +399,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                             .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
+                            .addComponent(txtSearchService)
                             .addComponent(cbTypeOfService, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))))
         );
@@ -387,7 +412,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearchService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -445,6 +470,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel30.setText("Hình thức thanh toán:");
 
+        txtPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPrice.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 txtPricePropertyChange(evt);
@@ -458,6 +484,8 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
         jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel31.setText("Tiền trả lại:");
+
+        txtPriceRefund.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         lblTotalPriceAll.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTotalPriceAll.setForeground(new java.awt.Color(255, 102, 102));
@@ -515,11 +543,11 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                 .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPriceRefund, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -724,7 +752,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+                    .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -737,8 +765,10 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
     private void rdoDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDayActionPerformed
         // TODO add your handling code here:
-        int totalDay = calculateDays(booking.getStartDate(),endDate);
-                 System.out.println(totalDay);
+        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
+        if(confirm) {
+            int totalDay = calculateDays(booking.getStartDate(),endDate);
+            this.totalDay = totalDay;
         if(totalDay == 0) {
             lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
         } else {
@@ -748,11 +778,21 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
              int totalHour = calculateHours(booking.getStartDate(),endDate);
             lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
         }
+        booking.setType(true);
+        bookingDAO.update(booking);
+        } else {
+            rdoHour.setSelected(false);
+            rdoDay.setSelected(true);
+        }
+        
     }//GEN-LAST:event_rdoDayActionPerformed
 
     private void rdoHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHourActionPerformed
         // TODO add your handling code here:
-         int totalHour = calculateHours(booking.getStartDate(),endDate);
+        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
+        if(confirm) {
+           int totalHour = calculateHours(booking.getStartDate(),endDate);
+           totalDay = totalHour;
             lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
         if(rdoDay.isSelected()) {
             int totalDay = calculateDays(booking.getStartDate(),endDate);
@@ -762,6 +802,13 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
             }
         }
+        booking.setType(false);
+        bookingDAO.update(booking);
+        }else {
+            rdoHour.setSelected(false);
+            rdoDay.setSelected(true);
+        }
+         
     }//GEN-LAST:event_rdoHourActionPerformed
 
     private void cbTypeOfServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTypeOfServiceActionPerformed
@@ -777,6 +824,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         } else {
             showServices(serviceDAO.selectAll());
         }
+
     }//GEN-LAST:event_cbTypeOfServiceActionPerformed
 
     private void tblServiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblServiceMouseClicked
@@ -812,7 +860,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private void txtPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                txtPriceRefund.setText(Math.round((Float.parseFloat(txtPrice.getText())-totalAll))+"");
+                txtPriceRefund.setText(numberFormat.format(Math.round((Float.parseFloat(txtPrice.getText())-totalAll))));
         }
         if(evt.getKeyCode() == KeyEvent.VK_0) {
             if(txtPrice.getText().length() <= 2) {
@@ -825,11 +873,12 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
         // TODO add your handling code here:
         booking.setTotalMoney(totalAll);
-        booking.setStatus(false);
+        booking.setStatus(0);
         bookingDAO.update(booking);
         room.setStatus(2);
         roomDAO.update(room);
         ExportInvoicePDF.export(booking, lblTotalPriceRoom.getText(), lblTotalService.getText(), lblTotalPriceAll.getText(),totalDay);
+        sound();
         MsgBox.showMessage(this, "Thanh toán thành công");
         this.removeAll();
         this.setLayout(new BorderLayout());
@@ -847,6 +896,23 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
          this.revalidate();
          this.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSearchServiceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchServiceKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String keyword = txtSearchService.getText();
+            List<Service> services = serviceDAO.selectByName(keyword);
+            showServices(services);
+        }
+    }//GEN-LAST:event_txtSearchServiceKeyPressed
+
+    private void txtSearchServicePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtSearchServicePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchServicePropertyChange
+
+    private void txtSearchServiceVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_txtSearchServiceVetoableChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchServiceVetoableChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -892,7 +958,6 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblDay;
     private javax.swing.JLabel lblEndDate;
@@ -909,6 +974,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private javax.swing.JTable tblService;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtPriceRefund;
+    private javax.swing.JTextField txtSearchService;
     // End of variables declaration//GEN-END:variables
 
     private void showDetail() {
@@ -938,7 +1004,7 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
             lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
             }
         } else if(rdoHour.isSelected()) {
-            int totalDay = calculateHours(booking.getStartDate(),endDate);
+            totalDay = calculateHours(booking.getStartDate(),endDate);
             lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getHourlyPrice())));
         }
         
@@ -951,11 +1017,13 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         room = roomDAO.selectById(idRoom);
         booking = bookingDAO.selectByIdRoom(idRoom);
         tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
+        dcStart.setEnabled(false);
+        dcEnd.setEnabled(false);
         showDetail();
          fillComboboxTypeOfService();
          showServices(serviceDAO.selectAll());
         showServicesRoom();
-//         tblService.removeColumn(tblService.getColumnModel().getColumn(4));
+         tblService.removeColumn(tblService.getColumnModel().getColumn(4));
     }
 
     private int calculateDays(Date startDate, Date endDate) {
@@ -987,7 +1055,6 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private void showServices(List<Service> services) {
         pnlService.removeAll();
         tableModel = (DefaultTableModel) tblService.getModel();
-        tableModel.setRowCount(0);
         pnlService.setLayout(new GridLayout(0, 1));
     JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Sắp xếp component theo hàng ngang
         for (Service service : services) {
@@ -1016,6 +1083,33 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                     totalPrice += (serviceRoom.getQuantity()*service.getPrice());
         }
         lblTotalService.setText(numberFormat.format(totalPrice));
+    }
+
+    private void sound() {
+        AudioInputStream audioInputStream = null;
+        try {
+            File file = new File("src\\sound\\Money Sound Effect - (No Copyright).wav");
+            audioInputStream = AudioSystem.getAudioInputStream(file);
+            try {
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } catch (LineUnavailableException ex) {
+                Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (UnsupportedAudioFileException ex) {
+            Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                audioInputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
  
     public class PopupMenuMouseListener extends MouseAdapter {

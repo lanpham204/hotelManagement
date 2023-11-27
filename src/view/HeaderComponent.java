@@ -25,6 +25,8 @@ public class HeaderComponent extends javax.swing.JPanel {
 color2.setBorder(border);
         color3.setOpaque(true);
 color3 .setBorder(border);
+        color8.setOpaque(true);
+        color8.setBorder(border);
     }
 
     /**
@@ -52,6 +54,8 @@ color3 .setBorder(border);
         jLabel5 = new javax.swing.JLabel();
         color3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        color8 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -104,19 +108,28 @@ color3 .setBorder(border);
         jLabel5.setText("Có khách");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 70, -1));
 
-        color3.setBackground(new java.awt.Color(255, 255, 0));
+        color3.setBackground(new java.awt.Color(153, 153, 153));
         color3.setPreferredSize(new java.awt.Dimension(20, 20));
-        jPanel2.add(color3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 70, 20, -1));
+        jPanel2.add(color3, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 70, 20, -1));
 
         jLabel7.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
-        jLabel7.setText("Đang dọn dẹp");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 70, 110, -1));
+        jLabel7.setText("Đang bảo trì");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 70, 110, -1));
+
+        jLabel9.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
+        jLabel9.setText("Đang dọn dẹp");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 70, 110, -1));
+
+        color8.setBackground(new java.awt.Color(255, 255, 0));
+        color8.setForeground(new java.awt.Color(255, 255, 255));
+        color8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel2.add(color8, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 20, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 888, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,6 +147,7 @@ color3 .setBorder(border);
     private javax.swing.JLabel color4;
     private javax.swing.JLabel color5;
     private javax.swing.JLabel color6;
+    private javax.swing.JLabel color8;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -141,6 +155,7 @@ color3 .setBorder(border);
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField2;

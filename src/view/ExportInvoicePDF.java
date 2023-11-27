@@ -58,12 +58,15 @@ public class ExportInvoicePDF {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         NumberFormat numberFormat = 
             NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
-        try {
+        if(totalDay == 0) {
+            totalDay = 1;
+        }
+        try { 
             // Tạo một đối tượng Document
             Document document = new Document();
 
             // Tạo một đối tượng PdfWriter để ghi vào file PDF
-            PdfWriter.getInstance(document, new FileOutputStream(booking.getId()+".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("invoice\\"+booking.getId()+".pdf"));
 
             // Mở document để thêm nội dung
             document.open();

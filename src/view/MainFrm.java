@@ -109,6 +109,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Logout");
         btnLogout.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 70, 30));
+
+        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout (1).png"))); // NOI18N
         btnLogout.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 750, 300, 60));
@@ -138,6 +140,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Đặt phòng");
         btnBooking.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 130, 30));
+
+        jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/booking_1.png"))); // NOI18N
         btnBooking.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 300, 60));
@@ -155,9 +159,11 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Phòng");
         btnRoom.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 30));
+
+        jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/twin-beds.png"))); // NOI18N
         btnRoom.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 300, 60));
+        panelTrai.add(btnRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
 
         btnInvoice.setBackground(new java.awt.Color(64, 43, 100));
         btnInvoice.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -172,9 +178,11 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Hóa đơn");
         btnInvoice.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
+
+        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice.png"))); // NOI18N
         btnInvoice.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 300, 60));
+        panelTrai.add(btnInvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
 
         btnStatictics.setBackground(new java.awt.Color(64, 43, 100));
         btnStatictics.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -192,6 +200,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Thống kê");
         btnStatictics.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 110, 30));
+
+        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/statistics.png"))); // NOI18N
         btnStatictics.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnStatictics, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 300, 60));
@@ -199,6 +209,7 @@ public class MainFrm extends javax.swing.JFrame {
         panelTrai.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/a (3) (Custom) (Custom) (Custom).png"))); // NOI18N
         panelTrai.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 120));
 
         btnService.setBackground(new java.awt.Color(64, 43, 100));
@@ -214,6 +225,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Dịch vụ");
         btnService.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 100, 30));
+
+        jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/hotel-bell.png"))); // NOI18N
         btnService.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnService, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 300, 60));
@@ -231,9 +244,11 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Khách hàng");
         btnCustomer.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, 30));
+
+        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/tourist.png"))); // NOI18N
         btnCustomer.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
-        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 300, 60));
+        panelTrai.add(btnCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 300, 60));
 
         btnStaff.setBackground(new java.awt.Color(64, 43, 100));
         btnStaff.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -248,6 +263,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("Nhân viên");
         btnStaff.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 30));
+
+        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/staff.png"))); // NOI18N
         btnStaff.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 300, 60));
@@ -268,6 +285,8 @@ public class MainFrm extends javax.swing.JFrame {
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setText("Tài khoản");
         btnAccount.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, 30));
+
+        jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/account.png"))); // NOI18N
         btnAccount.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 50, 60));
 
         panelTrai.add(btnAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 300, 60));
@@ -282,7 +301,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Arial", 0, 48)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("x");
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button.png"))); // NOI18N
         jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel15MouseClicked(evt);
@@ -291,6 +310,7 @@ public class MainFrm extends javax.swing.JFrame {
 
         lblOclock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblOclock.setForeground(new java.awt.Color(255, 255, 255));
+        lblOclock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Clock.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -370,9 +390,13 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingAncestorRemoved
 
     private void btnBookingMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingMousePressed
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnBooking);
+        if(Auth.isLogin()) {
+            setView(new RoomsFrm());
+            resetColor();
+            setColor(btnBooking);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
     }//GEN-LAST:event_btnBookingMousePressed
 
     private void btnRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomMousePressed
@@ -386,9 +410,14 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRoomMousePressed
 
     private void btnInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvoiceMousePressed
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnInvoice);
+        if(Auth.isLogin()) {
+            setView(new InvoiceFrm());
+            resetColor();
+            setColor(btnInvoice);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+        
     }//GEN-LAST:event_btnInvoiceMousePressed
 
     private void btnStaticticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaticticsMouseClicked
@@ -396,12 +425,12 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnStaticticsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaticticsMousePressed
         
-        if(Auth.isManager()) {
-            setView(new RoomsFrm());
+        if(Auth.isLogin()) {
+            setView(new StaticticalFrm());
             resetColor();
             setColor(btnStatictics);
         } else {
-            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
         }
     }//GEN-LAST:event_btnStaticticsMousePressed
 
@@ -423,9 +452,14 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnCustomerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomerMousePressed
         // TODO add your handling code here:
-        setView(new RoomsFrm());
-        resetColor();
-        setColor(btnCustomer);
+        if(Auth.isLogin()) {
+            setView(new CustomerFrm());
+            resetColor();
+            setColor(btnCustomer);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+        
     }//GEN-LAST:event_btnCustomerMousePressed
 
     private void btnStaffMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaffMousePressed
@@ -447,9 +481,14 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnAccountMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAccountMousePressed
         // TODO add your handling code here:
-        new ChangePassword().setVisible(true);
-        resetColor();
-        setColor(btnAccount);
+        if(Auth.isLogin()) {
+             new InfoStaffFrm().setVisible(true);
+            resetColor();
+            setColor(btnAccount);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+       
                 
     }//GEN-LAST:event_btnAccountMousePressed
 

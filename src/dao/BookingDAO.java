@@ -3,6 +3,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,13 +16,14 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     String DELETE_SQL = "DELETE FROM PhieuDatPhong WHERE MaPDP = ?";
     String SELECT_ALL_SQL = "SELECT * FROM PhieuDatPhong";
     String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDatPhong WHERE MaPDP = ?";
+    String SELECT_BY_DATE = "SELECT distinct * FROM PhieuDatPhong WHERE ngaygionhan between ? and ? or ngaygiotra between ? and ?";
     private JdbcHelper jdbcHelper = new JdbcHelper();
 
     @Override
     public void insert(Booking entity) {
         try {
             jdbcHelper.update(INSERT_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.isStatus());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -31,7 +33,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     public void update(Booking entity) {
         try {
             jdbcHelper.update(UPDATE_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.isStatus(), entity.getId());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus(), entity.getId());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,7 +75,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
                 booking.setEndDate(resultSet.getTimestamp("NgayGioTra"));
                 booking.setType(resultSet.getBoolean("HinhThucThue"));
                 booking.setTotalMoney(resultSet.getFloat("TongTien"));
-                booking.setStatus(resultSet.getBoolean("TrangThai"));
+                booking.setStatus(resultSet.getInt("TrangThai"));
                 bookings.add(booking);
             }
             return bookings;
@@ -90,6 +92,24 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
             return null;
         }
         return bookings.get(0);
+    }
+    public Booking selectReserveByIdRoom(String id) {
+        String sql =    "select * from PhieuDatPhong\n" +
+                    "where MaPhong = ? and TrangThai = 2\n";
+        List<Booking> bookings = selectBySql(sql, id);
+        if(bookings.isEmpty()) {
+            return null;
+        }
+        return bookings.get(0);
+    }
+    
+
+    public List<Booking> selectByDate(Date from, Date to) {
+        List<Booking> bookings = this.selectBySql(SELECT_BY_DATE, from, to, from, to);
+        if (bookings.isEmpty()) {
+            return null;
+        }
+        return bookings;
     }
 }
 

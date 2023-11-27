@@ -4,6 +4,7 @@
  */
 package view;
 
+import com.itextpdf.text.pdf.PdfName;
 import dao.BookingDAO;
 import dao.GuestDAO;
 import dao.RoomDAO;
@@ -63,17 +64,18 @@ public class RoomsFrm extends javax.swing.JPanel {
             JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,5,0));
         TypeOfRoom tor = typeOfRoomDAO.selectById(room.getIdTypeofRoom());
             if(room.getStatus() == 1) {
+                
                 Booking booking = bookingDAO.selectByIdRoom(room.getId());
                 if(booking!=null) {
                     Guest guest = guestDAO.selectById(booking.getIdGuest());
                 CardRoomComponent cardRoomComponent = new CardRoomComponent(
-                room.getId(),tor.getName(),"Khách hàng: "+guest.getFullName()
+                room.getId(),tor.getName(),"Khách hàng: "+guest.getFullName(),""
                 ,room.getStatus());
                 cardPanel.add(cardRoomComponent);
                 }
             } else {
                 CardRoomComponent cardRoomComponent = new CardRoomComponent(
-                room.getId(),tor.getName(),""
+                room.getId(),tor.getName(),"",""
                 ,room.getStatus());
                 cardPanel.add(cardRoomComponent);
             }
@@ -133,6 +135,7 @@ public class PopupMenuMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             if (e.isPopupTrigger()) {
                 JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem reserveItem = new JMenuItem("Đặt phòng trước");   
                 JMenuItem bookingItem = new JMenuItem("Đặt phòng");               
                 JMenuItem detailItem = new JMenuItem("Chi tiết phòng đặt");
                 JMenuItem cleanItem = new JMenuItem("Dọn dẹp");
@@ -141,21 +144,35 @@ public class PopupMenuMouseListener extends MouseAdapter {
                     detailItem.setEnabled(false);
                     bookingItem.setEnabled(true);
                     cleanItem.setEnabled(false);
+                    reserveItem.setEnabled(true);
                 } else if(r.getStatus() == 1) {
                     bookingItem.setEnabled(false);
                     detailItem.setEnabled(true);
                     cleanItem.setEnabled(false);
+                    reserveItem.setEnabled(false);
                 } else if(r.getStatus() == 2) {
                     bookingItem.setEnabled(false);
                     detailItem.setEnabled(false);
                     cleanItem.setEnabled(true);
+                    reserveItem.setEnabled(false);
                 }
+                reserveItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Room room = roomDAO.selectById(id);
+                        if(room != null) {
+                            BookRoomFrm bookRoomFrm = new BookRoomFrm(room.getId(),cardPanel,2);
+                        bookRoomFrm.setVisible(true);
+                        
+                        }
+                    }
+                });
                 bookingItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Room room = roomDAO.selectById(id);
                         if(room != null) {
-                            BookRoomFrm bookRoomFrm = new BookRoomFrm(room.getId(),cardPanel);
+                            BookRoomFrm bookRoomFrm = new BookRoomFrm(room.getId(),cardPanel,1);
                         bookRoomFrm.setVisible(true);
                         
                         }
@@ -170,8 +187,6 @@ public class PopupMenuMouseListener extends MouseAdapter {
                         roomsFrm.validate();
                         roomsFrm.repaint();
                         cardPanel.removeAll();
-//                        cardPanel.add(new CardRoomComponent("P101","Đơn",""
-//                ,"",new ImageIcon(getClass().getResource("/icon/broom.png")),new Color(255,255,0)));
                         cardPanel.revalidate();
                         cardPanel.repaint();
                     }
@@ -184,7 +199,7 @@ public class PopupMenuMouseListener extends MouseAdapter {
                         r.setStatus(0);
                         roomDAO.update(r);
                          CardRoomComponent cardRoomComponent = new CardRoomComponent(
-                        r.getId(),tor.getName(),""
+                        r.getId(),tor.getName(),"",""
                         ,r.getStatus());
                         cardPanel.removeAll();
                         cardPanel.add(cardRoomComponent);
@@ -193,6 +208,7 @@ public class PopupMenuMouseListener extends MouseAdapter {
                     }
                     
                 });
+                popupMenu.add(reserveItem);
                 popupMenu.add(bookingItem);
                 popupMenu.add(detailItem);
                 popupMenu.add(cleanItem);

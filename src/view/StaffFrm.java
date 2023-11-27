@@ -258,7 +258,7 @@ public class StaffFrm extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(40, 40, 40)
-                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtName))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(449, 449, 449)
                         .addComponent(btnAdd)
@@ -268,7 +268,7 @@ public class StaffFrm extends javax.swing.JPanel {
                         .addComponent(btnEdit)
                         .addGap(27, 27, 27)
                         .addComponent(btnNew)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,7 +461,12 @@ public class StaffFrm extends javax.swing.JPanel {
                     matcher = pattern.matcher(email);
                     if (matcher.matches()) {
                         if (new Date().getYear() - date.getYear() >= 18) {
-                            return new Staff(id, name, date, rdoMale.isSelected() ? true : false, cccd, email, phone, BCrypt.hashpw(pass, BCrypt.gensalt()), rdoManager.isSelected() ? true : false);
+                            if(!checkEmail(email)) {
+                                return new Staff(id, name, date, rdoMale.isSelected() ? true : false, cccd, email, phone, BCrypt.hashpw(pass, BCrypt.gensalt()), rdoManager.isSelected() ? true : false);
+                            } else {
+                                MsgBox.showMessage(this, "Địa chỉ email đã tồn tại");
+                            }
+                            
                         } else {
                             MsgBox.showMessage(this, "Ngày sinh không hợp lệ\n"
                                     + "Phải trên 18 tuổi\n"
@@ -551,5 +556,14 @@ public class StaffFrm extends javax.swing.JPanel {
             rdoStaff.setSelected(true);
         }
 
+    }
+
+    private boolean checkEmail(String email) {
+        for (Staff staff : list) {
+            if(staff.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

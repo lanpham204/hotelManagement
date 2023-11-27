@@ -122,6 +122,7 @@ public class ChangePassword extends javax.swing.JFrame {
                     StaffDAO staffDAO=new StaffDAO();
                     staffDAO.update(staff);
                     MsgBox.showMessage(rootPane, "Đổi mật khẩu thành công");
+                    dispose();
                 }else{
                     MsgBox.showMessage(rootPane, "Mật khẩu mới và xác nhận mật khẩu phải giống nhau");
                 }

@@ -24,25 +24,30 @@ import model.Guest;
 import model.Room;
 import model.TypeOfRoom;
 import util.MsgBox;
+import util.XDate;
 
 /**
  *
  * @author phamn
  */
 public class BookRoomFrm extends javax.swing.JFrame {
+
     private JPanel cardPanel;
     private String id;
+    private int status;
     private RoomDAO dao = new RoomDAO();
     private TypeOfRoomDAO tordao = new TypeOfRoomDAO();
     private GuestDAO gdao = new GuestDAO();
     private BookingDAO bookingDAO = new BookingDAO();
-    private RoomDAO roomDao  = new  RoomDAO();
+    private RoomDAO roomDao = new RoomDAO();
     private List<Booking> bookings = new ArrayList<>();
+    private Booking reserveBooking = new Booking();
     private List<Guest> guests = new ArrayList<>();
-    private Room room =  new Room();
+    private Room room = new Room();
     private TypeOfRoom tor = new TypeOfRoom();
-    private NumberFormat numberFormat = 
-            NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+    private NumberFormat numberFormat
+            = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
     /**
      * Creates new form BookRoomFrm
      */
@@ -50,15 +55,15 @@ public class BookRoomFrm extends javax.swing.JFrame {
         initComponents();
         init();
     }
-    public BookRoomFrm(String id,JPanel cardPanel) {
+
+    public BookRoomFrm(String id, JPanel cardPanel, int status) {
         initComponents();
-        
+
         this.cardPanel = cardPanel;
         this.id = id;
+        this.status = status;
         init();
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -379,60 +384,132 @@ public class BookRoomFrm extends javax.swing.JFrame {
         String phoneNum = txtPhone.getText();
         Date startDate = dcStart.getDate();
         Date endDate = dcEnd.getDate();
-        
+
         String gender = "";
-        if(rdoMale.isSelected()) {
+        if (rdoMale.isSelected()) {
             gender = rdoMale.getText();
-        } else if(rdoFemale.isSelected()) {
+        } else if (rdoFemale.isSelected()) {
             gender = rdoFemale.getText();
         }
         String type = "";
-        if(rdoMale.isSelected()) {
+        if (rdoDay.isSelected()) {
             type = "Ngày";
-        } else if(rdoFemale.isSelected()) {
-           type = "Giờ";
+        } else if (rdoHours.isSelected()) {
+            type = "Giờ";
         }
-         if(idGuest.isEmpty() || fullName.isEmpty() || birthDate == null||
-                startDate == null||endDate == null||phoneNum.isEmpty() || gender.isEmpty()) {
+        if (idGuest.isEmpty() || fullName.isEmpty() || birthDate == null
+                || startDate == null || endDate == null || phoneNum.isEmpty() || gender.isEmpty()) {
             MsgBox.showMessage(rootPane, "Vui lòng nhập đủ thông tin");
         } else {
-             if(validate(idGuest,phoneNum,birthDate)) {
-                 float price = 0;
-             if(rdoDay.isSelected()) {
-                 price = tor.getPricePerDay();
-             } else if(rdoHours.isSelected()) {
-                 price = tor.getHourlyPrice();
-             }
-            Guest guest = new Guest(idGuest, fullName, birthDate,gender== "Nam"?true:false,phoneNum);
-            if(!exist(idGuest)) {
-                guests.add(guest);
-                gdao.insert(guest);
+            
+            if (validate(idGuest, phoneNum, birthDate)) {
+                float price = 0;
+                if (rdoDay.isSelected()) {
+                    price = tor.getPricePerDay();
+                } else if (rdoHours.isSelected()) {
+                    price = tor.getHourlyPrice();
+                }
+                Guest guest = new Guest(idGuest, fullName, birthDate, gender == "Nam" ? true : false, phoneNum);
+                if (!exist(idGuest)) {
+                    guests.add(guest);
+                    gdao.insert(guest);
+                }
+                if (reserveBooking != null) {
+                    if (endDate.getTime() >= reserveBooking.getStartDate().getTime()) {
+                        MsgBox.showMessage(rootPane, "Phòng này đã có người đặt trước từ ngày "
+                                + XDate.toString(reserveBooking.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
+                    } else {
+                        Booking booking = null;
+                        if (status == 1) {
+                            booking = new Booking(guest.getId(), room.getId(),
+                                    startDate, endDate, type == "Ngày" ? true : false,
+                                    price, status);
+                        } else if (status == 2) {
+                            booking = new Booking(guest.getId(), room.getId(),
+                                    startDate, endDate, type == "Ngày" ? true : false,
+                                    price, status);
+                        }
+
+                        if (booking != null) {
+                            bookingDAO.insert(booking);
+                            if (status == 1) {
+                                room.setStatus(1);
+                                roomDao.update(room);
+                                cardPanel.removeAll();
+                                cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                                MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
+                                dispose();
+                            } else {
+                                cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                                MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
+                                dispose();
+                            }
+
+                        }
+                    }
+                } else {
+                    Booking booking = null;
+                    if (status == 1) {
+                        booking = new Booking(guest.getId(), room.getId(),
+                                startDate, endDate, type == "Ngày" ? true : false,
+                                price, status);
+                    } else if (status == 2) {
+                        booking = new Booking(guest.getId(), room.getId(),
+                                startDate, endDate, type == "Ngày" ? true : false,
+                                price, status);
+                    }
+
+                    if (booking != null) {
+                        bookingDAO.insert(booking);
+                        if (status == 1) {
+                            room.setStatus(1);
+                            roomDao.update(room);
+                            cardPanel.removeAll();
+                            cardPanel.add(new CardRoomComponent(room.getId(), tor.getName()
+                                    , "Khách hàng: " + guest.getFullName(),"",
+                                     room.getStatus()));
+                            cardPanel.revalidate();
+                            cardPanel.repaint();
+                            MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
+                            dispose();
+                        } else {
+                            cardPanel.removeAll();
+                           cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                            MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
+                             dispose();
+                        }
+
+                    }
+                }
+
             }
-        Booking booking = new Booking(guest.getId(), room.getId(), 
-                startDate, endDate,type== "Ngày"?true:false, 
-                price,true);
-        bookingDAO.insert(booking);
-        room.setStatus(1);
-        roomDao.update(room);
-            cardPanel.removeAll();
-                        cardPanel.add(new CardRoomComponent(room.getId(),tor.getName(),"Khách hàng: "+guest.getFullName()
-                ,room.getStatus()));
-                        cardPanel.revalidate();
-                        cardPanel.repaint();
-        MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
-            dispose();
-             }
         }
+
     }//GEN-LAST:event_btnCheckinActionPerformed
 
     private void rdoDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDayActionPerformed
         // TODO add your handling code here:
-        lblPrice.setText(numberFormat.format(tor.getPricePerDay())+"");
+        lblPrice.setText(numberFormat.format(tor.getPricePerDay()) + "");
     }//GEN-LAST:event_rdoDayActionPerformed
 
     private void rdoHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHoursActionPerformed
         // TODO add your handling code here:
-        lblPrice.setText(numberFormat.format(tor.getHourlyPrice())+"");
+        lblPrice.setText(numberFormat.format(tor.getHourlyPrice()) + "");
     }//GEN-LAST:event_rdoHoursActionPerformed
 
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
@@ -529,25 +606,27 @@ public class BookRoomFrm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         lblId.setText(id);
         dcStart.setDate(new Date());
-        addButtonGr(); 
+        addButtonGr();
         guests = gdao.selectAll();
         room = dao.selectById(id);
         tor = tordao.selectById(room.getIdTypeofRoom());
         rdoDay.setSelected(true);
-        lblPrice.setText(numberFormat.format(tor.getPricePerDay())+"");
+        lblPrice.setText(numberFormat.format(tor.getPricePerDay()) + "");
+        reserveBooking = bookingDAO.selectReserveByIdRoom(id);
+
     }
 
     private void addButtonGr() {
         buttonGroupGender.add(rdoMale);
         buttonGroupGender.add(rdoDay);
-        
+
         buttonGroupType.add(rdoDay);
         buttonGroupType.add(rdoHours);
     }
 
     private boolean exist(String id) {
-        for (Guest guest: guests) {
-            if(id.equalsIgnoreCase(guest.getId())) {
+        for (Guest guest : guests) {
+            if (id.equalsIgnoreCase(guest.getId())) {
                 return true;
             }
         }
@@ -559,7 +638,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         txtFullName.setText(guest.getFullName());
         txtPhone.setText(guest.getPhoneNum());
         dcBirthDay.setDate(guest.getBirthDate());
-        if(guest.isGender()) {
+        if (guest.isGender()) {
             rdoMale.setSelected(true);
         } else {
             rdoFemale.setSelected(false);
@@ -569,12 +648,12 @@ public class BookRoomFrm extends javax.swing.JFrame {
     private void searchGuest() {
         String id = txtSearch.getText();
         Guest g = gdao.selectById(id);
-        if(g!= null) {
+        if (g != null) {
             txtId.setText(g.getId());
             txtFullName.setText(g.getFullName());
             txtPhone.setText(g.getPhoneNum());
             dcBirthDay.setDate(g.getBirthDate());
-            if(g.isGender()) {
+            if (g.isGender()) {
                 rdoMale.setSelected(true);
             } else {
                 rdoFemale.setSelected(true);
@@ -585,15 +664,15 @@ public class BookRoomFrm extends javax.swing.JFrame {
     }
 
     private boolean validate(String idGuest, String phoneNum, Date birthDate) {
-        if(!idGuest.matches("^([A-Z0-9]{9,13})$")) {
+        if (!idGuest.matches("^([A-Z0-9]{9,13})$")) {
             MsgBox.showMessage(rootPane, "Số CMND/Căn cước/Hộ chiếu không hợp lệ! \n"
                     + "VD hợp lệ: 037153000257");
             return false;
-        } else if(!phoneNum.matches("^(03|07|08|09)\\d{8}$")) {
+        } else if (!phoneNum.matches("^(03|07|08|09)\\d{8}$")) {
             MsgBox.showMessage(rootPane, "Số điện thoại phải có 10 chữ số\n"
                     + "VD hợp lệ: 0812312312");
             return false;
-        } else if((LocalDate.now().getYear() - birthDate.getYear()-1900) < 18) {
+        } else if ((LocalDate.now().getYear() - birthDate.getYear() - 1900) < 18) {
             MsgBox.showMessage(rootPane, "Ngày sinh không hợp lệ\n"
                     + "Phải trên 18 tuổi\n"
                     + "VD hợp lệ: 04/06/2000");
@@ -602,6 +681,6 @@ public class BookRoomFrm extends javax.swing.JFrame {
         return true;
     }
 
-
+   
 
 }

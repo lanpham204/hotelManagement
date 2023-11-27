@@ -92,4 +92,9 @@ public class ServiceDAO extends HotelDAO<Service, Integer> {
         }
         return services.get(0);
     }
+    public List<Service> selectByName(String keyword) {
+        String sql = "select * from DichVu\n" +
+                    "where TenDV LIKE  '%' + ? + '%'";
+        return selectBySql(sql, keyword);
+    }
 }
