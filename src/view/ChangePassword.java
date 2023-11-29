@@ -17,6 +17,7 @@ import util.MsgBox;
  */
 public class ChangePassword extends javax.swing.JFrame {
     private Staff staff=Auth.user;
+
     /**
      * Creates new form ChangePassword
      */
@@ -25,7 +26,7 @@ public class ChangePassword extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

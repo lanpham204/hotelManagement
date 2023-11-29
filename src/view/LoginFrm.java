@@ -28,8 +28,6 @@ public class LoginFrm extends javax.swing.JFrame {
     public LoginFrm() {
         initComponents();
         setLocationRelativeTo(null);
-        init();
-
     }
 
     /**
@@ -278,7 +276,7 @@ public class LoginFrm extends javax.swing.JFrame {
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         // TODO add your handling code here:
-        new ForgetPassword().setVisible(true);
+        openForgetPassword();
     }//GEN-LAST:event_jLabel11MouseClicked
     /**
      * @param args the command line arguments
@@ -342,9 +340,7 @@ public class LoginFrm extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void init() {
 
-    }
 
     private void login() {
         String username = txtUsername.getText();
@@ -365,6 +361,10 @@ public class LoginFrm extends javax.swing.JFrame {
             }
 
         }
+    }
+
+    private void openForgetPassword() {
+        new ForgetPassword().setVisible(true);
     }
 
 }

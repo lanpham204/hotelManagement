@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package view;
+package util;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -23,6 +23,7 @@ import dao.ServiceDAO;
 import dao.ServiceRoomDAO;
 import dao.TypeOfRoomDAO;
 import dao.TypeOfServiceDAO;
+import java.io.File;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import model.ServiceRoom;
 import model.TypeOfRoom;
 
 public class ExportInvoicePDF {
-    public static void export(Booking booking,String totalRoom,String totalService, String totalAll, int totalDay) {
+    public  void export(Booking booking,String totalRoom,String totalService, String totalAll, int totalDay) {
     RoomDAO roomDAO = new RoomDAO();
     TypeOfRoomDAO typeOfRoomDAO = new TypeOfRoomDAO();
     BookingDAO bookingDAO = new BookingDAO();
@@ -64,16 +65,19 @@ public class ExportInvoicePDF {
         try { 
             // Tạo một đối tượng Document
             Document document = new Document();
-
+            File path = new File("invoice");
+            if(!path.exists()) {
+                path.mkdirs();
+            }
             // Tạo một đối tượng PdfWriter để ghi vào file PDF
-            PdfWriter.getInstance(document, new FileOutputStream("invoice\\"+booking.getId()+".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(path+"\\"+booking.getId()+"-"+guest.getFullName()+".pdf"));
 
             // Mở document để thêm nội dung
             document.open();
 
             // Tạo font với font chữ Arial (có thể sử dụng font khác tùy chọn)
-            BaseFont baseFont = BaseFont.createFont("src\\font\\Roboto-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            BaseFont baseFontBold = BaseFont.createFont("src\\font\\Roboto-Bold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFont = BaseFont.createFont(getClass().getResource("/font/Roboto-Regular.ttf").toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont baseFontBold = BaseFont.createFont(getClass().getResource("/font/Roboto-Bold.ttf").toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(baseFont, 12);
             Font font15 = new Font(baseFont, 15);
             Font fontBold12 = new Font(baseFontBold, 12);
@@ -87,8 +91,7 @@ public class ExportInvoicePDF {
             float fourColumnWidth[] = {threecol,threecol,threecol,threecol};
             float threeColumnWidth100[] = {threecol+100f,threecol,threecol};
             float threeColumnWidth[] = {threecol-100f,threecol+100f,threecol};
-
-            String imageUrl = "src\\icon\\logo-small.png";
+            URL imageUrl = getClass().getResource("/icon/logo-small.png");
             Image image = Image.getInstance(imageUrl);
             image.scaleToFit(100, 100);
             

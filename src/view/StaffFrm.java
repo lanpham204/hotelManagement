@@ -24,13 +24,13 @@ public class StaffFrm extends javax.swing.JPanel {
     DefaultTableModel tblModel;
     List<Staff> list;
     StaffDAO staffDao = new StaffDAO();
-
     /**
      * Creates new form JPanel
      */
     public StaffFrm() {
         initComponents();
         init();
+        
     }
 
     /**
@@ -410,11 +410,13 @@ public class StaffFrm extends javax.swing.JPanel {
             });
         }
         tblModel.fireTableDataChanged();
+        
         setWhiteForm();
     }
 
     private void setWhiteForm() {
         txtId.setText("");
+        txtId.setEditable(true);
         txtName.setText("");
         txtCccd.setText("");
         txtEmail.setText("");
@@ -432,18 +434,16 @@ public class StaffFrm extends javax.swing.JPanel {
     }
 
     private Staff checkValue() {
-        String id = txtId.getText();
+        String id = txtId.getText().trim();
         String name = txtName.getText();
-        String pass = new String(txtPass.getPassword());
-        String confir = new String(txtConfir.getPassword());
-        String cccd = txtCccd.getText();
+        String pass = new String(txtPass.getPassword()).trim();
+        String confir = new String(txtConfir.getPassword()).trim();
+        String cccd = txtCccd.getText().trim();
         boolean gender = rdoMale.isSelected() || rdoFemale.isSelected() ? false : true;
         Date date = chsBirthday.getDate();
-        String phone = txtPhone.getText();
-        String email = txtEmail.getText();
+        String phone = txtPhone.getText().trim();
+        String email = txtEmail.getText().trim();
         boolean role = rdoManager.isSelected() || rdoStaff.isSelected() ? false : true;
-        System.out.println("role" + role);
-        System.out.println("gender" + gender);
 
         if (id.isEmpty() || name.isEmpty() || pass.isEmpty() || confir.isEmpty() || cccd.isEmpty() || date == null || phone.isEmpty() || email.isEmpty() || role || gender) {
             MsgBox.showMessage(this, "Vui lòng nhập đầy đủ thông tin");
@@ -462,7 +462,16 @@ public class StaffFrm extends javax.swing.JPanel {
                     if (matcher.matches()) {
                         if (new Date().getYear() - date.getYear() >= 18) {
                             if(!checkEmail(email)) {
-                                return new Staff(id, name, date, rdoMale.isSelected() ? true : false, cccd, email, phone, BCrypt.hashpw(pass, BCrypt.gensalt()), rdoManager.isSelected() ? true : false);
+                                if(!exist(id)) {
+                                    return new Staff(id, name, date, 
+                                            rdoMale.isSelected() ? true : false, 
+                                            cccd, email, phone, 
+                                            BCrypt.hashpw(pass, BCrypt.gensalt()), 
+                                            rdoManager.isSelected() ? true : false);
+                                } else {
+                                    MsgBox.showMessage(this, "Mã NV đã tồn tại");
+                                }
+                                
                             } else {
                                 MsgBox.showMessage(this, "Địa chỉ email đã tồn tại");
                             }
@@ -473,19 +482,27 @@ public class StaffFrm extends javax.swing.JPanel {
                                     + "VD hợp lệ: 04/06/2000");
                             return null;
                         }
-                    }
-                    MsgBox.showMessage(this, "Email không hợp lệ\n"
+                    } else {
+                        MsgBox.showMessage(this, "Email không hợp lệ\n"
                             + "VD hợp lệ: minh@gmail.com");
-                    return null;
-                }
-                MsgBox.showMessage(this, "Số điện thoại phải có 10 chữ số\n"
+                        return null;
+                    }
+                    
+                } else {
+                    MsgBox.showMessage(this, "Số điện thoại phải có 10 chữ số\n"
                         + "VD hợp lệ: 0812312312");
                 return null;
-            }
-            MsgBox.showMessage(this, "Căn cước công dân không hợp lệ");
+                }
+                
+            } else {
+                MsgBox.showMessage(this, "Căn cước công dân không hợp lệ");
             return null;
+            }
+            
+        } else {
+            MsgBox.showMessage(this, "Mật khẩu phải giống nhau");
+        return null;
         }
-        MsgBox.showMessage(this, "Mật khẩu phải giống nhau");
         return null;
     }
 
@@ -555,12 +572,22 @@ public class StaffFrm extends javax.swing.JPanel {
         } else {
             rdoStaff.setSelected(true);
         }
-
+        txtId.setEditable(false);
     }
 
     private boolean checkEmail(String email) {
         for (Staff staff : list) {
             if(staff.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean exist(String id) {
+        for (Staff staff : list) {
+            if(staff.getId().equalsIgnoreCase(id)) {
                 return true;
             }
         }

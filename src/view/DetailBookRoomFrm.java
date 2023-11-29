@@ -4,6 +4,7 @@
  */
 package view;
 
+import util.ExportInvoicePDF;
 import dao.BookingDAO;
 import dao.GuestDAO;
 import dao.RoomDAO;
@@ -22,6 +23,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -164,7 +167,8 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         jLabel34 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         lblIdRoom = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        btnChange = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1294, 600));
 
@@ -718,12 +722,21 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         lblIdRoom.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblIdRoom.setText("P101");
 
-        jButton1.setBackground(new java.awt.Color(255, 102, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("<<Trở về");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setBackground(new java.awt.Color(255, 102, 51));
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBack.setText("<<Trở về");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        btnChange.setBackground(new java.awt.Color(255, 102, 51));
+        btnChange.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnChange.setText("Đổi phòng");
+        btnChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeActionPerformed(evt);
             }
         });
 
@@ -740,19 +753,24 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblIdRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 1054, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(369, 369, 369)
+                        .addComponent(lblIdRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnChange, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblIdRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBack, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnChange, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -765,65 +783,19 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
     private void rdoDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDayActionPerformed
         // TODO add your handling code here:
-        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
-        if(confirm) {
-            int totalDay = calculateDays(booking.getStartDate(),endDate);
-            this.totalDay = totalDay;
-        if(totalDay == 0) {
-            lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
-        } else {
-            lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
-        }
-        if(rdoHour.isSelected()) {
-             int totalHour = calculateHours(booking.getStartDate(),endDate);
-            lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
-        }
-        booking.setType(true);
-        bookingDAO.update(booking);
-        } else {
-            rdoHour.setSelected(false);
-            rdoDay.setSelected(true);
-        }
+        changeTypeDay();
         
     }//GEN-LAST:event_rdoDayActionPerformed
 
     private void rdoHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHourActionPerformed
         // TODO add your handling code here:
-        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
-        if(confirm) {
-           int totalHour = calculateHours(booking.getStartDate(),endDate);
-           totalDay = totalHour;
-            lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
-        if(rdoDay.isSelected()) {
-            int totalDay = calculateDays(booking.getStartDate(),endDate);
-            if(totalDay == 0) {
-            lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
-            }else {
-            lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
-            }
-        }
-        booking.setType(false);
-        bookingDAO.update(booking);
-        }else {
-            rdoHour.setSelected(false);
-            rdoDay.setSelected(true);
-        }
+        changeTypeHours();
          
     }//GEN-LAST:event_rdoHourActionPerformed
 
     private void cbTypeOfServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTypeOfServiceActionPerformed
         // TODO add your handling code here:
-        if(cbTypeOfService.getSelectedIndex() != 0) {
-            TypeOfService tos = (TypeOfService) cbTypeOfService.getSelectedItem();
-            if(tos!= null) {
-                showServices(serviceDAO.
-                    selectServiceByIdTypeOfService(tos));
-            }
-                
-            
-        } else {
-            showServices(serviceDAO.selectAll());
-        }
+        searchServiceByType();
 
     }//GEN-LAST:event_cbTypeOfServiceActionPerformed
 
@@ -872,30 +844,14 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
 
     private void btnCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckoutActionPerformed
         // TODO add your handling code here:
-        booking.setTotalMoney(totalAll);
-        booking.setStatus(0);
-        bookingDAO.update(booking);
-        room.setStatus(2);
-        roomDAO.update(room);
-        ExportInvoicePDF.export(booking, lblTotalPriceRoom.getText(), lblTotalService.getText(), lblTotalPriceAll.getText(),totalDay);
-        sound();
-        MsgBox.showMessage(this, "Thanh toán thành công");
-        this.removeAll();
-        this.setLayout(new BorderLayout());
-        this.add(new RoomsFrm());
-         this.revalidate();
-         this.repaint();
+        checkout();
         
     }//GEN-LAST:event_btnCheckoutActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        this.removeAll();
-        this.setLayout(new BorderLayout());
-        this.add(new RoomsFrm());
-         this.revalidate();
-         this.repaint();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        back();
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void txtSearchServiceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchServiceKeyPressed
         // TODO add your handling code here:
@@ -914,14 +870,24 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchServiceVetoableChange
 
+    private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
+        // TODO add your handling code here:
+        this.removeAll();
+        this.setLayout(new BorderLayout());
+        this.add(new ChangeRoomsFrm(booking.getId()));
+         this.revalidate();
+         this.repaint();
+    }//GEN-LAST:event_btnChangeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnChange;
     private javax.swing.JButton btnCheckout;
     private javax.swing.ButtonGroup buttonGroupType;
     private javax.swing.JComboBox<String> cbTypeOfService;
     private com.toedter.calendar.JDateChooser dcEnd;
     private com.toedter.calendar.JDateChooser dcStart;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
@@ -1088,8 +1054,9 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
     private void sound() {
         AudioInputStream audioInputStream = null;
         try {
-            File file = new File("src\\sound\\Money Sound Effect - (No Copyright).wav");
-            audioInputStream = AudioSystem.getAudioInputStream(file);
+            URL url = getClass().getResource("/sound/Money Sound Effect - (No Copyright).wav");
+//        File file = new File(getClass().getResource("/sound/Money Sound Effect - (No Copyright).wav").getFile());
+            audioInputStream = AudioSystem.getAudioInputStream(url);
             try {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
@@ -1110,6 +1077,89 @@ public class DetailBookRoomFrm extends javax.swing.JPanel {
                 Logger.getLogger(DetailBookRoomFrm.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private void searchServiceByType() {
+        if(cbTypeOfService.getSelectedIndex() != 0) {
+            TypeOfService tos = (TypeOfService) cbTypeOfService.getSelectedItem();
+            if(tos!= null) {
+                showServices(serviceDAO.
+                    selectServiceByIdTypeOfService(tos));
+            }
+                
+            
+        } else {
+            showServices(serviceDAO.selectAll());
+        }
+    }
+
+    private void changeTypeDay() {
+        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
+        if(confirm) {
+            int totalDay = calculateDays(booking.getStartDate(),endDate);
+            this.totalDay = totalDay;
+        if(totalDay == 0) {
+            lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
+        } else {
+            lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
+        }
+        if(rdoHour.isSelected()) {
+             int totalHour = calculateHours(booking.getStartDate(),endDate);
+            lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
+        }
+        booking.setType(true);
+        bookingDAO.update(booking);
+        } else {
+            rdoHour.setSelected(false);
+            rdoDay.setSelected(true);
+        }
+    }
+
+    private void changeTypeHours() {
+        boolean confirm = MsgBox.confirm(this, "Bạn có chắc muốn đổi loại hình thuê !");
+        if(confirm) {
+           int totalHour = calculateHours(booking.getStartDate(),endDate);
+           totalDay = totalHour;
+            lblTotalPriceRoom.setText(numberFormat.format((totalHour*tor.getHourlyPrice())));
+        if(rdoDay.isSelected()) {
+            int totalDay = calculateDays(booking.getStartDate(),endDate);
+            if(totalDay == 0) {
+            lblTotalPriceRoom.setText(numberFormat.format((1*tor.getPricePerDay())));
+            }else {
+            lblTotalPriceRoom.setText(numberFormat.format((totalDay*tor.getPricePerDay())));
+            }
+        }
+        booking.setType(false);
+        bookingDAO.update(booking);
+        }else {
+            rdoHour.setSelected(false);
+            rdoDay.setSelected(true);
+        }
+    }
+
+    private void checkout() {
+        booking.setTotalMoney(totalAll);
+        booking.setStatus(0);
+        bookingDAO.update(booking);
+        room.setStatus(2);
+        roomDAO.update(room);
+        ExportInvoicePDF exportInvoicePDF = new ExportInvoicePDF();
+        exportInvoicePDF.export(booking, lblTotalPriceRoom.getText(), lblTotalService.getText(), lblTotalPriceAll.getText(),totalDay);
+        sound();
+        MsgBox.showMessage(this, "Thanh toán thành công");
+        this.removeAll();
+        this.setLayout(new BorderLayout());
+        this.add(new RoomsFrm());
+         this.revalidate();
+         this.repaint();
+    }
+
+    private void back() {
+         this.removeAll();
+        this.setLayout(new BorderLayout());
+        this.add(new RoomsFrm());
+         this.revalidate();
+         this.repaint();
     }
  
     public class PopupMenuMouseListener extends MouseAdapter {

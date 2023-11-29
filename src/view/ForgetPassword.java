@@ -160,101 +160,12 @@ public class ForgetPassword extends javax.swing.JFrame {
 
     private void btnChange1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChange1ActionPerformed
         // TODO add your handling code here:
-        if (txtEmail.getText().isEmpty()) {
-            MsgBox.showMessage(rootPane, "Vui lòng nhập đia chỉ email");
-        } else {
-            send = staffDAO.selectByEmail(txtEmail.getText());
-            if (send == null) {
-                MsgBox.showMessage(rootPane, "Tên tài khoản không tồn tại");
-                return;
-            }
-            if (!txtEmail.getText().equals(send.getEmail())) {
-                MsgBox.showMessage(rootPane, "Tài khoản không tồn tại email này");
-                return;
-            }
-            final String username = "boomkings474@gmail.com";
-            final String password = "plvy vcph ixtr fxec"; // Mật khẩu ứng dụng
-
-            // Cài đặt cấu hình email server
-            Properties props = new Properties();
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.smtp.port", "587");
-
-            // Tạo một phiên làm việc
-            Session session = Session.getInstance(props,
-                    new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
-            try {
-                // Tạo đối tượng MimeMessage
-                Message message = new MimeMessage(session);
-
-                // Đặt thông tin người gửi và người nhận
-                message.setFrom(new InternetAddress("boomkings474@gmail.com"));
-                message.setRecipients(Message.RecipientType.TO,
-                        InternetAddress.parse(txtEmail.getText()));
-                message.setSubject("Mã xác nhận");
-                Random random = new Random();
-                number = random.nextInt(9000) + 1000;
-                message.setText(number + "");
-
-                // Gửi email
-                Transport.send(message);
-                MsgBox.showMessage(rootPane, "Đã gữi");
-
-            } catch (MessagingException e) {
-                e.printStackTrace();
-                MsgBox.showMessage(rootPane, "Gữi thất bại");
-            }
-        }
+        sendMail();
     }//GEN-LAST:event_btnChange1ActionPerformed
 
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
         // TODO add your handling code here:
-        String email = txtEmail.getText();
-        String code = txtCode.getText();
-        String neww = new String(txtNew.getPassword());
-        String confirm = new String(txtConfirm.getPassword());
-        if (email.isEmpty() || code.isEmpty() || neww.isEmpty() || confirm.isEmpty()) {
-            MsgBox.showMessage(rootPane, "Vui lòng nhập đầy đủ thông tin");
-
-        } else {
-            if(number==0){
-                MsgBox.showMessage(rootPane, "Vui lòng nhân gữi để lấy mã xác nhận trước");
-                return;
-            }            
-
-            change = staffDAO.selectByEmail(txtEmail.getText());
-            if (!change.getId().equals(send.getId())) {
-                MsgBox.showMessage(rootPane, "Đổi mật khẩu thất bại");
-                return;
-            }
-            int cod;
-            try {
-                cod = Integer.parseInt(code);
-            } catch (Exception e) {
-                MsgBox.showMessage(rootPane, "Mã xác nhân không đúng");
-                return;
-            }
-            if (cod == number) {
-                if (neww.equals(confirm)) {
-                    change.setPassword(BCrypt.hashpw(neww, BCrypt.gensalt()));
-                    StaffDAO staffDAO = new StaffDAO();
-                    staffDAO.update(change);
-                    number=0;
-                    MsgBox.showMessage(rootPane, "Đổi mật khẩu thành công");
-                    dispose();
-                } else {
-                    MsgBox.showMessage(rootPane, "Mật khẩu mới và xác nhận mật khẩu phải giống nhau");
-                }
-            } else {
-                MsgBox.showMessage(rootPane, "Mã xác nhân không đúng");
-            }
-        }
+        changePassword();
     }//GEN-LAST:event_btnChangeActionPerformed
 
     /**
@@ -306,4 +217,101 @@ public class ForgetPassword extends javax.swing.JFrame {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtNew;
     // End of variables declaration//GEN-END:variables
+
+    private void sendMail() {
+        if (txtEmail.getText().isEmpty()) {
+            MsgBox.showMessage(rootPane, "Vui lòng nhập đia chỉ email");
+        } else {
+            send = staffDAO.selectByEmail(txtEmail.getText());
+            if (send == null) {
+                MsgBox.showMessage(rootPane, "Tên tài khoản không tồn tại");
+                return;
+            }
+            if (!txtEmail.getText().equals(send.getEmail())) {
+                MsgBox.showMessage(rootPane, "Tài khoản không tồn tại email này");
+                return;
+            }
+            final String username = "boomkings474@gmail.com";
+            final String password = "plvy vcph ixtr fxec"; // Mật khẩu ứng dụng
+
+            // Cài đặt cấu hình email server
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            // Tạo một phiên làm việc
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+            try {
+                // Tạo đối tượng MimeMessage
+                Message message = new MimeMessage(session);
+
+                // Đặt thông tin người gửi và người nhận
+                message.setFrom(new InternetAddress("boomkings474@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(txtEmail.getText()));
+                message.setSubject("Mã xác nhận");
+                Random random = new Random();
+                number = random.nextInt(9000) + 1000;
+                message.setText(number + "");
+
+                // Gửi email
+                Transport.send(message);
+                MsgBox.showMessage(rootPane, "Đã gữi");
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                MsgBox.showMessage(rootPane, "Gữi thất bại");
+            }
+        }
+    }
+
+    private void changePassword() {
+        String email = txtEmail.getText();
+        String code = txtCode.getText();
+        String neww = new String(txtNew.getPassword());
+        String confirm = new String(txtConfirm.getPassword());
+        if (email.isEmpty() || code.isEmpty() || neww.isEmpty() || confirm.isEmpty()) {
+            MsgBox.showMessage(rootPane, "Vui lòng nhập đầy đủ thông tin");
+
+        } else {
+            if(number==0){
+                MsgBox.showMessage(rootPane, "Vui lòng nhân gữi để lấy mã xác nhận trước");
+                return;
+            }            
+
+            change = staffDAO.selectByEmail(txtEmail.getText());
+            if (!change.getId().equals(send.getId())) {
+                MsgBox.showMessage(rootPane, "Đổi mật khẩu thất bại");
+                return;
+            }
+            int cod;
+            try {
+                cod = Integer.parseInt(code);
+            } catch (Exception e) {
+                MsgBox.showMessage(rootPane, "Mã xác nhân không đúng");
+                return;
+            }
+            if (cod == number) {
+                if (neww.equals(confirm)) {
+                    change.setPassword(BCrypt.hashpw(neww, BCrypt.gensalt()));
+                    StaffDAO staffDAO = new StaffDAO();
+                    staffDAO.update(change);
+                    number=0;
+                    MsgBox.showMessage(rootPane, "Đổi mật khẩu thành công");
+                    dispose();
+                } else {
+                    MsgBox.showMessage(rootPane, "Mật khẩu mới và xác nhận mật khẩu phải giống nhau");
+                }
+            } else {
+                MsgBox.showMessage(rootPane, "Mã xác nhân không đúng");
+            }
+        }
+    }
 }

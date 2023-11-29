@@ -6,6 +6,7 @@ package view;
 
 import dao.StatisticalDAO;
 import java.awt.event.KeyEvent;
+import java.text.AttributedString;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +20,11 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import util.Auth;
 import util.ExportExcel;
 import util.MsgBox;
@@ -67,6 +71,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
         rdoASC = new javax.swing.JRadioButton();
         btnRefreshService = new javax.swing.JButton();
         btnExportExcelService = new javax.swing.JButton();
+        btnExportChartService = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGuest = new javax.swing.JTable();
@@ -86,6 +91,9 @@ public class StaticticalFrm extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblRevenue = new javax.swing.JTable();
         btnRefreshRevenue = new javax.swing.JButton();
+        btnViewMonthChart = new javax.swing.JButton();
+        cbYear = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(0, 689));
 
@@ -219,6 +227,15 @@ public class StaticticalFrm extends javax.swing.JPanel {
             }
         });
 
+        btnExportChartService.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnExportChartService.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/pie-chart (1).png"))); // NOI18N
+        btnExportChartService.setText("Xem biểu đồ");
+        btnExportChartService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportChartServiceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -228,10 +245,15 @@ public class StaticticalFrm extends javax.swing.JPanel {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExportExcelService, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnExportExcelService, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnExportChartService, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jScrollPane4)
         );
@@ -240,14 +262,18 @@ public class StaticticalFrm extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnExportExcelService)
-                        .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnExportExcelService))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExportChartService)))
+                .addGap(3, 3, 3)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabs.addTab("Dịch vụ", jPanel1);
@@ -351,7 +377,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(252, Short.MAX_VALUE)
+                .addContainerGap(270, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(71, 71, 71)
                 .addComponent(btnExportExcelGuest, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,7 +400,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
                             .addComponent(btnRefreshGuest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         tabs.addTab("Khách hàng", jPanel2);
@@ -463,6 +489,20 @@ public class StaticticalFrm extends javax.swing.JPanel {
             }
         });
 
+        btnViewMonthChart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnViewMonthChart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/bar-chart.png"))); // NOI18N
+        btnViewMonthChart.setText("Xem biểu đồ doanh thu từng tháng");
+        btnViewMonthChart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewMonthChartActionPerformed(evt);
+            }
+        });
+
+        cbYear.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Năm:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -478,11 +518,17 @@ public class StaticticalFrm extends javax.swing.JPanel {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chsTo, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                        .addComponent(chsTo, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap(733, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnViewMonthChart)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnViewChart)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnExportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -506,10 +552,13 @@ public class StaticticalFrm extends javax.swing.JPanel {
                         .addGap(1, 1, 1))
                     .addComponent(chsTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExportExcel)
-                    .addComponent(btnViewChart))
+                    .addComponent(btnViewChart)
+                    .addComponent(btnViewMonthChart)
+                    .addComponent(cbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -520,7 +569,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1113, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1131, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -632,8 +681,19 @@ public class StaticticalFrm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchGuestKeyPressed
 
+    private void btnExportChartServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportChartServiceActionPerformed
+        // TODO add your handling code here:
+        showChartService();
+    }//GEN-LAST:event_btnExportChartServiceActionPerformed
+
+    private void btnViewMonthChartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewMonthChartActionPerformed
+        // TODO add your handling code here:
+        showChartMonthRevenueByYear();
+    }//GEN-LAST:event_btnViewMonthChartActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportChartService;
     private javax.swing.JButton btnExportExcel;
     private javax.swing.JButton btnExportExcelGuest;
     private javax.swing.JButton btnExportExcelService;
@@ -643,12 +703,15 @@ public class StaticticalFrm extends javax.swing.JPanel {
     private javax.swing.JButton btnSearchGuest;
     private javax.swing.JButton btnSearchService;
     private javax.swing.JButton btnViewChart;
+    private javax.swing.JButton btnViewMonthChart;
     private javax.swing.ButtonGroup buttonGroupSortService;
+    private javax.swing.JComboBox<String> cbYear;
     private com.toedter.calendar.JDateChooser chsFrom;
     private com.toedter.calendar.JDateChooser chsTo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -681,6 +744,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
         if (!Auth.isManager()) {
             tabs.remove(2);
         }
+        fillComboboxYear();
     }
     public void showRevenues(List<Object[]> list) {
         DefaultTableModel tableModel = (DefaultTableModel) tblRevenue.getModel();
@@ -738,5 +802,66 @@ public class StaticticalFrm extends javax.swing.JPanel {
            } else {
                MsgBox.showMessage(this, "Vui lòng nhập thông tin trước khi tìm");
            }
+    }
+
+    private void showChartService() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (Object[] o : listService) {
+            dataset.setValue((Comparable) o[0],(int)o[1]);
+        }
+        JFreeChart pieChart = ChartFactory.createPieChart(
+            "BIỂU ĐỒ SỬ DỤNG DỊCH VỤ",
+            dataset,true, true,true);
+        PieSectionLabelGenerator labelGenerator = new CustomLabelGenerator();
+        
+        // Set the label generator for the PiePlot
+        PiePlot plot = (PiePlot) pieChart.getPlot();
+        plot.setLabelGenerator(labelGenerator);
+        ChartFrame frame = new ChartFrame("Biểu đồ sử dụng dịch vụ", pieChart);
+        frame.setSize(1280,680);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    static class CustomLabelGenerator implements PieSectionLabelGenerator {
+        @Override
+        public String generateSectionLabel(org.jfree.data.general.PieDataset dataset, Comparable key) {
+            double value = dataset.getValue(key).doubleValue();
+            double total = 0;
+            for (int i = 0; i < dataset.getItemCount(); i++) {
+                total += dataset.getValue(i).doubleValue();
+            }
+            double percentage = (value / total) * 100.0;
+            return String.format("%s (%.1f%%)", key, percentage);
+        }
+
+        @Override
+        public AttributedString generateAttributedSectionLabel(org.jfree.data.general.PieDataset dataset, Comparable key) {
+            return null;
+        }
+    }
+    public void fillComboboxYear() {
+        List<Object[]> list = dao.getyearByRevenue();
+        cbYear.removeAll();
+        for (Object[] objects : list) {
+            cbYear.addItem(String.valueOf(objects[0]));
+        }
+    }
+    public void showChartMonthRevenueByYear() {
+        String year = (String) cbYear.getSelectedItem();
+        List<Object[]> l = dao.getTotalMonthRevenueByYear(year);
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (Object[] o : l) {
+            dataset.addValue((double) o[1],"Tháng", (Comparable) o[0]);
+        }
+        JFreeChart barChart = ChartFactory.createBarChart3D(
+            "BIỂU ĐỒ DOANH THU THEO TỪNG THÁNG",
+            "Tháng","Doanh thu",
+            dataset,
+            PlotOrientation.VERTICAL, false, false, false);
+        ChartFrame frame = new ChartFrame("Biểu đồ tổng doanh thu", barChart);
+        frame.setSize(1280,680);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

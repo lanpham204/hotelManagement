@@ -40,7 +40,7 @@ public class CardRoomComponent extends javax.swing.JPanel {
         lblReverse.setText(reverse);
         Booking reserve = bookingDAO.selectReserveByIdRoom(id);
         if(kindOfRoom.equalsIgnoreCase("Đôi")) {
-            lblBed2.setIcon(new ImageIcon("src\\icon\\bedroom.png"));
+            lblBed2.setIcon(new ImageIcon(getClass().getResource("/icon/bedroom.png")));
         }
         if(reserve != null) {
             lblReverse.setText("Đặt trước: "+XDate.toString(reserve.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
@@ -53,23 +53,24 @@ public class CardRoomComponent extends javax.swing.JPanel {
                 reserve.setStatus(1);
                 bookingDAO.update(reserve);
                 roomDAO.update(r);
-                lblGuest.setText("");
+                lblGuest.setText( "Khách hàng: " + g.getFullName());
+                lblReverse.setText("");
             }
         } else {
             lblReverse.setText("");
         }
         
         if(status == 0) {
-            lblIcon.setIcon(new ImageIcon("src\\icon\\hotel (1).png"));
+            lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/hotel (1).png")));
             this.setBackground(new Color(102,255,102));
         } else if(status == 1) {
-            lblIcon.setIcon(new ImageIcon("src\\icon\\human.png"));
+            lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/human.png")));
             this.setBackground(new Color(255,51,51));
         } else if(status == 2) {
-            lblIcon.setIcon(new ImageIcon("src\\icon\\broom.png"));
+            lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/broom.png")));
             this.setBackground(new Color(255,255,0));
         } else if(status == 3) {
-            lblIcon.setIcon(new ImageIcon("src\\icon\\tools.png"));
+            lblIcon.setIcon(new ImageIcon(getClass().getResource("/icon/tools.png")));
             this.setBackground(new Color(153,153,153));
             
         }

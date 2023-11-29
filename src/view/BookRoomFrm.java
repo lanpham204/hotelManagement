@@ -40,7 +40,6 @@ public class BookRoomFrm extends javax.swing.JFrame {
     private GuestDAO gdao = new GuestDAO();
     private BookingDAO bookingDAO = new BookingDAO();
     private RoomDAO roomDao = new RoomDAO();
-    private List<Booking> bookings = new ArrayList<>();
     private Booking reserveBooking = new Booking();
     private List<Guest> guests = new ArrayList<>();
     private Room room = new Room();
@@ -378,127 +377,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
 
     private void btnCheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckinActionPerformed
         // TODO add your handling code here:
-        String idGuest = txtId.getText();
-        String fullName = txtFullName.getText();
-        Date birthDate = dcBirthDay.getDate();
-        String phoneNum = txtPhone.getText();
-        Date startDate = dcStart.getDate();
-        Date endDate = dcEnd.getDate();
-
-        String gender = "";
-        if (rdoMale.isSelected()) {
-            gender = rdoMale.getText();
-        } else if (rdoFemale.isSelected()) {
-            gender = rdoFemale.getText();
-        }
-        String type = "";
-        if (rdoDay.isSelected()) {
-            type = "Ngày";
-        } else if (rdoHours.isSelected()) {
-            type = "Giờ";
-        }
-        if (idGuest.isEmpty() || fullName.isEmpty() || birthDate == null
-                || startDate == null || endDate == null || phoneNum.isEmpty() || gender.isEmpty()) {
-            MsgBox.showMessage(rootPane, "Vui lòng nhập đủ thông tin");
-        } else {
-            
-            if (validate(idGuest, phoneNum, birthDate)) {
-                float price = 0;
-                if (rdoDay.isSelected()) {
-                    price = tor.getPricePerDay();
-                } else if (rdoHours.isSelected()) {
-                    price = tor.getHourlyPrice();
-                }
-                Guest guest = new Guest(idGuest, fullName, birthDate, gender == "Nam" ? true : false, phoneNum);
-                if (!exist(idGuest)) {
-                    guests.add(guest);
-                    gdao.insert(guest);
-                }
-                if (reserveBooking != null) {
-                    if (endDate.getTime() >= reserveBooking.getStartDate().getTime()) {
-                        MsgBox.showMessage(rootPane, "Phòng này đã có người đặt trước từ ngày "
-                                + XDate.toString(reserveBooking.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
-                    } else {
-                        Booking booking = null;
-                        if (status == 1) {
-                            booking = new Booking(guest.getId(), room.getId(),
-                                    startDate, endDate, type == "Ngày" ? true : false,
-                                    price, status);
-                        } else if (status == 2) {
-                            booking = new Booking(guest.getId(), room.getId(),
-                                    startDate, endDate, type == "Ngày" ? true : false,
-                                    price, status);
-                        }
-
-                        if (booking != null) {
-                            bookingDAO.insert(booking);
-                            if (status == 1) {
-                                room.setStatus(1);
-                                roomDao.update(room);
-                                cardPanel.removeAll();
-                                cardPanel.add(new CardRoomComponent(room.getId(),
-                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
-                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
-                                         room.getStatus()));
-                                cardPanel.revalidate();
-                                cardPanel.repaint();
-                                MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
-                                dispose();
-                            } else {
-                                cardPanel.add(new CardRoomComponent(room.getId(),
-                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
-                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
-                                         room.getStatus()));
-                                cardPanel.revalidate();
-                                cardPanel.repaint();
-                                MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
-                                dispose();
-                            }
-
-                        }
-                    }
-                } else {
-                    Booking booking = null;
-                    if (status == 1) {
-                        booking = new Booking(guest.getId(), room.getId(),
-                                startDate, endDate, type == "Ngày" ? true : false,
-                                price, status);
-                    } else if (status == 2) {
-                        booking = new Booking(guest.getId(), room.getId(),
-                                startDate, endDate, type == "Ngày" ? true : false,
-                                price, status);
-                    }
-
-                    if (booking != null) {
-                        bookingDAO.insert(booking);
-                        if (status == 1) {
-                            room.setStatus(1);
-                            roomDao.update(room);
-                            cardPanel.removeAll();
-                            cardPanel.add(new CardRoomComponent(room.getId(), tor.getName()
-                                    , "Khách hàng: " + guest.getFullName(),"",
-                                     room.getStatus()));
-                            cardPanel.revalidate();
-                            cardPanel.repaint();
-                            MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
-                            dispose();
-                        } else {
-                            cardPanel.removeAll();
-                           cardPanel.add(new CardRoomComponent(room.getId(),
-                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
-                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
-                                         room.getStatus()));
-                                cardPanel.revalidate();
-                                cardPanel.repaint();
-                            MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
-                             dispose();
-                        }
-
-                    }
-                }
-
-            }
-        }
+        checkin();
 
     }//GEN-LAST:event_btnCheckinActionPerformed
 
@@ -633,17 +512,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         return false;
     }
 
-    private void setForm(Guest guest) {
-        txtId.setText(guest.getId());
-        txtFullName.setText(guest.getFullName());
-        txtPhone.setText(guest.getPhoneNum());
-        dcBirthDay.setDate(guest.getBirthDate());
-        if (guest.isGender()) {
-            rdoMale.setSelected(true);
-        } else {
-            rdoFemale.setSelected(false);
-        }
-    }
+   
 
     private void searchGuest() {
         String id = txtSearch.getText();
@@ -663,7 +532,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
         }
     }
 
-    private boolean validate(String idGuest, String phoneNum, Date birthDate) {
+    private boolean validate(String idGuest, String phoneNum, Date birthDate,Date startDate,Date endDate) {
         if (!idGuest.matches("^([A-Z0-9]{9,13})$")) {
             MsgBox.showMessage(rootPane, "Số CMND/Căn cước/Hộ chiếu không hợp lệ! \n"
                     + "VD hợp lệ: 037153000257");
@@ -677,8 +546,136 @@ public class BookRoomFrm extends javax.swing.JFrame {
                     + "Phải trên 18 tuổi\n"
                     + "VD hợp lệ: 04/06/2000");
             return false;
+        } else if( endDate.getTime() < startDate.getTime()) {
+            MsgBox.showMessage(rootPane, "Ngày dự kiến trả"
+                    + " không được nhỏ hơn ngày vào\n");
+            return false;
         }
         return true;
+    }
+
+    private void checkin() {
+        String idGuest = txtId.getText();
+        String fullName = txtFullName.getText();
+        Date birthDate = dcBirthDay.getDate();
+        String phoneNum = txtPhone.getText();
+        Date startDate = dcStart.getDate();
+        Date endDate = dcEnd.getDate();
+
+        String gender = "";
+        if (rdoMale.isSelected()) {
+            gender = rdoMale.getText();
+        } else if (rdoFemale.isSelected()) {
+            gender = rdoFemale.getText();
+        }
+        String type = "";
+        if (rdoDay.isSelected()) {
+            type = "Ngày";
+        } else if (rdoHours.isSelected()) {
+            type = "Giờ";
+        }
+        if (idGuest.isEmpty() || fullName.isEmpty() || birthDate == null
+                || startDate == null || endDate == null || phoneNum.isEmpty() || gender.isEmpty()) {
+            MsgBox.showMessage(rootPane, "Vui lòng nhập đủ thông tin");
+        } else {
+            
+            if (validate(idGuest, phoneNum, birthDate,startDate,endDate)) {
+                float price = 0;
+                if (rdoDay.isSelected()) {
+                    price = tor.getPricePerDay();
+                } else if (rdoHours.isSelected()) {
+                    price = tor.getHourlyPrice();
+                }
+                Guest guest = new Guest(idGuest, fullName, birthDate, gender == "Nam" ? true : false, phoneNum);
+                if (!exist(idGuest)) {
+                    guests.add(guest);
+                    gdao.insert(guest);
+                }
+                if (reserveBooking != null) {
+                    if (endDate.getTime() >= reserveBooking.getStartDate().getTime()) {
+                        MsgBox.showMessage(rootPane, "Phòng này đã có người đặt trước từ ngày "
+                                + XDate.toString(reserveBooking.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
+                    } else {
+                        Booking booking = null;
+                        if (status == 1) {
+                            booking = new Booking(guest.getId(), room.getId(),
+                                    startDate, endDate, type == "Ngày" ? true : false,
+                                    price, status);
+                        } else if (status == 2) {
+                            booking = new Booking(guest.getId(), room.getId(),
+                                    startDate, endDate, type == "Ngày" ? true : false,
+                                    price, status);
+                        }
+
+                        if (booking != null) {
+                            bookingDAO.insert(booking);
+                            if (status == 1) {
+                                room.setStatus(1);
+                                roomDao.update(room);
+                                cardPanel.removeAll();
+                                cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                                MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
+                                dispose();
+                            } else {
+                                cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                                MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
+                                dispose();
+                            }
+
+                        }
+                    }
+                } else {
+                    Booking booking = null;
+                    if (status == 1) {
+                        booking = new Booking(guest.getId(), room.getId(),
+                                startDate, endDate, type == "Ngày" ? true : false,
+                                price, status);
+                    } else if (status == 2) {
+                        booking = new Booking(guest.getId(), room.getId(),
+                                startDate, endDate, type == "Ngày" ? true : false,
+                                price, status);
+                    }
+
+                    if (booking != null) {
+                        bookingDAO.insert(booking);
+                        if (status == 1) {
+                            room.setStatus(1);
+                            roomDao.update(room);
+                            cardPanel.removeAll();
+                            cardPanel.add(new CardRoomComponent(room.getId(), tor.getName()
+                                    , "Khách hàng: " + guest.getFullName(),"",
+                                     room.getStatus()));
+                            cardPanel.revalidate();
+                            cardPanel.repaint();
+                            MsgBox.showMessage(rootPane, "Đặt phòng thành công!");
+                            dispose();
+                        } else {
+                            cardPanel.removeAll();
+                           cardPanel.add(new CardRoomComponent(room.getId(),
+                                        tor.getName(), "Khách hàng: "+ guest.getFullName(),
+                                        "Đặt trước: "+XDate.toString(booking.getStartDate(), "dd/MMyyyy HH:mm:ss"),
+                                         room.getStatus()));
+                                cardPanel.revalidate();
+                                cardPanel.repaint();
+                            MsgBox.showMessage(rootPane, "Đặt trước phòng thành công!");
+                             dispose();
+                        }
+
+                    }
+                }
+
+            }
+        }
     }
 
    

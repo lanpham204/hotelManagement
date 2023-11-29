@@ -318,9 +318,9 @@ public class MainFrm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblOclock, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStaff))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 950, Short.MAX_VALUE)
+                    .addComponent(lblOclock, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 712, Short.MAX_VALUE)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
@@ -377,12 +377,7 @@ public class MainFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
-        boolean confirm = MsgBox.confirm(rootPane, "Bạn có chắc muốn đăng xuất");
-        if(confirm) {
-            Auth.clear();
-            new LoginFrm().setVisible(true);
-            dispose();
-        }
+        logout();
     }//GEN-LAST:event_btnLogoutMouseClicked
 
     private void btnBookingAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_btnBookingAncestorRemoved
@@ -390,34 +385,15 @@ public class MainFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBookingAncestorRemoved
 
     private void btnBookingMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingMousePressed
-        if(Auth.isLogin()) {
-            setView(new RoomsFrm());
-            resetColor();
-            setColor(btnBooking);
-        } else {
-            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
-        }
+        openBooking();
     }//GEN-LAST:event_btnBookingMousePressed
 
     private void btnRoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRoomMousePressed
-        if(Auth.isManager()) {
-            setView(new RoomMangementFrm());
-            resetColor();
-            setColor(btnRoom);
-        } else {
-            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
-        }
+        openRoom();
     }//GEN-LAST:event_btnRoomMousePressed
 
     private void btnInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvoiceMousePressed
-        if(Auth.isLogin()) {
-            setView(new InvoiceFrm());
-            resetColor();
-            setColor(btnInvoice);
-        } else {
-            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
-        }
-        
+        openInvoice();
     }//GEN-LAST:event_btnInvoiceMousePressed
 
     private void btnStaticticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaticticsMouseClicked
@@ -425,13 +401,7 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnStaticticsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaticticsMousePressed
         
-        if(Auth.isLogin()) {
-            setView(new StaticticalFrm());
-            resetColor();
-            setColor(btnStatictics);
-        } else {
-            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
-        }
+        openStaticstics();
     }//GEN-LAST:event_btnStaticticsMousePressed
 
     private void btnBookingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingMouseClicked
@@ -441,36 +411,18 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnServiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnServiceMousePressed
         // TODO add your handling code here:
-        if(Auth.isManager()) {
-            setView(new ServiceFrm());
-            resetColor();
-            setColor(btnService);
-        } else {
-            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
-        }
+        openService();
     }//GEN-LAST:event_btnServiceMousePressed
 
     private void btnCustomerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCustomerMousePressed
         // TODO add your handling code here:
-        if(Auth.isLogin()) {
-            setView(new CustomerFrm());
-            resetColor();
-            setColor(btnCustomer);
-        } else {
-            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
-        }
+        openGuest();
         
     }//GEN-LAST:event_btnCustomerMousePressed
 
     private void btnStaffMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStaffMousePressed
         // TODO add your handling code here:
-        if(Auth.isManager()) {
-            setView(new StaffFrm());
-            resetColor();
-            setColor(btnStaff);
-        } else {
-            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
-        }
+        openStaff();
 
     }//GEN-LAST:event_btnStaffMousePressed
 
@@ -481,13 +433,8 @@ public class MainFrm extends javax.swing.JFrame {
 
     private void btnAccountMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAccountMousePressed
         // TODO add your handling code here:
-        if(Auth.isLogin()) {
-             new InfoStaffFrm().setVisible(true);
-            resetColor();
-            setColor(btnAccount);
-        } else {
-            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
-        }
+        openInfoStaff();
+        
        
                 
     }//GEN-LAST:event_btnAccountMousePressed
@@ -630,6 +577,96 @@ public class MainFrm extends javax.swing.JFrame {
             }
         });
         t.start();
+    }
+
+    private void openInfoStaff() {
+        if(Auth.isLogin()) {
+             new InfoStaffFrm().setVisible(true);
+            resetColor();
+            setColor(btnAccount);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+    }
+
+    private void openStaff() {
+        if(Auth.isManager()) {
+            setView(new StaffFrm());
+            resetColor();
+            setColor(btnStaff);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
+    }
+
+    private void openGuest() {
+        if(Auth.isLogin()) {
+            setView(new CustomerFrm());
+            resetColor();
+            setColor(btnCustomer);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+    }
+
+    private void openService() {
+        if(Auth.isManager()) {
+            setView(new ServiceFrm());
+            resetColor();
+            setColor(btnService);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
+    }
+
+    private void openStaticstics() {
+        if(Auth.isLogin()) {
+            setView(new StaticticalFrm());
+            resetColor();
+            setColor(btnStatictics);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+    }
+
+    private void openInvoice() {
+        if(Auth.isLogin()) {
+            setView(new InvoiceFrm());
+            resetColor();
+            setColor(btnInvoice);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+        
+    }
+
+    private void openRoom() {
+        if(Auth.isManager()) {
+            setView(new RoomMangementFrm());
+            resetColor();
+            setColor(btnRoom);
+        } else {
+            MsgBox.showMessage(rootPane, "Bạn không có quyền truy cập tính năng này");
+        }
+    }
+
+    private void openBooking() {
+        if(Auth.isLogin()) {
+            setView(new RoomsFrm());
+            resetColor();
+            setColor(btnBooking);
+        } else {
+            MsgBox.showMessage(rootPane, "Vui lòng đăng nhập để sử dụng truy cập tính năng này");
+        }
+    }
+
+    private void logout() {
+        boolean confirm = MsgBox.confirm(rootPane, "Bạn có chắc muốn đăng xuất");
+        if(confirm) {
+            Auth.clear();
+            new LoginFrm().setVisible(true);
+            dispose();
+        }
     }
     
 }

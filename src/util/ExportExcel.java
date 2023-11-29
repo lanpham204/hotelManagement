@@ -57,7 +57,11 @@ public class ExportExcel {
                 
             }
             Date date = new Date();
-            String path = "excel\\"+title+" "+XDate.toString(date, "dd-MM-yyyy HH-mm-ss")+".xlsx";
+            File folder = new File("excel");
+            if(!folder.exists()) {
+                folder.mkdirs();
+            }
+            String path = folder+"\\"+title+" "+XDate.toString(date, "dd-MM-yyyy HH-mm-ss")+".xlsx";
                 try {
                     FileOutputStream fos = new FileOutputStream(path);
                     workbook.write(fos);

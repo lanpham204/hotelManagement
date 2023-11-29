@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
 import model.Service;
+import model.Staff;
 import model.TypeOfService;
 import util.MsgBox;
 
@@ -383,6 +384,7 @@ public class ServiceFrm extends javax.swing.JPanel {
         TypeOfService service = typeList.get(tblType.getSelectedRow());
         txtType.setText(service.getId());
         txtNameType.setText(service.getName());
+        txtType.setEnabled(false);
     }//GEN-LAST:event_tblTypeMouseClicked
 
     private void txtTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTypeActionPerformed
@@ -428,6 +430,7 @@ public class ServiceFrm extends javax.swing.JPanel {
             typeDAO.insert(service);
             MsgBox.showMessage(this, "Thêm thành công");
             fillTblType();
+            
         }
     }//GEN-LAST:event_btnInsertTypeActionPerformed
 
@@ -542,18 +545,23 @@ public class ServiceFrm extends javax.swing.JPanel {
     }
 
     private TypeOfService checkType() {
-        String Id = txtType.getText();
-        String name = txtNameType.getText();
+        String Id = txtType.getText().trim();
+        String name = txtNameType.getText().trim();
         if (Id.isEmpty() || name.isEmpty()) {
             MsgBox.showMessage(this, "Vui lòng nhập đầy đủ thông tin");
             return null;
         }
-        return new TypeOfService(Id, name);
+        if(!exist(Id)) {
+            return new TypeOfService(Id, name);
+        } else {
+            MsgBox.showMessage(this, "Mã loại dịch vụ đã tồn tại");
+        }
+        return null;
     }
 
     private Service checkService() {
-        String name = txtNameService.getText();
-        String price = txtPrice.getText();
+        String name = txtNameService.getText().trim();
+        String price = txtPrice.getText().trim();
         if (name.isEmpty() || price.isEmpty()) {
             MsgBox.showMessage(this, "Vui lòng nhập đầy đủ thông tin");
             return null;
@@ -568,7 +576,14 @@ public class ServiceFrm extends javax.swing.JPanel {
 
         return new Service(name, pric, typeList.get(cboType.getSelectedIndex()).getId());
     }
-
+    private boolean exist(String idService) {
+        for (TypeOfService s : typeList) {
+            if(s.getId().equalsIgnoreCase(idService)) {
+                return true;
+            }
+        }
+        return false;
+    }
     private void cleanService() {
         txtPrice.setText("");
         txtNameService.setText("");
@@ -576,6 +591,7 @@ public class ServiceFrm extends javax.swing.JPanel {
 
     private void cleanType() {
         txtType.setText("");
+        txtType.setEnabled(true);
         txtNameType.setText("");
     }
 }

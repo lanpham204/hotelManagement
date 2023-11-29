@@ -256,7 +256,7 @@ public class RoomMangementFrm extends javax.swing.JPanel {
                                 .addGap(30, 30, 30)
                                 .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(237, 237, 237)))
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,7 +459,7 @@ public class RoomMangementFrm extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1211, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -744,6 +744,7 @@ public class RoomMangementFrm extends javax.swing.JPanel {
         txtNameType.setText(tblModelTypeRoom.getValueAt(row, 1).toString());
         txtPriceHour.setText(tblModelTypeRoom.getValueAt(row, 2).toString());
         txtPriceDay.setText(tblModelTypeRoom.getValueAt(row, 3).toString());
+        
     }
     public void checkTang(){
         if((int) cboTang.getValue() < 1) {

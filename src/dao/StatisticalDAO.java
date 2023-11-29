@@ -75,4 +75,23 @@ public class StatisticalDAO {
         String[] cols = {"TenDV","SoLan"};
         return this.getListOfArray(sql, cols,"%"+keyword+"%");
     }
+    public List<Object[]> getTotalMonthRevenueByYear(String year) {
+        String sql = "SELECT  month(NgayGioTra) Thang,\n" +
+"		 SUM(TongTien) DoanhThu\n" +
+"	FROM PhieuDatPhong pd\n" +
+"		JOIN KhachHang kh ON kh.CCCD = pd.MaKH\n" +
+"    WHERE year(NgayGioTra) = ?\n" +
+"	GROUP BY month(NgayGioTra);";
+        String[] cols = {"Thang","DoanhThu"};
+        return this.getListOfArray(sql, cols,year);
+    }
+    public List<Object[]> getyearByRevenue() {
+        String sql = "SELECT  year(NgayGioTra) Nam\n" +
+"	FROM PhieuDatPhong pd\n" +
+"	GROUP BY year(NgayGioTra);";
+        String[] cols = {"Nam"};
+        return this.getListOfArray(sql, cols);
+    }
+    
+    
 }

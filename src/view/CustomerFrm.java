@@ -173,7 +173,7 @@ public class CustomerFrm extends javax.swing.JPanel {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel3)
@@ -276,6 +276,7 @@ public class CustomerFrm extends javax.swing.JPanel {
         // TODO add your handling code here:
         int row = tblCustomer.getSelectedRow();
         txtId.setText(tblModel.getValueAt(row, 0).toString());
+        txtId.setEditable(false);
         txtName.setText(tblModel.getValueAt(row, 1).toString());
         txtPhone.setText(tblModel.getValueAt(row, 4).toString());
         if (tblModel.getValueAt(row, 3).toString().equals("Nam")) {
@@ -333,9 +334,9 @@ public class CustomerFrm extends javax.swing.JPanel {
     }
 
     private Guest checkGuest() {
-        String id = txtId.getText();
-        String name = txtName.getText();
-        String phone = txtPhone.getText();
+        String id = txtId.getText().trim();
+        String name = txtName.getText().trim();
+        String phone = txtPhone.getText().trim();
         Date date = chsBirthday.getDate();
         boolean gender = rdoFemale.isSelected() || rdoMale.isSelected() ? false : true;
         if (id.isEmpty() || name.isEmpty() || phone.isEmpty() || date == null || gender) {
@@ -361,5 +362,6 @@ public class CustomerFrm extends javax.swing.JPanel {
         txtPhone.setText("");
         buttonGroup1.clearSelection();
         chsBirthday.setDate(null);
+        txtId.setEditable(true);
     }
 }

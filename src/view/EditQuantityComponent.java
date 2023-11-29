@@ -50,7 +50,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
         this.lblTotalPrice = lblTotalPrice;
         txtQuantity.setText(quantity+"");
         if(quantity == 1) {
-            btnDiv.setEnabled(false);
+            btnMinus.setEnabled(false);
         }
     }
 
@@ -65,7 +65,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txtQuantity = new javax.swing.JTextField();
-        btnDiv = new javax.swing.JButton();
+        btnMinus = new javax.swing.JButton();
         btnPlus = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
 
@@ -77,11 +77,11 @@ public class EditQuantityComponent extends javax.swing.JFrame {
 
         txtQuantity.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        btnDiv.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnDiv.setText("-");
-        btnDiv.addActionListener(new java.awt.event.ActionListener() {
+        btnMinus.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMinus.setText("-");
+        btnMinus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDivActionPerformed(evt);
+                btnMinusActionPerformed(evt);
             }
         });
 
@@ -113,7 +113,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDiv)
+                        .addComponent(btnMinus)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(btnSubmit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -126,7 +126,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnDiv)
+                        .addComponent(btnMinus)
                         .addComponent(btnPlus))
                     .addComponent(txtQuantity))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
@@ -139,31 +139,18 @@ public class EditQuantityComponent extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-         ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
-                        tableModel.setValueAt(Integer.parseInt(txtQuantity.getText()), selectedIndex, 2);
-                        updateTotal(selectedIndex, tableModel);
-                        serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
-                        serviceRoomDAO.update(serviceRoom);
-                        updateTotalPriceAll();
-                dispose();
+         submit();
     }//GEN-LAST:event_btnSubmitActionPerformed
 
-    private void btnDivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivActionPerformed
+    private void btnMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinusActionPerformed
         // TODO add your handling code here:
-        if(quantity == 1) {
-            btnDiv.setEnabled(false);
-        } else {
-            quantity = --quantity;
-            txtQuantity.setText(quantity+"");
-        }
+        minus();
         
-    }//GEN-LAST:event_btnDivActionPerformed
+    }//GEN-LAST:event_btnMinusActionPerformed
 
     private void btnPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlusActionPerformed
         // TODO add your handling code here:
-        btnDiv.setEnabled(true);
-        quantity = ++quantity;
-        txtQuantity.setText(quantity+"");
+        plus();
     }//GEN-LAST:event_btnPlusActionPerformed
 
     /**
@@ -205,7 +192,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDiv;
+    private javax.swing.JButton btnMinus;
     private javax.swing.JButton btnPlus;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JLabel jLabel1;
@@ -227,5 +214,29 @@ public class EditQuantityComponent extends javax.swing.JFrame {
         
                     }
                     lblTotalPrice.setText(numberFormat.format(totalPriceAll));
+    }
+
+    private void submit() {
+        ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
+                        tableModel.setValueAt(Integer.parseInt(txtQuantity.getText()), selectedIndex, 2);
+                        updateTotal(selectedIndex, tableModel);
+                        serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                        serviceRoomDAO.update(serviceRoom);
+                        updateTotalPriceAll();
+                dispose();
+    }
+
+    private void minus() {
+        if(quantity == 1) {
+            btnMinus.setEnabled(false);
+        } else {
+            quantity = --quantity;
+            txtQuantity.setText(quantity+"");
+        }
+    }
+    private void plus() {
+         btnMinus.setEnabled(true);
+        quantity = ++quantity;
+        txtQuantity.setText(quantity+"");
     }
 }

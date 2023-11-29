@@ -20,15 +20,7 @@ public class InfoStaffFrm extends javax.swing.JFrame {
     public InfoStaffFrm() {
         initComponents();
         setLocationRelativeTo(null);
-        txtId.setText(staff.getId());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        txtBirthDate.setText(dateFormat.format(staff.getBirthDate()));
-        txtEmail.setText(staff.getEmail());
-        txtFullName.setText(staff.getFullName());
-        txtGender.setText(staff.isGender() ? "Nam":"Nữ");
-        txtPhone.setText(staff.getPhoneNum());
-        txtRole.setText(staff.isRole()? "Quản lý":"Nhân viên");
-        lblDocument.setText(staff.getDocumentCard());
+        setData();
     }
 
     /**
@@ -217,8 +209,7 @@ public class InfoStaffFrm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new ChangePassword().setVisible(true);
-        dispose();
+        openChangePassword();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -276,4 +267,21 @@ public class InfoStaffFrm extends javax.swing.JFrame {
     private javax.swing.JLabel txtPhone;
     private javax.swing.JLabel txtRole;
     // End of variables declaration//GEN-END:variables
+
+    private void setData() {
+        txtId.setText(staff.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        txtBirthDate.setText(dateFormat.format(staff.getBirthDate()));
+        txtEmail.setText(staff.getEmail());
+        txtFullName.setText(staff.getFullName());
+        txtGender.setText(staff.isGender() ? "Nam":"Nữ");
+        txtPhone.setText(staff.getPhoneNum());
+        txtRole.setText(staff.isRole()? "Quản lý":"Nhân viên");
+        lblDocument.setText(staff.getDocumentCard());
+    }
+
+    private void openChangePassword() {
+        new ChangePassword().setVisible(true);
+        dispose();
+    }
 }
