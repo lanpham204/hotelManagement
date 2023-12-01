@@ -104,7 +104,7 @@ public class InvoiceFrm extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chsTo, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jScrollPane1)
         );
@@ -130,7 +130,6 @@ public class InvoiceFrm extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (chsFrom.getDate() == null || chsTo.getDate() == null) {
             MsgBox.showMessage(this, "Vui long chon ngay");
-            
             return;
         } else {
             list = bookDao.selectByDate(chsFrom.getDate(), chsTo.getDate());

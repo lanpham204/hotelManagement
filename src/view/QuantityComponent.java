@@ -21,6 +21,7 @@ import util.MsgBox;
  * @author phamn
  */
 public class QuantityComponent extends javax.swing.JFrame {
+
     private int idBooking;
     private String name;
     private String price;
@@ -29,17 +30,19 @@ public class QuantityComponent extends javax.swing.JFrame {
     private ServiceDAO serviceDAO = new ServiceDAO();
     private ServiceRoomDAO serviceRoomDAO = new ServiceRoomDAO();
     private int quantity = 1;
-    private NumberFormat numberFormat = 
-            NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+    private NumberFormat numberFormat
+            = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private Service service;
     private ServiceRoom serviceRoom;
+
     /**
      * Creates new form QuantityCompo
      */
     public QuantityComponent() {
         initComponents();
     }
-    public QuantityComponent(int id,int idBooking,String name,String price,DefaultTableModel tableModel,JLabel lblTotalPrice) {
+
+    public QuantityComponent(int id, int idBooking, String name, String price, DefaultTableModel tableModel, JLabel lblTotalPrice) {
         initComponents();
         setLocationRelativeTo(null);
         this.name = name;
@@ -47,10 +50,10 @@ public class QuantityComponent extends javax.swing.JFrame {
         this.tableModel = tableModel;
         this.idBooking = idBooking;
         this.lblTotalPrice = lblTotalPrice;
-        txtQuantity.setText(quantity+"");
+        txtQuantity.setText(quantity + "");
         btnDiv.setEnabled(false);
         service = serviceDAO.selectById(id);
-        serviceRoom = new ServiceRoom(idBooking , service.getId(), quantity);
+        serviceRoom = new ServiceRoom(idBooking, service.getId(), quantity);
     }
 
     /**
@@ -138,51 +141,61 @@ public class QuantityComponent extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-         boolean serviceExist = false;
-         
-          float totalPrice = 0;
-                for (int i = 0; i < tableModel.getRowCount(); i++) {
-                    if(name.equals(tableModel.getValueAt(i, 0))) {
-                        if(name.equalsIgnoreCase((String) tableModel.getValueAt(i, 0))){
-                            MsgBox.showMessage(rootPane, "Dịch vụ đã tồn tại");
-                            serviceExist = true;
-                            dispose();
-                            break;
-                        }
-                        
-                    }
+        boolean serviceExist = false;
+
+        float totalPrice = 0;
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (name.equals(tableModel.getValueAt(i, 0))) {
+                if (name.equalsIgnoreCase((String) tableModel.getValueAt(i, 0))) {
+                    MsgBox.showMessage(rootPane, "Dịch vụ đã tồn tại");
+                    serviceExist = true;
+                    dispose();
+                    break;
                 }
-                if(!serviceExist) {
-                    Object[] rowData = {name, price,quantity,totalPrice};
-                    tableModel.addRow(rowData);
-                    
-                    serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
-                    serviceRoomDAO.insert(serviceRoom);
-                    List<ServiceRoom> serviceRooms = serviceRoomDAO.selectAll();
-                    int id = serviceRooms.get(serviceRooms.size()-1).getId();
-                        updateTotal(id,tableModel.getRowCount()-1, tableModel);
-                        updateTotalPriceAll();
-                    
-                }
-                dispose();
+
+            }
+        }
+        if (!serviceExist) {
+           
+            String quantityString = txtQuantity.getText();
+            int quantity = 0;
+            try {
+                quantity = Integer.parseInt(quantityString);
+                 Object[] rowData = {name, price, quantity, totalPrice};
+                tableModel.addRow(rowData);
+                serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
+                serviceRoomDAO.insert(serviceRoom);
+                List<ServiceRoom> serviceRooms = serviceRoomDAO.selectAll();
+                int id = serviceRooms.get(serviceRooms.size() - 1).getId();
+                updateTotal(id, tableModel.getRowCount() - 1, tableModel);
+                updateTotalPriceAll();
+
+            } catch (Exception e) {
+                txtQuantity.setText("1");
+                MsgBox.showMessage(rootPane, "Số lượng phải là số");
+                return;
+            }
+
+        }
+        dispose();
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnDivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivActionPerformed
         // TODO add your handling code here:
-        if(quantity == 1) {
+        if (quantity == 1) {
             btnDiv.setEnabled(false);
         } else {
             quantity = --quantity;
-            txtQuantity.setText(quantity+"");
+            txtQuantity.setText(quantity + "");
         }
-        
+
     }//GEN-LAST:event_btnDivActionPerformed
 
     private void btnPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlusActionPerformed
         // TODO add your handling code here:
         btnDiv.setEnabled(true);
         quantity = ++quantity;
-        txtQuantity.setText(quantity+"");
+        txtQuantity.setText(quantity + "");
     }//GEN-LAST:event_btnPlusActionPerformed
 
     /**
@@ -228,21 +241,21 @@ public class QuantityComponent extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
-        private void updateTotal(int id,int row, DefaultTableModel tableModel) {
-            int quantity = (int) tableModel.getValueAt(row, 2);
-            float total =  service.getPrice() * quantity;
-            tableModel.setValueAt(numberFormat.format(total), row, 3);
-            tableModel.setValueAt(id, row, 4);
-        }
+        private void updateTotal(int id, int row, DefaultTableModel tableModel) {
+        int quantity = (int) tableModel.getValueAt(row, 2);
+        float total = service.getPrice() * quantity;
+        tableModel.setValueAt(numberFormat.format(total), row, 3);
+        tableModel.setValueAt(id, row, 4);
+    }
 
     private void updateTotalPriceAll() {
         float totalPriceAll = 0;
         List<ServiceRoom> serviceRooms = serviceRoomDAO.selectServiceRoomByIdBooking(idBooking);
         for (ServiceRoom sr : serviceRooms) {
-                        Service sv = serviceDAO.selectById(sr.getIdService());
-                        totalPriceAll += (sr.getQuantity()*sv.getPrice());
-        
-                    }
-                    lblTotalPrice.setText(numberFormat.format(totalPriceAll));
+            Service sv = serviceDAO.selectById(sr.getIdService());
+            totalPriceAll += (sr.getQuantity() * sv.getPrice());
+
+        }
+        lblTotalPrice.setText(numberFormat.format(totalPriceAll));
     }
 }

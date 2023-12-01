@@ -25,7 +25,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tabs" alignment="1" pref="1131" max="32767" attributes="0"/>
+          <Component id="tabs" alignment="1" pref="1098" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -65,7 +65,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="btnExportExcelService" min="-2" pref="94" max="-2" attributes="0"/>
-                              <EmptySpace pref="39" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnRefreshService" min="-2" pref="43" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -83,10 +83,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPanel6" min="-2" pref="56" max="-2" attributes="0"/>
-                              <Component id="jPanel5" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jPanel6" min="-2" pref="56" max="-2" attributes="0"/>
+                          <Component id="jPanel5" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="btnRefreshService" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>

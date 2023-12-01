@@ -555,10 +555,10 @@ public class BookRoomFrm extends javax.swing.JFrame {
     }
 
     private void checkin() {
-        String idGuest = txtId.getText();
-        String fullName = txtFullName.getText();
+        String idGuest = txtId.getText().trim();
+        String fullName = txtFullName.getText().trim();
         Date birthDate = dcBirthDay.getDate();
-        String phoneNum = txtPhone.getText();
+        String phoneNum = txtPhone.getText().trim();
         Date startDate = dcStart.getDate();
         Date endDate = dcEnd.getDate();
 
@@ -592,6 +592,9 @@ public class BookRoomFrm extends javax.swing.JFrame {
                     gdao.insert(guest);
                 }
                 if (reserveBooking != null) {
+                    if(status == 2 ) {
+                        MsgBox.showMessage(rootPane, "Phòng này đã có người đặt trước !");
+                    }
                     if (endDate.getTime() >= reserveBooking.getStartDate().getTime()) {
                         MsgBox.showMessage(rootPane, "Phòng này đã có người đặt trước từ ngày "
                                 + XDate.toString(reserveBooking.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
@@ -608,6 +611,7 @@ public class BookRoomFrm extends javax.swing.JFrame {
                         }
 
                         if (booking != null) {
+                            
                             bookingDAO.insert(booking);
                             if (status == 1) {
                                 room.setStatus(1);

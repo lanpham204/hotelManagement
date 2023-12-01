@@ -66,12 +66,12 @@ public class StatisticalDAO {
     }
     public List<Object[]> getService(String keyword,String orderSort) {
         String sql = "SELECT  TenDV,\n" +
-"		COUNT(dvp.MaDV) SoLan\n" +
-                "FROM DichVu dv\n" +
-                "left JOIN DichVuPhong dvp on  dvp.MaDV = dv.MaDV\n" +
-                "where TenDV like ?\n" +
-                "GROUP BY TenDV\n" +
-                "ORDER BY SoLan "+ orderSort;
+"		 sum(dvp.SoLuong) SoLan\n" +
+"                FROM DichVu dv\n" +
+"                JOIN DichVuPhong dvp on  dvp.MaDV = dv.MaDV\n" +
+"		where TenDV like ?\n" +
+"                GROUP BY dv.MaDV,TenDV\n" +
+"				order by SoLan "+ orderSort;
         String[] cols = {"TenDV","SoLan"};
         return this.getListOfArray(sql, cols,"%"+keyword+"%");
     }

@@ -42,10 +42,12 @@ public class CardRoomComponent extends javax.swing.JPanel {
         if(kindOfRoom.equalsIgnoreCase("Đôi")) {
             lblBed2.setIcon(new ImageIcon(getClass().getResource("/icon/bedroom.png")));
         }
-        if(reserve != null) {
+        if(reserve != null ) {
             lblReverse.setText("Đặt trước: "+XDate.toString(reserve.getStartDate(), "dd/MM/yyyy HH:mm:ss"));
             Guest g = guestDAO.selectById(reserve.getIdGuest());
-            lblGuest.setText( "Khách hàng: " + g.getFullName());
+            if(status != 1) {
+                lblGuest.setText( "Khách hàng: " + g.getFullName());
+            }
             Date now = new Date();
             if(now.getTime() >= reserve.getStartDate().getTime()) {
                 Room r = roomDAO.selectById(id);

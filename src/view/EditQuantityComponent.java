@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import model.Service;
 import model.ServiceRoom;
+import util.MsgBox;
 
 /**
  *
@@ -199,6 +200,7 @@ public class EditQuantityComponent extends javax.swing.JFrame {
     private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
         private void updateTotal(int row, DefaultTableModel tableModel) {
+            
             ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
          Service service = serviceDAO.selectById(serviceRoom.getIdService());
             int quantity = Integer.parseInt(txtQuantity.getText());
@@ -217,13 +219,23 @@ public class EditQuantityComponent extends javax.swing.JFrame {
     }
 
     private void submit() {
-        ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
-                        tableModel.setValueAt(Integer.parseInt(txtQuantity.getText()), selectedIndex, 2);
+        String quantityString = txtQuantity.getText();
+            int quantity = 0;
+            try {
+                quantity = Integer.parseInt(quantityString);
+                ServiceRoom serviceRoom = serviceRoomDAO.selectById(id);
+                        tableModel.setValueAt(quantity, selectedIndex, 2);
                         updateTotal(selectedIndex, tableModel);
                         serviceRoom.setQuantity(Integer.parseInt(txtQuantity.getText()));
                         serviceRoomDAO.update(serviceRoom);
                         updateTotalPriceAll();
                 dispose();
+            } catch (Exception e) {
+                txtQuantity.setText("1");
+                MsgBox.showMessage(rootPane, "Số lượng phải là số");
+                return;
+            }
+        
     }
 
     private void minus() {

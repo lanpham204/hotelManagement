@@ -249,7 +249,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnExportExcelService, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnExportChartService, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,9 +262,8 @@ public class StaticticalFrm extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnRefreshService, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -569,7 +568,7 @@ public class StaticticalFrm extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1131, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1098, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -635,12 +634,12 @@ public class StaticticalFrm extends javax.swing.JPanel {
 
     private void rdoASCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoASCActionPerformed
         // TODO add your handling code here:
-        searchService("ASC");
+        sortService("ASC");
     }//GEN-LAST:event_rdoASCActionPerformed
 
     private void rdoDESCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDESCActionPerformed
         // TODO add your handling code here:
-        searchService("DESC");
+        sortService("DESC");
     }//GEN-LAST:event_rdoDESCActionPerformed
 
     private void btnRefreshServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshServiceActionPerformed
@@ -777,12 +776,35 @@ public class StaticticalFrm extends javax.swing.JPanel {
             tableModel.addRow(new Object[]{objects[0],objects[1]});
         }
     }
-
-    private void searchService(String orderSort) {
-        String keyword = txtSearchService.getText();
+    private void sortService(String orderSort) {
+        String key = txtSearchService.getText();
+            String keyword = txtSearchService.getText();
             listService.clear();
             listService = dao.getService(keyword, orderSort);
+            txtSearchService.setText("");
             showService(listService);
+            if(listService.isEmpty()) {
+                MsgBox.showMessage(this, "Không tìm thấy thông tin");
+            }
+            
+        
+    }
+    private void searchService(String orderSort) {
+        String key = txtSearchService.getText().trim();
+        if(!key.isEmpty()) {
+            String keyword = txtSearchService.getText();
+            listService.clear();
+            listService = dao.getService(keyword, orderSort);
+            txtSearchService.setText("");
+            showService(listService);
+            if(listService.isEmpty()) {
+                MsgBox.showMessage(this, "Không tìm thấy thông tin");
+            }
+            
+        } else {
+            MsgBox.showMessage(this, "Vui lòng nhập thông tin trước khi tìm");
+        }
+        
     }
 
     private void showGuest(List<Object[]> listGuest) {
@@ -798,7 +820,12 @@ public class StaticticalFrm extends javax.swing.JPanel {
            if(!keyword.isEmpty()) {
                 listGuest.clear();
             listGuest = dao.getGuest(keyword);
+            txtSearchGuest.setText("");
             showGuest(listGuest);
+            if(listGuest.isEmpty()) {
+                MsgBox.showMessage(this, "Không tìm thấy thông tin");
+            }
+            
            } else {
                MsgBox.showMessage(this, "Vui lòng nhập thông tin trước khi tìm");
            }
