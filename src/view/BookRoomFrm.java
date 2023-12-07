@@ -23,6 +23,7 @@ import model.Booking;
 import model.Guest;
 import model.Room;
 import model.TypeOfRoom;
+import util.Auth;
 import util.MsgBox;
 import util.XDate;
 
@@ -603,11 +604,11 @@ public class BookRoomFrm extends javax.swing.JFrame {
                         if (status == 1) {
                             booking = new Booking(guest.getId(), room.getId(),
                                     startDate, endDate, type == "Ngày" ? true : false,
-                                    price, status);
+                                    price, status,Auth.user.getId());
                         } else if (status == 2) {
                             booking = new Booking(guest.getId(), room.getId(),
                                     startDate, endDate, type == "Ngày" ? true : false,
-                                    price, status);
+                                    price, status,Auth.user.getId());
                         }
 
                         if (booking != null) {
@@ -643,11 +644,11 @@ public class BookRoomFrm extends javax.swing.JFrame {
                     if (status == 1) {
                         booking = new Booking(guest.getId(), room.getId(),
                                 startDate, endDate, type == "Ngày" ? true : false,
-                                price, status);
+                                price, status,Auth.user.getId());
                     } else if (status == 2) {
                         booking = new Booking(guest.getId(), room.getId(),
                                 startDate, endDate, type == "Ngày" ? true : false,
-                                price, status);
+                                price, status,Auth.user.getId());
                     }
 
                     if (booking != null) {

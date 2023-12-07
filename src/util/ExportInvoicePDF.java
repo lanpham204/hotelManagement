@@ -75,7 +75,6 @@ public class ExportInvoicePDF {
             // Mở document để thêm nội dung
             document.open();
 
-            // Tạo font với font chữ Arial (có thể sử dụng font khác tùy chọn)
             BaseFont baseFont = BaseFont.createFont(getClass().getResource("/font/Roboto-Regular.ttf").toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             BaseFont baseFontBold = BaseFont.createFont(getClass().getResource("/font/Roboto-Bold.ttf").toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(baseFont, 12);
@@ -99,9 +98,10 @@ public class ExportInvoicePDF {
             PdfPTable table = new PdfPTable(twocolumnWidth2);
             table.addCell( createCell("HÓA ĐƠN",fontBold));
             PdfPTable nestedTable = new PdfPTable(new float[]{twocol100,twocol100});
+           
             nestedTable.addCell(createCell("Mã hóa đơn: ",font));
             nestedTable.addCell(createCell(booking.getId()+"",font));
-            nestedTable.addCell(createCell("Ngày lập ",font));
+            nestedTable.addCell(createCell("Ngày lập: ",font));
             nestedTable.addCell(createCell(dateFormat.format(booking.getEndDate()),font));
             PdfPCell nestedCell = new PdfPCell();
             nestedCell.addElement(nestedTable);
@@ -116,6 +116,10 @@ public class ExportInvoicePDF {
             divider.addCell(gb);
             
             PdfPTable twoColTable = new PdfPTable(twocolumnWidth);
+            twoColTable.addCell(createCell("Nhân viên: "+Auth.user.getFullName(),font));
+            twoColTable.addCell(createCell("",font));
+            twoColTable.addCell(createCell("\n", font));
+            twoColTable.addCell(createCell("\n", font));
             twoColTable.addCell(createCell("Khách hàng: "+guest.getFullName(), font));
             twoColTable.addCell(createCell("Phòng: "+room.getId(), font));
             twoColTable.addCell(createCell("\n", font));

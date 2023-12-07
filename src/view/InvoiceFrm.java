@@ -55,13 +55,13 @@ public class InvoiceFrm extends javax.swing.JPanel {
         tblBooking.setForeground(new java.awt.Color(0, 0, 0));
         tblBooking.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã Hóa Đơn", "Tên Khách Hàng", "Mã Phòng", "Lúc Vào", "Lúc Ra", "Hình Thức Thuê", "Trạng thái", "Tồng tiền"
+                "Mã Hóa Đơn", "Tên Khách Hàng", "Mã Phòng", "Lúc Vào", "Lúc Ra", "Hình Thức Thuê", "Trạng thái", "Tồng tiền", "Mã Nhân viên"
             }
         ));
         tblBooking.setFocusable(false);
@@ -162,7 +162,7 @@ public class InvoiceFrm extends javax.swing.JPanel {
         list = bookDao.selectAll();
         tblModel.setRowCount(0);
         for (Booking b : list) {
-            tblModel.addRow(new Object[]{b.getId(), guestDAO.selectById(b.getIdGuest()).getFullName(), b.getIdRoom(), b.getStartDate(), b.getEndDate(), b.isType() ? "Ngày" : "Giờ", b.getStatus() == 0  ? "Đã thanh toán" : "Chưa thanh toán", numberFormat.format(b.getTotalMoney())});
+            tblModel.addRow(new Object[]{b.getId(), guestDAO.selectById(b.getIdGuest()).getFullName(), b.getIdRoom(), b.getStartDate(), b.getEndDate(), b.isType() ? "Ngày" : "Giờ", b.getStatus() == 0  ? "Đã thanh toán" : "Chưa thanh toán", numberFormat.format(b.getTotalMoney()),b.getIdStaff()});
         }
         tblModel.fireTableDataChanged();
     }
@@ -171,7 +171,7 @@ public class InvoiceFrm extends javax.swing.JPanel {
         tblModel.setRowCount(0);
         if(bookings!=null) {
             for (Booking b : bookings) {
-            tblModel.addRow(new Object[]{b.getId(), guestDAO.selectById(b.getIdGuest()).getFullName(), b.getIdRoom(), b.getStartDate(), b.getEndDate(), b.isType() ? "Ngày" : "Giờ", b.getStatus() == 0 ? "Đã thanh toán" : "Chưa thanh toán", b.getTotalMoney()});
+            tblModel.addRow(new Object[]{b.getId(), guestDAO.selectById(b.getIdGuest()).getFullName(), b.getIdRoom(), b.getStartDate(), b.getEndDate(), b.isType() ? "Ngày" : "Giờ", b.getStatus() == 0 ? "Đã thanh toán" : "Chưa thanh toán", b.getTotalMoney(),b.getIdStaff()});
             }
             tblModel.fireTableDataChanged();
         } else {

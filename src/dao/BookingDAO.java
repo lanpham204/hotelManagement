@@ -11,8 +11,8 @@ import model.Booking;
 import util.JdbcHelper;
 
 public class BookingDAO extends HotelDAO<Booking, Integer> {
-    String INSERT_SQL = "INSERT INTO PhieuDatPhong(MaKH, MaPhong, NgayGioNhan, NgayGioTra,HinhThucThue, TongTien, TrangThai) VALUES (?,?, ?, ?, ?, ?,?)";
-    String UPDATE_SQL = "UPDATE PhieuDatPhong SET MaKH = ?, MaPhong = ?, NgayGioNhan = ?, NgayGioTra = ?,HinhThucThue = ?, TongTien = ?, TrangThai = ? WHERE MaPDP = ?";
+    String INSERT_SQL = "INSERT INTO PhieuDatPhong(MaKH, MaPhong, NgayGioNhan, NgayGioTra,HinhThucThue, TongTien, TrangThai,MaNV) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    String UPDATE_SQL = "UPDATE PhieuDatPhong SET MaKH = ?, MaPhong = ?, NgayGioNhan = ?, NgayGioTra = ?,HinhThucThue = ?, TongTien = ?, TrangThai = ?, MaNV = ? WHERE MaPDP = ?";
     String DELETE_SQL = "DELETE FROM PhieuDatPhong WHERE MaPDP = ?";
     String SELECT_ALL_SQL = "SELECT * FROM PhieuDatPhong";
     String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDatPhong WHERE MaPDP = ?";
@@ -23,7 +23,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     public void insert(Booking entity) {
         try {
             jdbcHelper.update(INSERT_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus(),entity.getIdStaff());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -33,7 +33,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
     public void update(Booking entity) {
         try {
             jdbcHelper.update(UPDATE_SQL, entity.getIdGuest(), entity.getIdRoom(), entity.getStartDate(),
-                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus(), entity.getId());
+                    entity.getEndDate(), entity.isType(),entity.getTotalMoney(),entity.getStatus(), entity.getIdStaff(),entity.getId());
         } catch (SQLException ex) {
             Logger.getLogger(BookingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,6 +76,7 @@ public class BookingDAO extends HotelDAO<Booking, Integer> {
                 booking.setType(resultSet.getBoolean("HinhThucThue"));
                 booking.setTotalMoney(resultSet.getFloat("TongTien"));
                 booking.setStatus(resultSet.getInt("TrangThai"));
+                booking.setIdStaff(resultSet.getString("MaNV"));
                 bookings.add(booking);
             }
             return bookings;

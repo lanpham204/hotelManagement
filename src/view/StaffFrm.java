@@ -24,13 +24,14 @@ public class StaffFrm extends javax.swing.JPanel {
     DefaultTableModel tblModel;
     List<Staff> list;
     StaffDAO staffDao = new StaffDAO();
+
     /**
      * Creates new form JPanel
      */
     public StaffFrm() {
         initComponents();
         init();
-        
+
     }
 
     /**
@@ -410,7 +411,7 @@ public class StaffFrm extends javax.swing.JPanel {
             });
         }
         tblModel.fireTableDataChanged();
-        
+
         setWhiteForm();
     }
 
@@ -435,7 +436,7 @@ public class StaffFrm extends javax.swing.JPanel {
 
     private Staff checkValue() {
         String id = txtId.getText().trim();
-        String name = txtName.getText();
+        String name = txtName.getText().trim();
         String pass = new String(txtPass.getPassword()).trim();
         String confir = new String(txtConfir.getPassword()).trim();
         String cccd = txtCccd.getText().trim();
@@ -461,21 +462,13 @@ public class StaffFrm extends javax.swing.JPanel {
                     matcher = pattern.matcher(email);
                     if (matcher.matches()) {
                         if (new Date().getYear() - date.getYear() >= 18) {
-                            if(!checkEmail(email)) {
-                                if(!exist(id)) {
-                                    return new Staff(id, name, date, 
-                                            rdoMale.isSelected() ? true : false, 
-                                            cccd, email, phone, 
-                                            BCrypt.hashpw(pass, BCrypt.gensalt()), 
-                                            rdoManager.isSelected() ? true : false);
-                                } else {
-                                    MsgBox.showMessage(this, "Mã NV đã tồn tại");
-                                }
-                                
-                            } else {
-                                MsgBox.showMessage(this, "Địa chỉ email đã tồn tại");
-                            }
-                            
+
+                                return new Staff(id, name, date,
+                                        rdoMale.isSelected() ? true : false,
+                                        cccd, email, phone,
+                                        BCrypt.hashpw(pass, BCrypt.gensalt()),
+                                        rdoManager.isSelected() ? true : false);
+
                         } else {
                             MsgBox.showMessage(this, "Ngày sinh không hợp lệ\n"
                                     + "Phải trên 18 tuổi\n"
@@ -484,56 +477,71 @@ public class StaffFrm extends javax.swing.JPanel {
                         }
                     } else {
                         MsgBox.showMessage(this, "Email không hợp lệ\n"
-                            + "VD hợp lệ: minh@gmail.com");
+                                + "VD hợp lệ: minh@gmail.com");
                         return null;
                     }
-                    
+
                 } else {
                     MsgBox.showMessage(this, "Số điện thoại phải có 10 chữ số\n"
-                        + "VD hợp lệ: 0812312312");
-                return null;
+                            + "VD hợp lệ: 0812312312");
+                    return null;
                 }
-                
+
             } else {
                 MsgBox.showMessage(this, "Căn cước công dân không hợp lệ");
-            return null;
+                return null;
             }
-            
+
         } else {
             MsgBox.showMessage(this, "Mật khẩu phải giống nhau");
-        return null;
+            return null;
         }
-        return null;
     }
 
     private void insert() {
         Staff staff = checkValue();
-        if (staff == null) {
-            return;
+        if (!checkEmail(staff.getEmail())) {
+            if (!exist(staff.getId())) {
+                if (staff == null) {
+                return;
+            }
+            try {
+                staffDao.insert(staff);
+                fillTable();
+                MsgBox.showMessage(this, "Thành công");
+            } catch (Exception e) {
+                e.printStackTrace();
+                MsgBox.showMessage(this, "Thất bại");
+            }
+            } else {
+                MsgBox.showMessage(this, "Mã nhân viên đã tồn tại");
+            }
+            
+        } else {
+            MsgBox.showMessage(this, "Email đã tồn tại");
         }
-        try {
-            staffDao.insert(staff);
-            fillTable();
-            MsgBox.showMessage(this, "Thành công");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MsgBox.showMessage(this, "Thất bại");
-        }
+
     }
 
     private void update() {
         Staff staff = checkValue();
-        if (staff == null) {
-            return;
+        if (!checkEmail(staff.getEmail())) {
+   
+            if (staff == null) {
+                return;
+            }
+            try {
+                staffDao.update(staff);
+                fillTable();
+                MsgBox.showMessage(this, "Thành công");
+            } catch (Exception e) {
+                e.printStackTrace();
+                MsgBox.showMessage(this, "Thất bại");
+            }
+        } else {
+            MsgBox.showMessage(this, "Email đã tồn tại");
         }
-        try {
-            staffDao.update(staff);
-            fillTable();
-            MsgBox.showMessage(this, "Thành công");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MsgBox.showMessage(this, "Thất bại");
-        }
+
     }
 
     private void delete() {
@@ -577,17 +585,16 @@ public class StaffFrm extends javax.swing.JPanel {
 
     private boolean checkEmail(String email) {
         for (Staff staff : list) {
-            if(staff.getEmail().equalsIgnoreCase(email)) {
+            if (staff.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
         return false;
     }
 
-
     private boolean exist(String id) {
         for (Staff staff : list) {
-            if(staff.getId().equalsIgnoreCase(id)) {
+            if (staff.getId().equalsIgnoreCase(id)) {
                 return true;
             }
         }

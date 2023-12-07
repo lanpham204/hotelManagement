@@ -19,11 +19,12 @@ public class Booking {
     private boolean type;
     private float totalMoney;
     private int  status;
+    private String idStaff;
 
     public Booking() {
     }
 
-    public Booking(String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status) {
+    public Booking(String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status, String idStaff) {
         this.idGuest = idGuest;
         this.idRoom = idRoom;
         this.startDate = startDate;
@@ -31,9 +32,10 @@ public class Booking {
         this.type = type;
         this.totalMoney = totalMoney;
         this.status = status;
+        this.idStaff = idStaff;
     }
 
-    public Booking(int id, String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status) {
+    public Booking(int id, String idGuest, String idRoom, Date startDate, Date endDate, boolean type, float totalMoney, int status, String idStaff) {
         this.id = id;
         this.idGuest = idGuest;
         this.idRoom = idRoom;
@@ -42,7 +44,13 @@ public class Booking {
         this.type = type;
         this.totalMoney = totalMoney;
         this.status = status;
+        this.idStaff = idStaff;
     }
+
+    
+
+
+    
 
     
 
@@ -83,6 +91,14 @@ public class Booking {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getIdStaff() {
+        return idStaff;
+    }
+
+    public void setIdStaff(String idStaff) {
+        this.idStaff = idStaff;
     }
 
     
